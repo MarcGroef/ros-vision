@@ -1,2 +1,2 @@
-
+sb_vision
 -DCATKIN_DEVEL_PREFIX=/home/student/ros-vision/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/student/ros-vision/catkin_ws/install

@@ -1,0 +1,8 @@
+prefix=/home/student/ros-vision/catkin_ws/devel
+
+Name: web_video_server
+Description: Description of web_video_server
+Version: 0.0.2
+Cflags: 
+Libs: -L/home/student/ros-vision/catkin_ws/devel/lib 
+Requires: 

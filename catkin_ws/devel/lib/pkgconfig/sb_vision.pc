@@ -1,0 +1,8 @@
+prefix=/home/student/ros-vision/catkin_ws/devel
+
+Name: sb_vision
+Description: Description of sb_vision
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/student/ros-vision/catkin_ws/devel/lib 
+Requires: 

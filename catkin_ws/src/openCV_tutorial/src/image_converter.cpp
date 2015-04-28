@@ -11,6 +11,15 @@
 using namespace std;
 using namespace cv;
 
+void printVector(std::vector<cv::KeyPoint> kp){
+ int i,size;
+ size = kp.size();
+ for(i=0;i<size;i++){
+  std::cout << kp[i].pt << "\n";   
+ }
+ std::cout << "there were " << size << " features\n";
+}
+
 int main(int argc, char* argv[])
 {
     ros::init(argc,argv,"image_converter");
@@ -20,6 +29,7 @@ int main(int argc, char* argv[])
     cv::SiftFeatureDetector detector;
     std::vector<cv::KeyPoint> keypoints;
     detector.detect(input, keypoints);
+    //printVector(keypoints);
     // Add results to image and save.
     cv::Mat output;
     cv::drawKeypoints(input, keypoints, output);

@@ -6,11 +6,11 @@ project(openCV_tutorial)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
-  cv_bridge
+  ##OpenCV
+  ##cv_bridge
   roscpp
   std_msgs
   image_transport
-  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -164,8 +164,11 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+##find_package(OpenCV)
+#include_directories(${OpenCV_INCLUDE_DIRS})
 
 include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include "../opencv-master")
 add_executable(image_converter src/image_converter.cpp)
-target_link_libraries(image_converter ${catkin_LIBRARIES})
+target_link_libraries(image_converter ${catkin_LIBRARIES} )
 add_dependencies(image_converter openCV_tutorial_image_converter_cpp)

@@ -7,7 +7,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/nonfree/nonfree.hpp>
 #include <opencv2/highgui/highgui.hpp>
-//#include <opencv2/line_descriptor/descriptor.hpp>
+#include <opencv2/line_descriptor/descriptor.hpp>
 #include <iostream>
 
 
@@ -53,7 +53,7 @@ int main(int argc, char* argv[]){
     cv::initModule_nonfree();
     const cv::Mat input = cv::imread(argv[1], 1); //Load as grayscale
     performSIFT(input);  
-    //performLSD(input);
+    performLSD(input);
     
     return 0;
 }

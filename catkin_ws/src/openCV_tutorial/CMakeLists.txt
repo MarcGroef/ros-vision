@@ -6,8 +6,8 @@ project(openCV_tutorial)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
-  ##OpenCV
-  ##cv_bridge
+  #opencv
+  cv_bridge
   roscpp
   std_msgs
   image_transport
@@ -168,7 +168,7 @@ include_directories(
 #include_directories(${OpenCV_INCLUDE_DIRS})
 
 include_directories(include ${catkin_INCLUDE_DIRS})
-include_directories(include "../opencv-master")
+include_directories(include "~/opencv")
 add_executable(image_converter src/image_converter.cpp)
 target_link_libraries(image_converter ${catkin_LIBRARIES} )
 add_dependencies(image_converter openCV_tutorial_image_converter_cpp)

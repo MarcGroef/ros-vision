@@ -164,8 +164,10 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
-##find_package(OpenCV)
+#find_package(OpenCV)
 #include_directories(${OpenCV_INCLUDE_DIRS})
+
+
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 include_directories(include "~/opencv")

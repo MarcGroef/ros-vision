@@ -159,8 +159,8 @@ int main(int argc, char* argv[]){
     
     ros::init(argc,argv,"image_converter");
     cv::initModule_nonfree();
-    const cv::Mat input = cv::imread(argv[1], CV_LOAD_IMAGE_COLOR); //Load as grayscale
-    performSIFT(input);  
+    const cv::Mat input = cv::imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE); //Load as grayscale
+   // performSIFT(input);  
     performLSD(input);
     
     return 0;

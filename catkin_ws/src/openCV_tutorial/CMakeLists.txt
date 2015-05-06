@@ -4,6 +4,11 @@ project(openCV_tutorial)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
+#set(OpenCV_INCLUDE_DIRS /usr/local/include)
+set(OpenCV_DIR /usr/local/)
+set(CMAKE_PREFIX_PATH "/usr/local" ${CMAKE_PREFIX_PATH})
+
+
 find_package(catkin REQUIRED COMPONENTS
   sensor_msgs
   #opencv
@@ -12,6 +17,18 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   image_transport
 )
+
+find_package(OpenCV REQUIRED)
+
+
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+  ${OpenCV_INCLUDE_DIRS}
+
+)
+message(STATUS "Dit is de gebruikte opencv dir:")
+message(STATUS ${OpenCV_INCLUDE_DIRS})
+message(STATUS ${OpenCV_LIBRARIES})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -96,9 +113,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-)
+
+
 
 ## Declare a cpp library
 # add_library(openCV_tutorial
@@ -169,8 +185,8 @@ include_directories(
 
 
 
-include_directories(include ${catkin_INCLUDE_DIRS})
-include_directories(include "~/opencv")
-add_executable(image_converter src/image_converter.cpp)
-target_link_libraries(image_converter ${catkin_LIBRARIES} )
+add_executable(image_converter src/image_converter.cpp src/lsd_1.6/lsd.c)
+target_link_libraries(image_converter ${catkin_LIBRARIES} 
+${OpenCV_LIBRARIES}
+)
 add_dependencies(image_converter openCV_tutorial_image_converter_cpp)

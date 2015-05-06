@@ -20,7 +20,7 @@ extern "C"{
 #include <string>
 
 
-//using namespace std;
+using namespace std;
 using namespace cv;
 
 
@@ -44,39 +44,51 @@ void performSIFT(cv::Mat input){
     cv::imwrite("sift_result.jpg", output);
 }
 
-void performLSD(){
+double* char_to_image_double_ptr( unsigned int xsize, 
+                                     unsigned int ysize, char * data ){
 
-  double * image;
+  int size = xsize*ysize;
+  int i;
+  double* image;
+  /* check parameters */
+  if( xsize == 0 || ysize == 0 )
+    cout << "new_image_double_ptr: invalid image size.";
+  if( data == NULL ) cout << "new_image_double_ptr: NULL data pointer.";
+
+  /* get memory */
+  image = (double*) malloc(size* sizeof(double) );
+  if( image == NULL ) cout << "not enough memory.";
+
+  /* set image */
+
+  for(i=0; i < size; ++i){
+    image[i] = (double) data[i];
+  }
+  return image;
+}
+
+void performLSD(cv::Mat m){
+  
+  double * image = char_to_image_double_ptr(m.cols,m.rows,(char*)m.data);
   double * out;
   int x,y,i,j,n;
-  int X = 128;  /* x image size */
-  int Y = 128;  /* y image size */
+  int X = m.cols;  /* x image size */
+  int Y = m.rows;  /* y image size */
 
-  /* create a simple image: left half black, right half gray */
-  image = (double *) malloc( X * Y * sizeof(double) );
-  if( image == NULL )
-    {
-      fprintf(stderr,"error: not enough memory\n");
-      exit(EXIT_FAILURE);
-    }
-  for(x=0;x<X;x++)
-    for(y=0;y<Y;y++)
-      image[x+y*X] = x<X/2 ? 0.0 : 64.0; /* image(x,y) */
-
-
+ 
   /* LSD call */
   out = lsd(&n,image,X,Y);
 
 
   /* print output */
-  printf("%d line segments found:\n",n);
+
   for(i=0;i<n;i++)
     {
       for(j=0;j<7;j++)
         printf("%f ",out[7*i+j]);
       printf("\n");
     }
-
+  printf("%d line segments found:\n",n);
   /* free memory */
   free( (void *) image );
   free( (void *) out );
@@ -90,7 +102,7 @@ int main(int argc, char* argv[]){
     cv::initModule_nonfree();
     const cv::Mat input = cv::imread(argv[1], 1); //Load as grayscale
     performSIFT(input);  
-    performLSD();
+    performLSD(input);
     
     return 0;
 }

@@ -34,10 +34,11 @@ namespace BOLD{
     /* LSD call */
     lines = (Line*)lsd(&nLines,im,X,Y);
 
-    printf("%d line segments found:\n",nLines);
-    /* free memory */
+    cout << nLines << " line segments found\n";
     write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",X,Y,.1);
-    //free( (void *) image );
+    cout << "Line image written to BOLDLSDout.eps..\n";
+    /* free memory */
+
     free( (void *) im );
   }
     

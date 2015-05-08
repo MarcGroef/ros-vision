@@ -14,32 +14,42 @@ using namespace BOLD;
 namespace BOLD{
   
   BOLDescriptor::BOLDescriptor(){
-    cout << "BOLDescriptor contstructor called\n";
+    lines = NULL;
+    imageIsSet = false;
   }
   
   void BOLDescriptor::setImage(Mat im){
     image = im;
+    imageIsSet = true;
   }
   
-  
-    
-  void BOLDescriptor::describe(){
-    
+  void BOLDescriptor::detectLines(){
     double * im = char_to_image_double_ptr(image.cols,image.rows,(char*)image.data);
     
-    int x,y,i,j,n;
+    int x,y,i,j;
     int X = image.cols;  /* x image size */
     int Y = image.rows;  /* y image size */
 
   
     /* LSD call */
-    bol = lsd(&n,im,X,Y);
+    lines = (Line*)lsd(&nLines,im,X,Y);
 
-    printf("%d line segments found:\n",n);
+    printf("%d line segments found:\n",nLines);
     /* free memory */
-    write_eps(bol,n,7,(char*)"BOLDLSDout.eps",X,Y,.1);
+    write_eps(lines,nLines,7,(char*)"BOLDLSDout.eps",X,Y,.1);
     //free( (void *) image );
     free( (void *) im );
+  }
+    
+  void BOLDescriptor::describe(){
+    if(lines==NULL){
+      if(!imageIsSet){
+	cout << "BOLD::BOLDescriptor.describe() error: image not set.\n";
+	exit(-1);
+      }else
+	detectLines();
+    }
+    
   }
   
   
@@ -53,7 +63,7 @@ int main(int argc,char**argv){
   
   
   BOLDescriptor d;
-  //d.setImage(cv::imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE));
-  //d.lsd();
+  d.setImage(cv::imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE));
+  d.describe();
   return 0;
 }

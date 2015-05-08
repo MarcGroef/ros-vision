@@ -25,15 +25,26 @@ using namespace std;
 
 namespace BOLD{
   
+  
+  class Line{
+    double x1,y1,x2,y2,width,p,minLogNFA;
+  };
+  
+  
+  
   class BOLDescriptor{
-    cv::Mat image;
-    double* bol;
-    
-    public:
-      BOLDescriptor();
-      void setImage(Mat image);
-      void describe();
 
+    
+  public:
+    BOLDescriptor();
+    void setImage(Mat image);
+    void describe();
+  private: 
+    void detectLines();
+    cv::Mat image;
+    Line* lines;
+    bool imageIsSet;
+    int nLines;
   };
 }
 #endif 

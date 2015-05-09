@@ -75,8 +75,8 @@ namespace BOLD{
     lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
 
     cout << nLines << " line segments found\n";
-    write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",imWidth,imHeight,.1);
-    cout << "Line image written to BOLDLSDout.eps..\n";
+    //write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",imWidth,imHeight,.1);
+    //cout << "Line image written to BOLDLSDout.eps..\n";
     // free memory 
 
  
@@ -120,6 +120,13 @@ namespace BOLD{
 	signSI = n.dot(signPart.divByScalar(signPart.abs()));
 	
 	sj.set(ej2.minus2D(ej1).timesScalar(signSI));
+	
+	
+	alpha = acos(si.dot(tij)/(si.abs()*tij.abs()));
+	beta = acos(sj.dot(tji)/(sj.abs()*tji.abs()));
+	
+	//cout << "alpha = " << alpha*360/(2*M_PI) << "\t beta = " << beta*360/(2*M_PI) << "\n";
+	
       }
     }
     

@@ -86,7 +86,7 @@ namespace BOLD{
     int i,j;
 
     double alpha,beta;
-    BVector gi,gj;
+    BVector gi,gj,ei1,ei2,ej1,ej2,n(0,0,1);
     int meanX,meanY;
     
     if(lines==NULL){
@@ -102,9 +102,7 @@ namespace BOLD{
 	//following variable namings from BOLD paper by Tombari e.a.
 	gi = getGradient((int)((lines[i].x1+lines[i].x2))/2,(int)((lines[i].y1+lines[i].y2)/2));  
 	gj = getGradient((int)((lines[j].x1+lines[j].x2))/2,(int)((lines[j].y1+lines[j].y2)/2));	 
-	double gti = sqrt(gi.getElement(0)*gi.getElement(0)+gi.getElement(1)*gi.getElement(1));
-	double gtj = sqrt(gj.getElement(0)*gj.getElement(0)+gj.getElement(1)*gj.getElement(1));
-	cout << gti << " , " << gtj << "\n";
+	
       }
     }
     

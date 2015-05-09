@@ -21,6 +21,16 @@ namespace BOLD{
    a[2]=a3;
   }
   
+  void BVector::set(double a1,double a2,double a3){
+    a[0]=a1;
+    a[1]=a2;
+    a[2]=a3;
+  }
+  
+  void BVector::setElement(int index,double value){
+    a[index]=value;
+  }
+  
   double BVector::getElement(int index){
     if (index >= VECTOR_SIZE) {
     std::cout << "BOLD::Vector::getElement() error: request index out of range..\n" ;
@@ -44,5 +54,34 @@ namespace BOLD{
     }
     BVector ans(a[1]*b.getElement(2)-a[2]*b.getElement(1),a[2]*b.getElement(0)-a[0]*b.getElement(2),a[0]*b.getElement(1)-a[1]*b.getElement(0));
     return ans;
+  }
+  
+  double BVector::abs(){
+   return sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]) ;
+  }
+  
+  double BVector::abs2D(){
+   return sqrt(a[0]*a[0]+a[1]*a[1]) ;
+  }
+  
+  
+  BVector BVector::minus(BVector b){
+   BVector c(a[0]-b.getElement(0),a[1]-b.getElement(1),a[2]-b.getElement(2)) ;
+   return c;
+  }
+  
+  BVector BVector::plus(BVector b){
+   BVector c(a[0]+b.getElement(0),a[1]+b.getElement(1),a[2]+b.getElement(2)) ; 
+   return c;
+  }
+  
+  BVector BVector::divByScalar(double b){
+    BVector c(a[0]/b,a[1]/b,a[2]/b);
+    return c;
+  }
+  
+  BVector BVector::timesScalar(double b){
+    BVector c(a[0]*b,a[1]*b,a[2]*b);
+    return c;
   }
 }

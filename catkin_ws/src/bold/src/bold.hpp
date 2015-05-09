@@ -54,15 +54,18 @@ namespace BOLD{
   class BOLDescriptor{
   private: 
     void detectLines();
-    cv::Mat image;
+    double* image;
+    int imWidth,imHeight;
     Line* lines;
     bool imageIsSet;
     int nLines;
     BOLDFeature feature;
     double histBinSize;
-    
+    BVector getGradient(int x,int y);
+    double getImValue(int x,int y);
   public:
     BOLDescriptor();
+    ~BOLDescriptor();
     void setImage(Mat image);
     void describe();
     BOLDFeature getFeature();

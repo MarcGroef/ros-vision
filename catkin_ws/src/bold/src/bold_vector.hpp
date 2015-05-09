@@ -19,6 +19,7 @@ namespace BOLD{
     
     BVector(double* array);
     BVector(double a1,double a2,double a3);
+    BVector();
     double getElement(int index);
     double dot(BVector b);
     BVector cross(BVector c);

@@ -2,9 +2,16 @@
 
 
 namespace BOLD{
+  
+  BVector::BVector(){
+    for(int i=0;i<VECTOR_SIZE;i++){
+      a[i] = 0; 
+    }
+  }
+  
   BVector::BVector(double* array){
     for(int i=0;i<VECTOR_SIZE;i++){
-    a[i] = array[i]; 
+      a[i] = array[i]; 
     }
   }
   

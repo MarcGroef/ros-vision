@@ -28,9 +28,6 @@ namespace BOLD{
   }
   
   
-  
-  
-  
   //BOLD Descriptor functions*/
   
   
@@ -39,12 +36,30 @@ namespace BOLD{
     lines = NULL;
     imageIsSet = false;
     
+    
+  }
+  
+  BOLDescriptor::~BOLDescriptor(){
+   free(image); 
   }
   
   
+  BVector BOLDescriptor::getGradient(int x,int y){
+    double gx = getImValue(x-1,y)-getImValue(x+1,y);
+    double gy = getImValue(x,y-1)-getImValue(x,y+1);
+    BVector g(gx,gy,0);
+    return g;
+  }
+  
+  double BOLDescriptor::getImValue(int x,int y){
+    return image[x+y*imWidth];
+  }
+  
   //load an image into the BOLDescriptor
   void BOLDescriptor::setImage(Mat im){
-    image = im;
+    image = char_to_image_double_ptr(im.cols,im.rows,(char*)im.data);
+    imWidth = im.cols;
+    imHeight = im.rows;
     imageIsSet = true;
     histBinSize = M_PI/HISTOGRAM_SIZE;
   }
@@ -53,29 +68,25 @@ namespace BOLD{
   //Currently the line segments are written to a .eps image.
   
   void BOLDescriptor::detectLines(){
-    double * im = char_to_image_double_ptr(image.cols,image.rows,(char*)image.data);
-    
-    int x,y;
-    int X = image.cols;  // x image size 
-    int Y = image.rows; //  y image size 
+
 
   
     // LSD call 
-    lines = (Line*)lsd_scale(&nLines,im,X,Y,1.0);
+    lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
 
     cout << nLines << " line segments found\n";
-    write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",X,Y,.1);
+    write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",imWidth,imHeight,.1);
     cout << "Line image written to BOLDLSDout.eps..\n";
     // free memory 
 
-    free( (void *) im );
+ 
   }
     
   void BOLDescriptor::describe(){
     int i,j;
 
     double alpha,beta;
-    double gi,gj;
+    BVector gi,gj;
     int meanX,meanY;
     
     if(lines==NULL){
@@ -89,10 +100,11 @@ namespace BOLD{
     for(i=0;i<nLines;i++){
       for(j=i+1;j<nLines;j++){
 	//following variable namings from BOLD paper by Tombari e.a.
-	gi = image.at<double>((int)((lines[i].x1+lines[i].x2))/2,(int)((lines[i].y1+lines[i].y2)/2));
-	gj = image.at<double>((int)((lines[j].x1+lines[j].x2))/2,(int)((lines[j].y1+lines[j].y2)/2));
-	
-	
+	gi = getGradient((int)((lines[i].x1+lines[i].x2))/2,(int)((lines[i].y1+lines[i].y2)/2));  
+	gj = getGradient((int)((lines[j].x1+lines[j].x2))/2,(int)((lines[j].y1+lines[j].y2)/2));	 
+	double gti = sqrt(gi.getElement(0)*gi.getElement(0)+gi.getElement(1)*gi.getElement(1));
+	double gtj = sqrt(gj.getElement(0)*gj.getElement(0)+gj.getElement(1)*gj.getElement(1));
+	cout << gti << " , " << gtj << "\n";
       }
     }
     

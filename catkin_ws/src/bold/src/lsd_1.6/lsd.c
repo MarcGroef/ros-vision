@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------
- EDIT by marc groefsema: Instead of the original line data, the following representation is used
- 5 floats :x1,y1,x2,y2,middleGradient
-
- 
- IN PROGRESS....
-
 
 /*----------------------------------------------------------------------------
 

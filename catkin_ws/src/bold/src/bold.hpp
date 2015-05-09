@@ -38,9 +38,16 @@ namespace BOLD{
   
   class BOLDFeature{
   private:
-   int histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];
+   int histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
+   int entries;
+   double histBinSize;
+   int highestCount;
   public:
    BOLDFeature();
+   void add(double alha,double beta);
+   void print();
+   void show(int windowSize);
+   
   };
   
   class Line{
@@ -59,7 +66,7 @@ namespace BOLD{
     bool imageIsSet;
     int nLines;
     BOLDFeature feature;
-    double histBinSize;
+    
     BVector getGradient(int x,int y);
     double getImValue(int x,int y);
   public:
@@ -68,7 +75,7 @@ namespace BOLD{
     void setImage(Mat image);
     void describe();
     BOLDFeature getFeature();
-  
+    void showLines();
   };
 }
 #endif 

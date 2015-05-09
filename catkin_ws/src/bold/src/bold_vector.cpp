@@ -27,6 +27,12 @@ namespace BOLD{
     a[2]=a3;
   }
   
+  void BVector::set(BVector b){
+    a[0]=b.getElement(0);
+    a[1]=b.getElement(1);
+    a[2]=b.getElement(2);
+  }
+  
   void BVector::setElement(int index,double value){
     a[index]=value;
   }
@@ -70,8 +76,18 @@ namespace BOLD{
    return c;
   }
   
+  BVector BVector::minus2D(BVector b){
+   BVector c(a[0]-b.getElement(0),a[1]-b.getElement(1),0) ;
+   return c;
+  }
+  
   BVector BVector::plus(BVector b){
    BVector c(a[0]+b.getElement(0),a[1]+b.getElement(1),a[2]+b.getElement(2)) ; 
+   return c;
+  }
+  
+  BVector BVector::plus2D(BVector b){
+   BVector c(a[0]+b.getElement(0),a[1]+b.getElement(1),0) ; 
    return c;
   }
   

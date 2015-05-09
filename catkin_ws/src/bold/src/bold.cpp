@@ -85,9 +85,9 @@ namespace BOLD{
   void BOLDescriptor::describe(){
     int i,j;
 
-    double alpha,beta;
-    BVector gi,gj,ei1,ei2,ej1,ej2,n(0,0,1);
-    int meanX,meanY;
+    double alpha,beta,signSI;
+    BVector gmi,gmj,ei1,ei2,ej1,ej2,n(0,0,1),si,sj,mj,mi,tij,tji,signPart;
+ 
     
     if(lines==NULL){
       if(!imageIsSet){
@@ -100,9 +100,26 @@ namespace BOLD{
     for(i=0;i<nLines;i++){
       for(j=i+1;j<nLines;j++){
 	//following variable namings from BOLD paper by Tombari e.a.
-	gi = getGradient((int)((lines[i].x1+lines[i].x2))/2,(int)((lines[i].y1+lines[i].y2)/2));  
-	gj = getGradient((int)((lines[j].x1+lines[j].x2))/2,(int)((lines[j].y1+lines[j].y2)/2));	 
+	mi.set((lines[i].x1+lines[i].x2)/2,(lines[i].y1+lines[i].y2)/2,0);
+	mj.set((lines[j].x1+lines[j].x2)/2,(lines[j].y1+lines[j].y2)/2,0);
+	tij.set(mj.minus2D(mi));
+	tji.set(mi.minus2D(mj));
+	gmi.set(getGradient((int)((lines[i].x1+lines[i].x2))/2,(int)((lines[i].y1+lines[i].y2)/2)));  
+	gmj.set(getGradient((int)((lines[j].x1+lines[j].x2))/2,(int)((lines[j].y1+lines[j].y2)/2)));	 
+	ei1.set(lines[i].x1,lines[i].y1,0);
+	ei2.set(lines[i].x2,lines[i].y2,0);
+	ej1.set(lines[j].x1,lines[j].y1,0);
+	ej2.set(lines[j].x2,lines[j].y2,0);
 	
+	signPart.set((ei2.minus2D(ei1)).cross(gmi));
+	signSI = n.dot(signPart.divByScalar(signPart.abs()));
+	
+	si.set(ei2.minus2D(ei1).timesScalar(signSI));
+	
+	signPart.set((ej2.minus2D(ej1)).cross(gmj));
+	signSI = n.dot(signPart.divByScalar(signPart.abs()));
+	
+	sj.set(ej2.minus2D(ej1).timesScalar(signSI));
       }
     }
     

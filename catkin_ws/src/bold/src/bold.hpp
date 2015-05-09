@@ -46,7 +46,6 @@ namespace BOLD{
   class Line{
   public:
     double x1,y1,x2,y2,width,p,minLogNFA;
-    //double x1,y1,x2,y2,gradient;
   };
   
   

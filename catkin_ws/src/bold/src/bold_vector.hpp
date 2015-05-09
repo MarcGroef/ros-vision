@@ -23,6 +23,7 @@ namespace BOLD{
     BVector(double* array);
     BVector(double a1,double a2,double a3);
     BVector();
+    void set(BVector b);
     void set(double a1,double a2,double a3);
     void setElement(int index,double value);
     double getElement(int index);
@@ -30,7 +31,9 @@ namespace BOLD{
     double abs();
     double abs2D();
     BVector minus(BVector b);
+    BVector minus2D(BVector b);
     BVector plus(BVector b);
+    BVector plus2D(BVector b);
     BVector cross(BVector b);
     BVector divByScalar(double b);
     BVector timesScalar(double b);

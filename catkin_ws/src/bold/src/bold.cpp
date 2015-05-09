@@ -51,14 +51,14 @@ namespace BOLD{
      
   }
   
-  void BOLDFeature::show(int windowSize){
-    Mat image(windowSize,windowSize,CV_8UC1);
+  void BOLDFeature::show(){
+    Mat image(FEATURE_SHOW_SIZE,FEATURE_SHOW_SIZE,CV_8UC1);
     
     
-    int imBlockSize = windowSize/HISTOGRAM_SIZE;
-    for(int i=0;i<windowSize;i++){
-     for(int j=0;j<windowSize;j++) {
-       image.data[i+j*windowSize] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]/highestCount);
+    int imBlockSize = FEATURE_SHOW_SIZE/HISTOGRAM_SIZE;
+    for(int i=0;i<FEATURE_SHOW_SIZE;i++){
+     for(int j=0;j<FEATURE_SHOW_SIZE;j++) {
+       image.data[i+j*FEATURE_SHOW_SIZE] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]/highestCount);
      }
     }
     cv::namedWindow("BOLD feature:",cv::WINDOW_AUTOSIZE);
@@ -93,13 +93,17 @@ namespace BOLD{
   
   //load an image into the BOLDescriptor
   void BOLDescriptor::setImage(Mat im){
-    cv::namedWindow("BOLD input");
+    cv::namedWindow("BOLD input",cv::WINDOW_AUTOSIZE);
     imshow("BOLD input",im);
     image = char_to_image_double_ptr(im.cols,im.rows,(char*)im.data);
     imWidth = im.cols;
     imHeight = im.rows;
     imageIsSet = true;
     
+  }
+  
+  void BOLDescriptor::showFeatures(){
+   feature.show(); 
   }
   
   //perform the LSD line detection from code of -von Gioi - e.a
@@ -109,19 +113,20 @@ namespace BOLD{
 
 
   
-    // LSD call 
+    // LSD call
+
     lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
 
     cout << nLines << " line segments found\n";
-    write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",imWidth,imHeight,.1);
-    cout << "Line image written to BOLDLSDout.eps..\n";
+    //write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",imWidth,imHeight,.1);
+    //cout << "Line image written to BOLDLSDout.eps..\n";
     // free memory 
-    showLines();
+   // showLines();
  
   }
   
   void BOLDescriptor::showLines(){
-   Mat image(imWidth,imHeight,CV_8UC1,Scalar::all(256));
+   Mat image(imHeight,imWidth,CV_8UC1,Scalar::all(256));
    
    for(int i=0;i<nLines;i++){
      cv::Point a(lines[i].x1,lines[i].y1),b(lines[i].x2,lines[i].y2);
@@ -190,11 +195,12 @@ namespace BOLD{
 	
 	
 	feature.add(alpha,beta);
+      
+	
       }
     }
-    feature.print();
-    feature.show(200);
-    waitKey(0);
+    //feature.print();
+    
   }
   
   
@@ -209,8 +215,9 @@ int main(int argc,char**argv){
   
   BOLDescriptor d;
   d.setImage(cv::imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE));
-  d.describe();
+  //d.describe();
   
- 
+  //d.showFeatures();
+  waitKey(0);
   return 0;
 }

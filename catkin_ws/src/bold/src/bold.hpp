@@ -29,8 +29,8 @@ using namespace std;
 namespace BOLD{
   
   enum BOLDConstants{
-    HISTOGRAM_SIZE = 10,
-    
+    HISTOGRAM_SIZE = 20,
+    FEATURE_SHOW_SIZE = 200,
   };
   
 
@@ -46,7 +46,7 @@ namespace BOLD{
    BOLDFeature();
    void add(double alha,double beta);
    void print();
-   void show(int windowSize);
+   void show();
    
   };
   
@@ -76,6 +76,7 @@ namespace BOLD{
     void describe();
     BOLDFeature getFeature();
     void showLines();
+    void showFeatures();
   };
 }
 #endif 

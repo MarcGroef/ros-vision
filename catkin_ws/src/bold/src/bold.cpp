@@ -40,7 +40,7 @@ namespace BOLD{
   }
   
   void BOLDFeature::print(){
-    cout << "BOLD feature 2D Histogram with " << entries << " entries:\n";
+    cout << "BOLD feature 2D Histogram with " << entries << " entries:\n" << "Highest entry is " << highestCount <<"\n";;
     
     for(int i=0;i<HISTOGRAM_SIZE;i++){
      for(int j=0;j<HISTOGRAM_SIZE;j++){
@@ -58,7 +58,7 @@ namespace BOLD{
     int imBlockSize = windowSize/HISTOGRAM_SIZE;
     for(int i=0;i<windowSize;i++){
      for(int j=0;j<windowSize;j++) {
-       image.data[i+j*windowSize] =(uchar) (256*histogram[i/imBlockSize][j/imBlockSize]/highestCount);
+       image.data[i+j*windowSize] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]/highestCount);
      }
     }
     cv::namedWindow("BOLD feature:",cv::WINDOW_AUTOSIZE);

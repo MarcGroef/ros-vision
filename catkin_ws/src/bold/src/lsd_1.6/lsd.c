@@ -1,4 +1,12 @@
 /*----------------------------------------------------------------------------
+ EDIT by marc groefsema: Instead of the original line data, the following representation is used
+ 5 floats :x1,y1,x2,y2,middleGradient
+
+ 
+ IN PROGRESS....
+
+
+/*----------------------------------------------------------------------------
 
   LSD - Line Segment Detector on digital images
 
@@ -330,6 +338,31 @@ static void add_7tuple( ntuple_list out, double v1, double v2, double v3,
   out->size++;
 }
 
+
+/** Add a 5-tuple to an n-tuple list.
+ */
+static void add_5tuple( ntuple_list out, double v1, double v2, double v3,
+                        double v4, double v5)
+{
+  /* check parameters */
+  if( out == NULL ) error("add_5tuple: invalid n-tuple input.");
+  if( out->dim != 5 ) error("add_5tuple: the n-tuple must be a 5-tuple.");
+
+  /* if needed, alloc more tuples to 'out' */
+  if( out->size == out->max_size ) enlarge_ntuple_list(out);
+  if( out->values == NULL ) error("add_5tuple: invalid n-tuple input.");
+
+  /* add new 5-tuple */
+  out->values[ out->size * out->dim + 0 ] = v1;
+  out->values[ out->size * out->dim + 1 ] = v2;
+  out->values[ out->size * out->dim + 2 ] = v3;
+  out->values[ out->size * out->dim + 3 ] = v4;
+  out->values[ out->size * out->dim + 4 ] = v5;
+
+
+  /* update number of tuples counter */
+  out->size++;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------- Image Data Types -----------------------------*/
@@ -2034,7 +2067,7 @@ double * LineSegmentDetection( int * n_out,
                                int ** reg_img, int * reg_x, int * reg_y )
 {
   image_double image;
-  ntuple_list out = new_ntuple_list(7);
+  ntuple_list out = new_ntuple_list(7);  //OLD: 7
   double * return_value;
   image_double scaled_image,angles,modgrad;
   image_char used;
@@ -2164,6 +2197,9 @@ double * LineSegmentDetection( int * n_out,
         /* add line segment found to output */
         add_7tuple( out, rec.x1, rec.y1, rec.x2, rec.y2,
                          rec.width, rec.p, log_nfa );
+	
+	 /* add_5tuple( out, rec.x1, rec.y1, rec.x2, rec.y2,
+			img[rec.x+rec.y*X] );*/
 
         /* add region number to 'region' image if needed */
         if( region != NULL )
@@ -2249,6 +2285,7 @@ double * lsd(int * n_out, double * img, int X, int Y)
   /* LSD parameters */
   double scale = 0.8;       /* Scale the image by Gaussian filter to 'scale'. */
 
+  
   return lsd_scale(n_out,img,X,Y,scale);
 }
 /*----------------------------------------------------------------------------*/

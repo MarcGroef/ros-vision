@@ -17,7 +17,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
-
+#include <cfloat>
 
 #include "bold_vector.hpp"
 
@@ -29,8 +29,9 @@ using namespace std;
 namespace BOLD{
   
   enum BOLDConstants{
-    HISTOGRAM_SIZE = 20,
+    HISTOGRAM_SIZE = 10,
     FEATURE_SHOW_SIZE = 200,
+    K_NEAREST_LINE_SEGMENTS = 10, 
   };
   
 
@@ -59,14 +60,19 @@ namespace BOLD{
   
   class BOLDescriptor{
   private: 
-    void detectLines();
+    
+    std::vector<int> falseLines;
     double* image;
     int imWidth,imHeight;
     Line* lines;
     bool imageIsSet;
     int nLines;
     BOLDFeature feature;
+    int KNLIndices[K_NEAREST_LINE_SEGMENTS];
     
+    void kNearestLines(int index);
+    void detectLines();
+    void resolveAngles(int indexA,int indexB);
     BVector getGradient(int x,int y);
     double getImValue(int x,int y);
   public:

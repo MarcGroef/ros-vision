@@ -26,7 +26,7 @@ namespace BOLD{
   }
   
   BOLDescriptor::~BOLDescriptor(){
-   free(image); 
+   clear();
   }
   
   void BOLDescriptor::setImageName(string name){
@@ -226,11 +226,12 @@ namespace BOLD{
     for(i=0;i<nLines;i++){
       kNearestLines(i);
       for(j=0;j<K_NEAREST_LINE_SEGMENTS;j++){
-	
-	resolveAngles(i,KNLIndices[j]);
+	if(KNLIndices[j]<nLines)  //secures against situations when nLines < 5
+	  resolveAngles(i,KNLIndices[j]);
       }
     }
    
+    feature.normalize();
   }
   
   void BOLDescriptor::clear(){
@@ -262,7 +263,7 @@ int main(int argc,char**argv){
     d.setImage(cv::imread(argv[i], CV_LOAD_IMAGE_GRAYSCALE),false);
     d.setImageName(argv[i]);
     d.describe();
-    d.showLines();
+   // d.showLines();
     d.showFeatures();
     d.clear();
     

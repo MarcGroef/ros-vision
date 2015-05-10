@@ -8,17 +8,36 @@
     
     BOLDFeature::BOLDFeature(){
       
-    for(int i=0;i<HISTOGRAM_SIZE;i++) {
-      for(int j=0;j<HISTOGRAM_SIZE;j++) {
-	histogram[i][j]=0;
+      for(int i=0;i<HISTOGRAM_SIZE;i++) {
+	for(int j=0;j<HISTOGRAM_SIZE;j++) {
+	  histogram[i][j]=0;
+	}
       }
-    }
-    histBinSize = 2*M_PI/HISTOGRAM_SIZE;
-    entries = 0;
-    highestCount=0;
+      histBinSize = 2*M_PI/HISTOGRAM_SIZE;
+      entries = 0;
+      highestCount=0;
+      normalized=false;
     }
     
-
+    void BOLDFeature::normalize(){
+      for(int i=0;i<HISTOGRAM_SIZE;i++) {
+	for(int j=0;j<HISTOGRAM_SIZE;j++) {
+	  histogram[i][j]/=highestCount;
+	}
+      }
+    }
+    
+    double BOLDFeature::distanceFrom(BOLDFeature f){
+      
+    }
+    
+    int BOLDFeature::getMaxFeatureElement(){
+     return  highestCount;
+    }
+    
+    int BOLDFeature::getNEntries(){
+     return entries; 
+    }
     
     void BOLDFeature::add(double alpha,double beta){
       histogram[(int)(alpha/histBinSize)][(int)(beta/histBinSize)]++;
@@ -31,9 +50,9 @@
       cout << "BOLD feature 2D Histogram with " << entries << " entries:\n" << "Highest entry is " << highestCount <<"\n";;
       
       for(int i=0;i<HISTOGRAM_SIZE;i++){
-      for(int j=0;j<HISTOGRAM_SIZE;j++){
-	cout << histogram[i][j] << ", ";
-      }
+	for(int j=0;j<HISTOGRAM_SIZE;j++){
+	  cout << histogram[i][j] << ", ";
+	}
       cout << "\n";
       }
       
@@ -45,9 +64,9 @@
       
       int imBlockSize = FEATURE_SHOW_SIZE/HISTOGRAM_SIZE;
       for(int i=0;i<FEATURE_SHOW_SIZE;i++){
-      for(int j=0;j<FEATURE_SHOW_SIZE;j++) {
-	image.data[i+j*FEATURE_SHOW_SIZE] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]/highestCount);
-      }
+	for(int j=0;j<FEATURE_SHOW_SIZE;j++) {
+	  image.data[i+j*FEATURE_SHOW_SIZE] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]);
+	}
       }
       cv::namedWindow("BOLD feature: "+name,cv::WINDOW_AUTOSIZE);
       imshow("BOLD feature: "+name,image);

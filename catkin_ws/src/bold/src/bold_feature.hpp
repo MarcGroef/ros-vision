@@ -13,7 +13,7 @@
   
   namespace BOLD{
     enum BOLDFeatureConstants{
-      HISTOGRAM_SIZE = 10,
+      HISTOGRAM_SIZE = 12,
       FEATURE_SHOW_SIZE = 300,
       
     };
@@ -21,16 +21,26 @@
     
     class BOLDFeature{
     private:
-      int histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
+      double histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
       int entries;
       double histBinSize;
       int highestCount;
+      bool normalized;
+      
     public:
+      
       BOLDFeature();
       void add(double alpha,double beta);
+      double distanceFrom(BOLDFeature f);
       void print();
       void show(string name);
+      
+      int getNEntries();
+      int getMaxFeatureElement();
+      
+      void normalize();
       void clear();
+      
     };
   }
 

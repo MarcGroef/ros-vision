@@ -9,11 +9,12 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-
+  using namespace std;
+  
   namespace BOLD{
     enum BOLDFeatureConstants{
       HISTOGRAM_SIZE = 10,
-      FEATURE_SHOW_SIZE = 200,
+      FEATURE_SHOW_SIZE = 300,
       
     };
     
@@ -28,8 +29,8 @@
     BOLDFeature();
     void add(double alha,double beta);
     void print();
-    void show();
-    
+    void show(string name);
+    void clear();
     };
   }
 

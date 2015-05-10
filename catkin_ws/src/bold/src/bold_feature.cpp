@@ -4,7 +4,10 @@
   using namespace cv;
 
   namespace BOLD{
+    
+    
     BOLDFeature::BOLDFeature(){
+      
     for(int i=0;i<HISTOGRAM_SIZE;i++) {
       for(int j=0;j<HISTOGRAM_SIZE;j++) {
 	histogram[i][j]=0;
@@ -36,7 +39,7 @@
       
     }
     
-    void BOLDFeature::show(){
+    void BOLDFeature::show(string name){
       Mat image(FEATURE_SHOW_SIZE,FEATURE_SHOW_SIZE,CV_8UC1);
       
       
@@ -46,7 +49,17 @@
 	image.data[i+j*FEATURE_SHOW_SIZE] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]/highestCount);
       }
       }
-      cv::namedWindow("BOLD feature",cv::WINDOW_AUTOSIZE);
-      imshow("BOLD feature",image);
+      cv::namedWindow("BOLD feature: "+name,cv::WINDOW_AUTOSIZE);
+      imshow("BOLD feature: "+name,image);
+    }
+    
+    void BOLDFeature::clear(){
+      for(int i=0;i<HISTOGRAM_SIZE;i++) {
+	for(int j=0;j<HISTOGRAM_SIZE;j++) {
+	  histogram[i][j]=0;
+	}
+      }
+      entries = 0;
+      highestCount=0;
     }
   }

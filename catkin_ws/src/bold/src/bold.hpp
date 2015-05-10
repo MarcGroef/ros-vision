@@ -63,15 +63,19 @@ namespace BOLD{
     void resolveAngles(int indexA,int indexB);
     BVector getGradient(int x,int y);
     double getImValue(int x,int y);
+    string imageName;
   public:
     BOLDescriptor();
     ~BOLDescriptor();
-    void setImage(Mat image);
+    void setImage(Mat image,bool showImage);
     void describe();
     void describeOLD();
     BOLDFeature getFeature();
     void showLines();
     void showFeatures();
+    void setImageName(string name);
+    string getImageName();
+    void clear();
   };
 }
 #endif 

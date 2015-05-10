@@ -21,12 +21,20 @@ namespace BOLD{
   BOLDescriptor::BOLDescriptor(){
     lines = NULL;
     imageIsSet = false;
-    
+    imageName = "";
     
   }
   
   BOLDescriptor::~BOLDescriptor(){
    free(image); 
+  }
+  
+  void BOLDescriptor::setImageName(string name){
+   imageName = name; 
+  }
+  
+  string BOLDescriptor::getImageName(){
+   return imageName; 
   }
   
   
@@ -42,9 +50,11 @@ namespace BOLD{
   }
   
   //load an image into the BOLDescriptor
-  void BOLDescriptor::setImage(Mat im){
-    cv::namedWindow("BOLD input",cv::WINDOW_AUTOSIZE);
-    imshow("BOLD input",im);
+  void BOLDescriptor::setImage(Mat im,bool showInput){
+    if(showInput){
+      cv::namedWindow("BOLD input",cv::WINDOW_AUTOSIZE);
+      imshow("BOLD input",im);
+    }
     image = char_to_image_double_ptr(im.cols,im.rows,(char*)im.data);
     imWidth = im.cols;
     imHeight = im.rows;
@@ -53,7 +63,7 @@ namespace BOLD{
   }
   
   void BOLDescriptor::showFeatures(){
-   feature.show(); 
+   feature.show(imageName); 
   }
   
   //perform the LSD line detection from code of -von Gioi - e.a
@@ -62,17 +72,9 @@ namespace BOLD{
   void BOLDescriptor::detectLines(){
 
 
-  
-    // LSD call
-
     lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
-
     cout << nLines << " line segments found\n";
-    //write_eps((double*)lines,nLines,7,(char*)"BOLDLSDout.eps",imWidth,imHeight,.1);
-    //cout << "Line image written to BOLDLSDout.eps..\n";
-    // free memory 
-   // showLines();
- 
+
   }
   
   void BOLDescriptor::showLines(){
@@ -82,8 +84,8 @@ namespace BOLD{
      cv::Point a(lines[i].x1,lines[i].y1),b(lines[i].x2,lines[i].y2);
     line(image,a,b,Scalar(0,0,0),1,8) ;
    }
-   cv::namedWindow("LSD lines",cv::WINDOW_AUTOSIZE);
-    imshow("LSD lines",image);
+   cv::namedWindow("LSD lines: "+imageName,cv::WINDOW_AUTOSIZE);
+    imshow("LSD lines: "+imageName,image);
   }
 
   bool checkFalseLine(std::vector<int> v,int index){
@@ -204,118 +206,15 @@ namespace BOLD{
 	}
       }
     }
-   // cout << "closest: " << distances[0] << ", furthest: " << distances[K_NEAREST_LINE_SEGMENTS-1] << "\n";
+    //cout << "closest: " << distances[0] << ", furthest: " << distances[K_NEAREST_LINE_SEGMENTS-1] << "\n";
   }
   
-  
-  //Depricated version of BOLD::BOLDescriptor::describe(). Commented for dev. reference
-   void BOLDescriptor::describeOLD(){
-    int i,j;
-
-    double alpha,beta,signSI;
-    BVector gmi,gmj,ei1,ei2,ej1,ej2,n(0,0,1),si,sj,mj,mi,tij,tji,signPart,st;
- 
-    
-    if(lines==NULL){
-      if(!imageIsSet){
-	cout << "BOLD::BOLDescriptor.describe() error: image not set.\n";
-	exit(-1);
-      }else
-	detectLines();
-    }
-    
-    std::vector<int> falseLines;
-    
-    
-    //following variable namings from BOLD paper by Tombari e.a.
-    //for all individual line combinations :: TODO should be K-nearest-line combos
-    for(i=0;i<nLines;i++){
-      
-      
-      if(checkFalseLine(falseLines,i))
-	continue;
-      gmi.set(getGradient((int)((lines[i].x1+lines[i].x2))/2,(int)((lines[i].y1+lines[i].y2)/2)));
-      if(gmi.abs()==0){
-	cout << "BOLD::BOLDescriptor::describe(): Warning! mid-line gradient was 0. Line omitted! \n" ;
-	falseLines.push_back(i);
-	continue;
-      }
-      
-      
-      for(j=i+1;j<nLines;j++){
-	
-	if(checkFalseLine(falseLines,j))
-	  continue;
-	gmj.set(getGradient((int)((lines[j].x1+lines[j].x2))/2,(int)((lines[j].y1+lines[j].y2)/2)));	 
-	if(gmj.abs()==0){
-	  cout << "BOLD::BOLDescriptor::describe(): Warning! mid-line gradient was 0. Line omitted! \n" ;
-	  falseLines.push_back(j);
-	  continue;
-	}
-	// set vectors
-	
-	mi.set((lines[i].x1+lines[i].x2)/2,(lines[i].y1+lines[i].y2)/2,0);
-	mj.set((lines[j].x1+lines[j].x2)/2,(lines[j].y1+lines[j].y2)/2,0);
-	tij.set(mj.minus2D(mi));
-	tji.set(mi.minus2D(mj));
-	  
-	
-	ei1.set(lines[i].x1,lines[i].y1,0);
-	ei2.set(lines[i].x2,lines[i].y2,0);
-	ej1.set(lines[j].x1,lines[j].y1,0);
-	ej2.set(lines[j].x2,lines[j].y2,0);
-	
-	
-	//calculate sign(si) and sign(sj) and invert vector if nessesary
-	signPart.set((ei2.minus2D(ei1)).cross(gmi));
-	signSI = n.dot(signPart.divByScalar(signPart.abs()));
-	
-	si.set(ei2.minus2D(ei1).timesScalar(signSI));
-	
-	signPart.set((ej2.minus2D(ej1)).cross(gmj));
-	signSI = n.dot(signPart.divByScalar(signPart.abs()));
-	
-	sj.set(ej2.minus2D(ej1).timesScalar(signSI));
-
-	//calculate angles
-	double frac = si.dot(tij)/(si.abs()*tij.abs());
-
-	alpha = acos(frac);
-	
-	frac = sj.dot(tji)/(sj.abs()*tji.abs());
-	beta = acos(sj.dot(tji)/(sj.abs()*tji.abs()));
-
-	//angle correction
-	st = si.cross(tij);
-	alpha = n.dot(st.divByScalar(st.abs()))==1?alpha:2*M_PI-alpha;
-	st = sj.cross(tji);
-	beta = n.dot(st.divByScalar(st.abs()))==1?beta:2*M_PI-beta;
-	
-	if(std::isnan(alpha)){
-	  falseLines.push_back(i);
-	  cout << "BOLD::BOLDescriptor::describe(): Warning! alpha was NaN. Omitting line..\n";
-	  continue;
-	}
-	if(std::isnan(beta)){
-	  falseLines.push_back(j);
-	  cout << "BOLD::BOLDescriptor::describe(): Warning! beta was NaN. Omitting line..\n";
-	  continue;
-	}
-
-	feature.add(alpha,beta);
-      
-	
-      }
-    }
-    
-    
-  }
   
   
   void BOLDescriptor::describe(){
    int i,j;
-
-   
+   cout << "describing..\n" ;
+   feature.clear();
    if(lines==NULL){
       if(!imageIsSet){
 	cout << "BOLD::BOLDescriptor.describe() error: image not set.\n";
@@ -328,13 +227,24 @@ namespace BOLD{
       kNearestLines(i);
       for(j=0;j<K_NEAREST_LINE_SEGMENTS;j++){
 	
-	if(KNLIndices[j]<nLines)
-	  resolveAngles(i,KNLIndices[j]);
+	resolveAngles(i,KNLIndices[j]);
       }
     }
    
   }
   
+  void BOLDescriptor::clear(){
+    feature.clear();
+    free(image);
+    free(lines);
+    
+    image = NULL;
+    lines = NULL;
+    
+    imageIsSet = false;
+    falseLines.clear();
+    imageName = "";
+  }
   
  
   
@@ -343,13 +253,20 @@ namespace BOLD{
 int main(int argc,char**argv){
   ros::init(argc,argv,"bold");
   cv::initModule_nonfree();
+  cout << argc << "\n";
   
   
   BOLDescriptor d;
-  d.setImage(cv::imread(argv[1], CV_LOAD_IMAGE_GRAYSCALE));
-  d.describe();
-  d.showLines();
-  d.showFeatures();
+  for(int i=1;i<argc;i++){
+    cout << argv[i] << "\n";
+    d.setImage(cv::imread(argv[i], CV_LOAD_IMAGE_GRAYSCALE),false);
+    d.setImageName(argv[i]);
+    d.describe();
+    d.showLines();
+    d.showFeatures();
+    d.clear();
+    
+  }
   waitKey(0);
   return 0;
 }

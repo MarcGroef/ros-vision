@@ -21,16 +21,16 @@
     
     class BOLDFeature{
     private:
-    int histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
-    int entries;
-    double histBinSize;
-    int highestCount;
+      int histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
+      int entries;
+      double histBinSize;
+      int highestCount;
     public:
-    BOLDFeature();
-    void add(double alha,double beta);
-    void print();
-    void show(string name);
-    void clear();
+      BOLDFeature();
+      void add(double alpha,double beta);
+      void print();
+      void show(string name);
+      void clear();
     };
   }
 

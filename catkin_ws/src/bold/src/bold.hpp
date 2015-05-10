@@ -68,6 +68,7 @@ namespace BOLD{
     ~BOLDescriptor();
     void setImage(Mat image);
     void describe();
+    void describeOLD();
     BOLDFeature getFeature();
     void showLines();
     void showFeatures();

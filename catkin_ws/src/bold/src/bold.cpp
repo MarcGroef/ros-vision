@@ -95,7 +95,7 @@ namespace BOLD{
   }
   
   void BOLDescriptor::resolveAngles(int i,int j){
-    
+    if(i==j) return;
     double alpha,beta,signSI;
     BVector gmi,gmj,ei1,ei2,ej1,ej2,n(0,0,1),si,sj,mj,mi,tij,tji,signPart,st;
     
@@ -204,12 +204,12 @@ namespace BOLD{
 	}
       }
     }
-    cout << "closest: " << distances[0] << ", furthest: " << distances[K_NEAREST_LINE_SEGMENTS-1] << "\n";
+   // cout << "closest: " << distances[0] << ", furthest: " << distances[K_NEAREST_LINE_SEGMENTS-1] << "\n";
   }
   
   
-  /* Depricated version of BOLD::BOLDescriptor::describe(). Commented for dev. reference
-   * void BOLDescriptor::describe(){
+  //Depricated version of BOLD::BOLDescriptor::describe(). Commented for dev. reference
+   void BOLDescriptor::describeOLD(){
     int i,j;
 
     double alpha,beta,signSI;
@@ -309,11 +309,13 @@ namespace BOLD{
     }
     
     
-  }*/
+  }
   
   
   void BOLDescriptor::describe(){
    int i,j;
+
+   
    if(lines==NULL){
       if(!imageIsSet){
 	cout << "BOLD::BOLDescriptor.describe() error: image not set.\n";
@@ -324,8 +326,10 @@ namespace BOLD{
     
     for(i=0;i<nLines;i++){
       kNearestLines(i);
-      for(j=i+1;j<K_NEAREST_LINE_SEGMENTS;j++){
-	resolveAngles(i,KNLIndices[j]);
+      for(j=0;j<K_NEAREST_LINE_SEGMENTS;j++){
+	
+	if(KNLIndices[j]<nLines)
+	  resolveAngles(i,KNLIndices[j]);
       }
     }
    
@@ -346,7 +350,6 @@ int main(int argc,char**argv){
   d.describe();
   d.showLines();
   d.showFeatures();
-  
   waitKey(0);
   return 0;
 }

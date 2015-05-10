@@ -20,6 +20,7 @@
 #include <cfloat>
 
 #include "bold_vector.hpp"
+#include "bold_feature.hpp"
 
 
 
@@ -29,27 +30,14 @@ using namespace std;
 namespace BOLD{
   
   enum BOLDConstants{
-    HISTOGRAM_SIZE = 10,
-    FEATURE_SHOW_SIZE = 200,
+    
     K_NEAREST_LINE_SEGMENTS = 10, 
   };
   
 
   
   
-  class BOLDFeature{
-  private:
-   int histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
-   int entries;
-   double histBinSize;
-   int highestCount;
-  public:
-   BOLDFeature();
-   void add(double alha,double beta);
-   void print();
-   void show();
-   
-  };
+
   
   class Line{
   public:

@@ -19,8 +19,14 @@ namespace BOLD{
     double buffer;
     int buff2,buff3;
     
-    for(int i=0;i<K_NEAREST_NEIGHBORS;i++)
+    int labelFrequencies[K_NEAREST_NEIGHBORS];
+    int highestFrequency = 0;
+    int frequencyOccurences=0;
+    
+    for(int i=0;i<K_NEAREST_NEIGHBORS;i++){
       distances[i] = DBL_MAX;
+      labelFrequencies[i]=0;
+    }
     
     for(int i=0;i<nTrainedElements;i++){
       dist = f.distanceFrom(trainedFeatures.at(i));
@@ -39,7 +45,32 @@ namespace BOLD{
 	}
       }
     }
-    //TODO find out most common label
+    
+    //count label frequencies
+    
+    for(int i=0;i<K_NEAREST_NEIGHBORS;i++)
+     for(int j=0;j<=i;j++) 
+       if(trainedFeatures[kNearestNeighborIndices[i]].getLabel()==trainedFeatures[kNearestNeighborIndices[j]].getLabel()){
+	  labelFrequencies[j]++; 
+	  if(labelFrequencies[j]>highestFrequency)
+	    highestFrequency=labelFrequencies[j];
+       }
+
+    //check for ties and return label
+    buff2=-1;
+    for(int i=0;i<K_NEAREST_NEIGHBORS;i++){
+     if(labelFrequencies[i]==highestFrequency) {
+	if(buff2==-1){
+	  buff2=i;
+	}
+	else{
+	 cout << "K-NN TIE!! Needs better tiebreaker... Choosing at random\n" ;
+	 return trainedFeatures[buff2].getLabel();
+	}
+	  
+     }
+    }
+    return trainedFeatures[buff2].getLabel();
     
   }
   

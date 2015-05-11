@@ -17,18 +17,35 @@
       entries = 0;
       highestCount=0;
       normalized=false;
+      label = "";
     }
     
     void BOLDFeature::normalize(){
       for(int i=0;i<HISTOGRAM_SIZE;i++) {
 	for(int j=0;j<HISTOGRAM_SIZE;j++) {
-	  histogram[i][j]/=highestCount;
+	  histogram[i][j]/=entries;
 	}
       }
     }
     
+    bool BOLDFeature::isNormalized(){
+     return normalized; 
+    }
+    
     double BOLDFeature::distanceFrom(BOLDFeature f){
-      
+      double dist=0;
+      double add;
+      for(int i=0;i<HISTOGRAM_SIZE;i++){
+	for(int j=0;j<HISTOGRAM_SIZE;j++){
+	  add = histogram[i][j]-f.getElement(i,j);
+	  dist+=add*add;
+	}
+      }
+      dist = sqrt(add);
+    }
+    
+    double BOLDFeature::getElement(int i,int j){
+     return histogram[i][j]; 
     }
     
     int BOLDFeature::getMaxFeatureElement(){
@@ -65,11 +82,19 @@
       int imBlockSize = FEATURE_SHOW_SIZE/HISTOGRAM_SIZE;
       for(int i=0;i<FEATURE_SHOW_SIZE;i++){
 	for(int j=0;j<FEATURE_SHOW_SIZE;j++) {
-	  image.data[i+j*FEATURE_SHOW_SIZE] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]);
+	  image.data[i+j*FEATURE_SHOW_SIZE] =(uchar) (255*histogram[i/imBlockSize][j/imBlockSize]*entries/highestCount);
 	}
       }
       cv::namedWindow("BOLD feature: "+name,cv::WINDOW_AUTOSIZE);
       imshow("BOLD feature: "+name,image);
+    }
+    
+    void BOLDFeature::setLabel(string l){
+      label = l;
+    }
+    
+    string BOLDFeature::getLabel(){
+      return label; 
     }
     
     void BOLDFeature::clear(){
@@ -81,4 +106,5 @@
       entries = 0;
       highestCount=0;
     }
+    
   }

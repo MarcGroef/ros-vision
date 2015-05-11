@@ -263,7 +263,7 @@ int main(int argc,char**argv){
     d.setImage(cv::imread(argv[i], CV_LOAD_IMAGE_GRAYSCALE),false);
     d.setImageName(argv[i]);
     d.describe();
-   // d.showLines();
+    d.showLines();
     d.showFeatures();
     d.clear();
     

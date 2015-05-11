@@ -1,8 +1,8 @@
-prefix=/home/marc/ros-vision/catkin_ws/devel
+prefix=/home/student/ros-vision/catkin_ws/devel
 
 Name: bold
 Description: Description of bold
 Version: 0.0.0
 Cflags: 
-Libs: -L/home/marc/ros-vision/catkin_ws/devel/lib 
+Libs: -L/home/student/ros-vision/catkin_ws/devel/lib 
 Requires: 

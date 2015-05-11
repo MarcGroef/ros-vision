@@ -10,6 +10,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
   using namespace std;
+  using namespace cv;
   
   namespace BOLD{
     enum BOLDFeatureConstants{
@@ -26,6 +27,7 @@
       double histBinSize;
       int highestCount;
       bool normalized;
+      string label;
       
     public:
       
@@ -38,8 +40,14 @@
       int getNEntries();
       int getMaxFeatureElement();
       
+      double getElement(int i,int j);
       void normalize();
       void clear();
+      
+      void setLabel(string label);
+      string getLabel();
+      
+      bool isNormalized();
       
     };
   }

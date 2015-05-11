@@ -68,12 +68,14 @@ namespace BOLD{
     BOLDescriptor();
     ~BOLDescriptor();
     void setImage(Mat image,bool showImage);
+    void setImage(string fileName,bool showImage);
     void describe();
     void describeOLD();
     BOLDFeature getFeature();
     void showLines();
     void showFeatures();
     void setImageName(string name);
+    void setFeatureLabel(string label);
     string getImageName();
     void clear();
   };

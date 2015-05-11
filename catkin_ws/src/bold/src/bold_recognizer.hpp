@@ -1,5 +1,5 @@
-#ifndef BOLD_RECOGNIZER
-#define BOLD_RECOGNIZER
+#ifndef BOLD_RECOGNIZER_HPP
+#define BOLD_RECOGNIZER_HPP
 
 #include "bold.hpp"
 #include "bold_feature.hpp"
@@ -26,18 +26,18 @@ namespace BOLD{
   
   enum BOLDRecognizerConstants{
    K_NEAREST_NEIGHBORS = 5,
-  }
+  };
   
   class BOLDRecognizer{
   private:
-    
     BOLDescriptor descriptor;
     vector<BOLDFeature> trainedFeatures;
     
   public:
     BOLDRecognizer();
-    string classifiy(BOLDFeature f);
+    string classify(BOLDFeature f);
     void addLabeledFeature(BOLDFeature f);
+    void addLabeledFeatureFromFile(string fileName,string label);
   };
   
   

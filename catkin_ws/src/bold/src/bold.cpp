@@ -62,6 +62,20 @@ namespace BOLD{
     
   }
   
+  void BOLDescriptor::setImage(string fileName,bool showInput){
+    Mat im = cv::imread(fileName, CV_LOAD_IMAGE_GRAYSCALE);
+    imageName = fileName;
+    if(showInput){
+      cv::namedWindow("BOLD input",cv::WINDOW_AUTOSIZE);
+      imshow("BOLD input",im);
+    }
+    image = char_to_image_double_ptr(im.cols,im.rows,(char*)im.data);
+    imWidth = im.cols;
+    imHeight = im.rows;
+    imageIsSet = true;
+    
+  }
+  
   void BOLDescriptor::showFeatures(){
    feature.show(imageName); 
   }
@@ -234,6 +248,14 @@ namespace BOLD{
     feature.normalize();
   }
   
+  void BOLDescriptor::setFeatureLabel(string label){
+    feature.setLabel(label);
+  }
+  
+  BOLDFeature BOLDescriptor::getFeature(){
+    return feature;
+  }
+  
   void BOLDescriptor::clear(){
     feature.clear();
     free(image);
@@ -251,23 +273,4 @@ namespace BOLD{
   
 }
 
-int main(int argc,char**argv){
-  ros::init(argc,argv,"bold");
-  cv::initModule_nonfree();
-  cout << argc << "\n";
-  
-  
-  BOLDescriptor d;
-  for(int i=1;i<argc;i++){
-    cout << argv[i] << "\n";
-    d.setImage(cv::imread(argv[i], CV_LOAD_IMAGE_GRAYSCALE),false);
-    d.setImageName(argv[i]);
-    d.describe();
-    d.showLines();
-    d.showFeatures();
-    d.clear();
-    
-  }
-  waitKey(0);
-  return 0;
-}
+

@@ -2,12 +2,12 @@
 
 using namespace std;
 using namespace cv;
+using namespace BOLD;
 
 namespace BOLD{
   
   BOLDRecognizer::BOLDRecognizer(){
-    for(int i=0;i<K_NEAREST_NEIGHBORS;i++)
-      kNeas
+
   }
   
   string BOLDRecognizer::classify(BOLDFeature f){
@@ -20,15 +20,15 @@ namespace BOLD{
     int buff2,buff3;
     
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++)
-      distances = DBL_MAX;
+      distances[i] = DBL_MAX;
     
     for(int i=0;i<nTrainedElements;i++){
-      dist = f.getDistance(trainedFeatures.at(i));
+      dist = f.distanceFrom(trainedFeatures.at(i));
       for(int j=0;j<K_NEAREST_NEIGHBORS;j++){
-	if(dist<=distances[d]){
-	  buff2 = d;
-	  for(int n=d;n<K_NEAREST_NEIGHBORS;n++){
-	    buffer = distances[d];
+	if(dist<=distances[j]){
+	  buff2 = j;
+	  for(int n=j;n<K_NEAREST_NEIGHBORS;n++){
+	    buffer = distances[j];
 	    distances[n] = dist;
 	    dist = buffer;
 	    buff3 = kNearestNeighborIndices[n];
@@ -39,7 +39,7 @@ namespace BOLD{
 	}
       }
     }
-    
+    //TODO find out most common label
     
   }
   
@@ -53,7 +53,39 @@ namespace BOLD{
     return;
    }
    
-    
+    trainedFeatures.push_back(f);
   }
   
+  
+  void BOLDRecognizer::addLabeledFeatureFromFile(string fileName,string label){
+    descriptor.setImage(fileName,false);
+    descriptor.describe();
+    descriptor.setFeatureLabel(label);
+    trainedFeatures.push_back(descriptor.getFeature());
+    descriptor.clear();
+    cout << "labeled feature "+label+ "from "+fileName+" has been added to the trainingset\n";
+  }
+  
+}
+
+
+int main(int argc,char**argv){
+  ros::init(argc,argv,"bold");
+  cv::initModule_nonfree();
+  cout << argc << "\n";
+  
+  
+  BOLDescriptor d;
+  for(int i=1;i<argc;i++){
+    cout << argv[i] << "\n";
+    d.setImage(argv[i],false);
+    d.setImageName(argv[i]);
+    d.describe();
+    d.showLines();
+    d.showFeatures();
+    d.clear();
+    
+  }
+  waitKey(0);
+  return 0;
 }

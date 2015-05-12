@@ -267,14 +267,14 @@ namespace BOLD{
     cout << "clearing bold..";
     
     
-    if(imageIsSet){
+    //if(imageIsSet){
       free(image);
       image = NULL;
-    }
-    if(linesIsSet){
+  //  }
+  //  if(linesIsSet){
       //free(lines);
-      //lines = NULL;
-    }
+      lines = NULL;
+  //  }
     
     feature.clear();
     

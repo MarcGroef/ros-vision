@@ -13,7 +13,7 @@
 	  histogram[i][j]=0;
 	}
       }
-      histBinSize = 2*M_PI/HISTOGRAM_SIZE;
+      histBinSize = (2*M_PI)/HISTOGRAM_SIZE;
       entries = 0;
       highestCount=0;
       normalized=false;
@@ -59,9 +59,26 @@
     }
     
     void BOLDFeature::add(double alpha,double beta){
-      histogram[(int)(alpha/histBinSize)][(int)(beta/histBinSize)]++;
-      if(histogram[(int)(alpha/histBinSize)][(int)(beta/histBinSize)]>highestCount)
-	highestCount = histogram[(int)(alpha/histBinSize)][(int)(beta/histBinSize)];
+      int a,b;
+     // cout << "binsize = " << histBinSize << "\n";
+      while(alpha>=M_PI*2){
+	cout << "alpha = " << alpha << "\n";
+	alpha-=M_PI*2;
+      }
+      while(beta>=M_PI*2){
+	cout << "beta = " << beta << "\n";
+	beta-=M_PI*2;
+	
+      }
+      a = (int)(alpha/histBinSize);
+      b= (int)(beta/histBinSize);
+      if (a > HISTOGRAM_SIZE-1 ||a<0)
+	cout << "INSERTION ERRRROROROROROR!!!!!  A = " << (a<0?"too small":"too large")<< ": "<< a << "\n";
+      if (b > HISTOGRAM_SIZE-1 ||b<0)
+	cout << "INSERTION ERRRROROROROROR!!!!!  B = " << (a<0?"too small":"too large")<< ": "<< b <<"\n";
+      histogram[a][b]++;
+      if(histogram[a][b]>highestCount)
+	highestCount = histogram[a][b];
       entries++;
     }
     

@@ -122,8 +122,10 @@ namespace BOLD{
     descriptor.setImage(fileName,false);
     descriptor.describe();
     descriptor.setFeatureLabel(label);
-    cout << "set label\n";
-    trainedFeatures.push_back(descriptor.getFeature());
+    cout << "push it\n";
+    BOLDFeature f = descriptor.getFeature();
+    cout << "MAX:: " << f.getMaxFeatureElement() << "\n";
+    trainedFeatures.push_back(f);
     cout << "feature pushed\n";
     descriptor.clear();
     cout << "labeled feature "+label+ " from "+fileName+" has been added to the trainingset\n";
@@ -196,6 +198,8 @@ int main(int argc,char**argv){
     d.clear();
     
   }*/
-  waitKey(0);
+  
+  //waitKey(0);
+  ros::shutdown();
   return 0;
 }

@@ -36,8 +36,10 @@ namespace BOLD{
   public:
     BOLDRecognizer();
     string classify(BOLDFeature f);
+    string classify(string fileName);
     void addLabeledFeature(BOLDFeature f);
     void addLabeledFeatureFromFile(string fileName,string label);
+    void dialogue();
   };
   
   

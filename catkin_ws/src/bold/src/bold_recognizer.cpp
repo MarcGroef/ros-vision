@@ -23,39 +23,53 @@ namespace BOLD{
     int highestFrequency = 0;
     int frequencyOccurences=0;
     
+    cout << "start knn..\n";
+    
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++){
       distances[i] = DBL_MAX;
+      kNearestNeighborIndices[i]=-1;
       labelFrequencies[i]=0;
     }
     
     for(int i=0;i<nTrainedElements;i++){
+      
       dist = f.distanceFrom(trainedFeatures.at(i));
+
+      buff2 = i;
       for(int j=0;j<K_NEAREST_NEIGHBORS;j++){
 	if(dist<=distances[j]){
-	  buff2 = j;
+	  
+	  
 	  for(int n=j;n<K_NEAREST_NEIGHBORS;n++){
-	    buffer = distances[j];
+	   
+	    //store dist to be switched in buffer
+	    buffer = distances[n];
+	    //store new dist in distances
 	    distances[n] = dist;
+	    //set dist for replacement at next iteration
 	    dist = buffer;
+	    
 	    buff3 = kNearestNeighborIndices[n];
 	    kNearestNeighborIndices[n]=buff2;
 	    buff2 = buff3;
+	    
 	  }
 	  
 	}
       }
     }
-    
+ 
+    cout << "determined nearest K\n";
     //count label frequencies
     
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++)
      for(int j=0;j<=i;j++) 
-       if(trainedFeatures[kNearestNeighborIndices[i]].getLabel()==trainedFeatures[kNearestNeighborIndices[j]].getLabel()){
+       if(kNearestNeighborIndices[i]!=-1&& kNearestNeighborIndices[j] != -1 &&trainedFeatures[kNearestNeighborIndices[i]].getLabel()==trainedFeatures[kNearestNeighborIndices[j]].getLabel()){
 	  labelFrequencies[j]++; 
 	  if(labelFrequencies[j]>highestFrequency)
 	    highestFrequency=labelFrequencies[j];
        }
-
+    cout << "determined max F\n";
     //check for ties and return label
     buff2=-1;
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++){
@@ -65,6 +79,13 @@ namespace BOLD{
 	}
 	else{
 	 cout << "K-NN TIE!! Needs better tiebreaker... Choosing at random\n" ;
+	 cout << "KNN labels:\n";
+	 for(int p=0;p<K_NEAREST_NEIGHBORS;p++)
+	  if(kNearestNeighborIndices[p]!=-1)
+	    cout << trainedFeatures[kNearestNeighborIndices[p]].getLabel() <<"\n";
+	  else{
+	   cout << kNearestNeighborIndices[p] << "\n" ;
+	  }
 	 return trainedFeatures[buff2].getLabel();
 	}
 	  
@@ -72,6 +93,15 @@ namespace BOLD{
     }
     return trainedFeatures[buff2].getLabel();
     
+  }
+  
+  string BOLDRecognizer::classify(string fileName){
+    string label;
+    descriptor.setImage(fileName,false);
+    descriptor.describe();
+    label = classify(descriptor.getFeature());
+    descriptor.clear();
+    return label;
   }
   
   void BOLDRecognizer::addLabeledFeature(BOLDFeature f){
@@ -94,7 +124,52 @@ namespace BOLD{
     descriptor.setFeatureLabel(label);
     trainedFeatures.push_back(descriptor.getFeature());
     descriptor.clear();
-    cout << "labeled feature "+label+ "from "+fileName+" has been added to the trainingset\n";
+    cout << "labeled feature "+label+ " from "+fileName+" has been added to the trainingset\n";
+  }
+  
+ 
+  
+  void BOLDRecognizer::dialogue(){
+    char i;
+    string name;
+    string label;
+    
+    cout << "Welcome to the BOLD recognizer!\n" ;
+    cout << "Trainings phase:\n";
+    for(;;){
+      cout << "Do you want to add a trainings sample? (y=yes, n=no)\n";
+      cin >> i;
+      if(i=='y'){
+	
+	cout << "Please specify the input file..\n";
+	cin >> name;
+	cout << "Please specify the label..\n";
+	cin >> label;
+	addLabeledFeatureFromFile(name,label);
+	
+      }else if(i=='n'){
+	cout << "Ending training input..\n";
+	break;
+      }else{
+	cout << "Invalid input.. try again!\n";
+      }
+      cout << "There are " << trainedFeatures.size() << " trained features present.\n";
+    }
+    cout << "Testing phase:\n";
+    for(;;){
+      cout << "Do you want to present a test sample?(y=yes,n=no)\n";
+      cin >> i;
+      if(i=='y'){
+	cout << "Please specify the input file..\n";
+	cin >> name;
+	cout << "Determined label = " + classify(name) + "\n";
+      }else if(i=='n'){
+	cout << "Terminating..\n";
+	return;
+      }else{
+	cout << "Invalid input! Try again..\n";
+      }
+    }
   }
   
 }
@@ -105,8 +180,10 @@ int main(int argc,char**argv){
   cv::initModule_nonfree();
   cout << argc << "\n";
   
+  BOLDRecognizer br;
+  br.dialogue();
   
-  BOLDescriptor d;
+  /*BOLDescriptor d;
   for(int i=1;i<argc;i++){
     cout << argv[i] << "\n";
     d.setImage(argv[i],false);
@@ -116,7 +193,7 @@ int main(int argc,char**argv){
     d.showFeatures();
     d.clear();
     
-  }
+  }*/
   waitKey(0);
   return 0;
 }

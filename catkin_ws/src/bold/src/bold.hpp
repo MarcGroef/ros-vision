@@ -64,6 +64,8 @@ namespace BOLD{
     BVector getGradient(int x,int y);
     double getImValue(int x,int y);
     string imageName;
+    
+    
   public:
     BOLDescriptor();
     ~BOLDescriptor();

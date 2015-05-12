@@ -60,6 +60,7 @@
     
     void BOLDFeature::add(double alpha,double beta){
       int a,b;
+      
      // cout << "binsize = " << histBinSize << "\n";
       while(alpha>=M_PI*2){
 	cout << "alpha = " << alpha << "\n";

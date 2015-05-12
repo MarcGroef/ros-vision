@@ -9,6 +9,7 @@ namespace BOLD{
   BOLDRecognizer::BOLDRecognizer(){
 
   }
+  //TODO: KNN adds each line combo double. Hists should be devided by two
   
   string BOLDRecognizer::classify(BOLDFeature f){
     int nTrainedElements = trainedFeatures.size();
@@ -74,6 +75,7 @@ namespace BOLD{
     buff2=-1;
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++){
      if(labelFrequencies[i]==highestFrequency) {
+        return trainedFeatures[kNearestNeighborIndices[i]].getLabel();
 	if(buff2==-1){
 	  buff2=i;
 	}
@@ -86,7 +88,7 @@ namespace BOLD{
 	  else{
 	   cout << kNearestNeighborIndices[p] << "\n" ;
 	  }
-	 return trainedFeatures[buff2].getLabel();
+	 return trainedFeatures[i].getLabel();
 	}
 	  
      }

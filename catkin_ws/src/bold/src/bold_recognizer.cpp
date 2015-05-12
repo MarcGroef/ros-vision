@@ -59,7 +59,7 @@ namespace BOLD{
       }
     }
  
-    cout << "determined nearest K\n";
+    
     //count label frequencies
     
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++)
@@ -69,7 +69,7 @@ namespace BOLD{
 	  if(labelFrequencies[j]>highestFrequency)
 	    highestFrequency=labelFrequencies[j];
        }
-    cout << "determined max F\n";
+    
     //check for ties and return label
     buff2=-1;
     for(int i=0;i<K_NEAREST_NEIGHBORS;i++){
@@ -82,7 +82,7 @@ namespace BOLD{
 	 cout << "KNN labels:\n";
 	 for(int p=0;p<K_NEAREST_NEIGHBORS;p++)
 	  if(kNearestNeighborIndices[p]!=-1)
-	    cout << trainedFeatures[kNearestNeighborIndices[p]].getLabel() <<"\n";
+	    cout << trainedFeatures[kNearestNeighborIndices[p]].getLabel() << ": dist = " << distances[p] <<"\n";
 	  else{
 	   cout << kNearestNeighborIndices[p] << "\n" ;
 	  }
@@ -122,7 +122,9 @@ namespace BOLD{
     descriptor.setImage(fileName,false);
     descriptor.describe();
     descriptor.setFeatureLabel(label);
+    cout << "set label\n";
     trainedFeatures.push_back(descriptor.getFeature());
+    cout << "feature pushed\n";
     descriptor.clear();
     cout << "labeled feature "+label+ " from "+fileName+" has been added to the trainingset\n";
   }
@@ -164,7 +166,7 @@ namespace BOLD{
 	cin >> name;
 	cout << "Determined label = " + classify(name) + "\n";
       }else if(i=='n'){
-	cout << "Terminating..\n";
+	cout << "Goodbye..\n";
 	return;
       }else{
 	cout << "Invalid input! Try again..\n";

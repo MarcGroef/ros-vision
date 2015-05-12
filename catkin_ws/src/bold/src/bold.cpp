@@ -22,7 +22,7 @@ namespace BOLD{
     lines = NULL;
     imageIsSet = false;
     imageName = "";
-    
+    linesIsSet = false;
   }
   
   BOLDescriptor::~BOLDescriptor(){
@@ -88,18 +88,24 @@ namespace BOLD{
 
     lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
     cout << nLines << " line segments found\n";
-
+    linesIsSet = true;
+    //showLines();
   }
   
   void BOLDescriptor::showLines(){
-   Mat image(imHeight,imWidth,CV_8UC1,Scalar::all(256));
+    Mat image(imHeight,imWidth,CV_8UC1,Scalar::all(256));
    
-   for(int i=0;i<nLines;i++){
-     cv::Point a(lines[i].x1,lines[i].y1),b(lines[i].x2,lines[i].y2);
+    for(int i=0;i<nLines;i++){
+      cv::Point a(lines[i].x1,lines[i].y1),b(lines[i].x2,lines[i].y2);
     line(image,a,b,Scalar(0,0,0),1,8) ;
-   }
-   cv::namedWindow("LSD lines: "+imageName,cv::WINDOW_AUTOSIZE);
+    }
+    cv::namedWindow("LSD lines: "+imageName,cv::WINDOW_AUTOSIZE);
     imshow("LSD lines: "+imageName,image);
+    cout << "lines should be shown..\n";
+    waitKey(0);
+    cv::destroyWindow("LSD lines: "+imageName);
+    cv::destroyAllWindows();
+    waitKey(1);
   }
 
   bool checkFalseLine(std::vector<int> v,int index){
@@ -240,12 +246,13 @@ namespace BOLD{
     for(i=0;i<nLines;i++){
       kNearestLines(i);
       for(j=0;j<K_NEAREST_LINE_SEGMENTS;j++){
-	if(KNLIndices[j]<nLines)  //secures against situations when nLines < 5
+	if(KNLIndices[j]<nLines)  //secures against situations when nLines < K
 	  resolveAngles(i,KNLIndices[j]);
       }
     }
-   
+    cout << "normalize..\n";
     feature.normalize();
+
   }
   
   void BOLDescriptor::setFeatureLabel(string label){
@@ -257,14 +264,23 @@ namespace BOLD{
   }
   
   void BOLDescriptor::clear(){
-    feature.clear();
-    free(image);
-    free(lines);
+    cout << "clearing bold..";
     
-    image = NULL;
-    lines = NULL;
+    
+    if(imageIsSet){
+      free(image);
+      image = NULL;
+    }
+    if(linesIsSet){
+      //free(lines);
+      //lines = NULL;
+    }
+    
+    feature.clear();
+    
     
     imageIsSet = false;
+    linesIsSet = false;
     falseLines.clear();
     imageName = "";
   }

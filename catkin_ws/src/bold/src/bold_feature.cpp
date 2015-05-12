@@ -20,6 +20,8 @@
       label = "";
     }
     
+    
+    
     void BOLDFeature::normalize(){
       for(int i=0;i<HISTOGRAM_SIZE;i++) {
 	for(int j=0;j<HISTOGRAM_SIZE;j++) {

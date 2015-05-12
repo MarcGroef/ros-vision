@@ -54,6 +54,7 @@ namespace BOLD{
     int imWidth,imHeight;
     Line* lines;
     bool imageIsSet;
+    bool linesIsSet;
     int nLines;
     BOLDFeature feature;
     int KNLIndices[K_NEAREST_LINE_SEGMENTS];

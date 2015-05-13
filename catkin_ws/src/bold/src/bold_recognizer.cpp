@@ -171,23 +171,27 @@ namespace BOLD{
         std::ifstream input("test.marc", std::ifstream::in);
         int histosize;
         int plaatjesn;
-
+	cout << "reading..\n";
         input >> plaatjesn;
         
         input >> histosize;
-        if(histosize != HISTOGRAM_SIZE)
-            cout << "Histogram size is wrong!";
-
-        for(size_t idx; idx != plaatjesn; ++idx)
+	
+        if(histosize != HISTOGRAM_SIZE){
+            cout << "Histogram size "<<histosize <<" from file does not match the HISTOGRAM_SIZE as compiled with..\n";
+	    input.close();
+	    return;
+	}
+        for(size_t idx = 0 ; idx != plaatjesn; ++idx)
         {
+	  
             double histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
             int entries;
             bool normalized;
             string label;
 
-            for(size_t r = 0; r != HISTOGRAM_SIZE; ++r)
+            for(size_t r = 0; r < HISTOGRAM_SIZE; ++r)
             {
-                for(size_t k = 0; k != HISTOGRAM_SIZE; ++k)
+                for(size_t k = 0; k < HISTOGRAM_SIZE; ++k)
                 {
                     input >> histogram[r][k];
                 }
@@ -198,8 +202,8 @@ namespace BOLD{
             input >> label;
 
             trainedFeatures.push_back(BOLDFeature(histogram,entries,normalized,label));
-            cout << "Ik heb erheen gehad!"
-           }
+            cout << idx << "\n";;
+        }
         
         input.close();
  }
@@ -231,7 +235,7 @@ namespace BOLD{
         }
         cout << "There are " << trainedFeatures.size() << " trained features present.\n";
     }
-    writeToFile();
+    //writeToFile();
     cout << "Testing phase:\n";
     for(;;){
       cout << "Do you want to present a test sample?(y=yes,n=no)\n";

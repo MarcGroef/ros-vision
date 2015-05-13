@@ -9,9 +9,9 @@
     BOLDFeature::BOLDFeature(){
       
       for(int i=0;i<HISTOGRAM_SIZE;i++) {
-	for(int j=0;j<HISTOGRAM_SIZE;j++) {
-	  histogram[i][j]=0;
-	}
+	    for(int j=0;j<HISTOGRAM_SIZE;j++) {
+	      histogram[i][j]=0;
+	    }
       }
       histBinSize = (2*M_PI)/HISTOGRAM_SIZE;
       entries = 0;
@@ -20,7 +20,21 @@
       label = "";
     }
     
-    
+    BOLDFeature::BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int ientries, bool inormalized, string ilabel)
+    {
+        for(int i=0;i<HISTOGRAM_SIZE;i++) {
+            for(int j=0;j<HISTOGRAM_SIZE;j++) {
+                histogram[i][j] = histo[i][j];
+            }
+        }
+        entries = ientries;
+        normalized = inormalized;
+        label = ilabel;
+        highestCount = 0;
+        histBinSize = (2*M_PI)/HISTOGRAM_SIZE;
+
+        
+    }
     
     void BOLDFeature::normalize(){
       for(int i=0;i<HISTOGRAM_SIZE;i++) {
@@ -38,10 +52,10 @@
       double dist=0;
       double add;
       for(int i=0;i<HISTOGRAM_SIZE;i++){
-	for(int j=0;j<HISTOGRAM_SIZE;j++){
-	  add = histogram[i][j]-f.getElement(i,j);
-	  dist+=add*add;
-	}
+	    for(int j=0;j<HISTOGRAM_SIZE;j++){
+	      add = histogram[i][j]-f.getElement(i,j);
+	      dist+=add*add;
+	    }
       }
       dist = sqrt(add);
     }
@@ -73,10 +87,7 @@
       }
       a = (int)(alpha/histBinSize);
       b= (int)(beta/histBinSize);
-      if (a > HISTOGRAM_SIZE-1 ||a<0)
-	cout << "INSERTION ERRRROROROROROR!!!!!  A = " << (a<0?"too small":"too large")<< ": "<< a << "\n";
-      if (b > HISTOGRAM_SIZE-1 ||b<0)
-	cout << "INSERTION ERRRROROROROROR!!!!!  B = " << (a<0?"too small":"too large")<< ": "<< b <<"\n";
+      
       histogram[a][b]++;
       if(histogram[a][b]>highestCount)
 	highestCount = histogram[a][b];
@@ -116,6 +127,23 @@
     string BOLDFeature::getLabel(){
       return label; 
     }
+
+
+    void BOLDFeature::writeTo(std::ostream &output)
+    {
+        for(size_t r = 0; HISTOGRAM_SIZE != r; ++r)
+        {
+            for(size_t k = 0;HISTOGRAM_SIZE != k; ++k)
+            {
+                output << histogram[r][k] << ' ';
+            }
+            output << '\n';
+        }
+
+      output << entries << '\n';
+      output << normalized << '\n';
+      output << label << '\n';
+     }
     
     void BOLDFeature::clear(){
       for(int i=0;i<HISTOGRAM_SIZE;i++) {

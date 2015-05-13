@@ -25,7 +25,7 @@ using namespace cv;
 namespace BOLD{
   
   enum BOLDRecognizerConstants{
-   K_NEAREST_NEIGHBORS = 3,
+   K_NEAREST_NEIGHBORS = 8,
   };
   
   class BOLDRecognizer{
@@ -39,6 +39,8 @@ namespace BOLD{
     string classify(string fileName);
     void addLabeledFeature(BOLDFeature f);
     void addLabeledFeatureFromFile(string fileName,string label);
+    void writeToFile();
+    void readFromFile();
     void dialogue();
   };
   

@@ -264,7 +264,7 @@ namespace BOLD{
   }
   
   void BOLDescriptor::clear(){
-    cout << "clearing bold..";
+   
     
     
     //if(imageIsSet){
@@ -272,7 +272,7 @@ namespace BOLD{
       image = NULL;
   //  }
   //  if(linesIsSet){
-      //free(lines);
+      free(lines);
       lines = NULL;
   //  }
     

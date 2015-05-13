@@ -73,7 +73,6 @@ namespace BOLD{
     void setImage(Mat image,bool showImage);
     void setImage(string fileName,bool showImage);
     void describe();
-    void describeOLD();
     BOLDFeature getFeature();
     void showLines();
     void showFeatures();

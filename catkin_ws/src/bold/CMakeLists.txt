@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 2.8.3)
 include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
+
 project(bold)
+#rosbuild_init()
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -103,7 +105,8 @@ include_directories(
 ## Declare a cpp library
 # add_library(bold
 #   src/${PROJECT_NAME}/bold.cpp
-# )
+# 
+
 
 ## Declare a cpp executable
 add_executable(bold src/bold.cpp src/bold_vector.cpp src/bold_feature.cpp src/bold_recognizer.cpp src/lsd_1.6/lsd.c src/image_ext/image_ext.c )

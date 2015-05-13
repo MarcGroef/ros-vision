@@ -53,11 +53,12 @@
       double add;
       for(int i=0;i<HISTOGRAM_SIZE;i++){
 	    for(int j=0;j<HISTOGRAM_SIZE;j++){
-	      add = histogram[i][j]-f.getElement(i,j);
-	      dist+=add*add;
+	      dist += (histogram[i][j]-f.getElement(i,j))*(histogram[i][j]-f.getElement(i,j));
+	      
 	    }
       }
-      dist = sqrt(add);
+      //returns squared distance
+      return dist;
     }
     
     double BOLDFeature::getElement(int i,int j){

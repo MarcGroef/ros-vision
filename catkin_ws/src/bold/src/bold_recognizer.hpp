@@ -25,7 +25,7 @@ using namespace cv;
 namespace BOLD{
   
   enum BOLDRecognizerConstants{
-   K_NEAREST_NEIGHBORS = 8,
+   K_NEAREST_NEIGHBORS = 3,
   };
   
   class BOLDRecognizer{

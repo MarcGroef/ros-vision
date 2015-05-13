@@ -39,7 +39,7 @@ namespace BOLD{
     for(int i = 0; i < nTrainedElements; ++i)
     {  
       dist = f.distanceFrom(trainedFeatures.at(i));  //store distance to compared element
-
+      
       buff2 = i;
       for(int j = 0; j < K_NEAREST_NEIGHBORS; ++j)
        {
@@ -58,8 +58,12 @@ namespace BOLD{
 	            buff3 = kNearestNeighborIndices[n];
 	            kNearestNeighborIndices[n] = buff2;
 	            buff2 = buff3;
-	         }
+		    
+		  
 	      }
+	      //for(int k=0;k<K_NEAREST_NEIGHBORS;k++)
+		//cout << "ind: " << kNearestNeighborIndices[k] << "\n";
+	  }
         }
      }
  

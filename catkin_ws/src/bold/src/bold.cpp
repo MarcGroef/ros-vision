@@ -39,8 +39,8 @@ namespace BOLD{
   
   
   BVector BOLDescriptor::getGradient(int x,int y){
-    double gx = getImValue((x>=0?x:0)-1,y)-getImValue((x<=imWidth-2?x:imWidth-2)+1,y);
-    double gy = getImValue(x,(y>=0?y:0)-1)-getImValue(x,(y<=imHeight-2?y:imHeight-2)+1);
+    double gx = getImValue((x>0?x:1)-1,y)-getImValue((x<=imWidth-2?x:imWidth-2)+1,y);
+    double gy = getImValue(x,(y>0?y:1)-1)-getImValue(x,(y<=imHeight-2?y:imHeight-2)+1);
     BVector g(gx,gy,0);
     return g;
   }

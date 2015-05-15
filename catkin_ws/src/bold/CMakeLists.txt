@@ -109,7 +109,7 @@ include_directories(
 
 
 ## Declare a cpp executable
-add_executable(bold src/bold.cpp src/bold_vector.cpp src/bold_feature.cpp src/bold_recognizer.cpp src/lsd_1.6/lsd.c src/image_ext/image_ext.c )
+add_executable(bold src/bold.cpp src/bold_vector.cpp src/bold_feature.cpp src/bold_recognizer.cpp src/bold_CMU_KO8.cpp src/lsd_1.6/lsd.c src/image_ext/image_ext.c )
 
 
 target_link_libraries(bold ${catkin_LIBRARIES} 

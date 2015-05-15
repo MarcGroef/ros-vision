@@ -4,6 +4,8 @@
 #include "bold.hpp"
 #include "bold_feature.hpp"
 
+
+
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
@@ -39,6 +41,7 @@ namespace BOLD{
     string classify(string fileName);
     void addLabeledFeature(BOLDFeature f);
     void addLabeledFeatureFromFile(string fileName,string label);
+    void addLabeledFeature(Mat image,string label);
     void writeToFile();
     void readFromFile();
     void dialogue();

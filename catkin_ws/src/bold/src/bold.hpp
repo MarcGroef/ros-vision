@@ -39,8 +39,8 @@ namespace BOLD{
   
 
   
-  class Line{
-  public:
+  struct Line{
+  
     double x1,y1,x2,y2,width,p,minLogNFA;
   };
   

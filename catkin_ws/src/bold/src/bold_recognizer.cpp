@@ -156,6 +156,14 @@ namespace BOLD{
     cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
   }
   
+  void BOLDRecognizer::addLabeledFeature(Mat image,string label){
+    descriptor.setImage(image,false);
+    descriptor.describe();
+    descriptor.setFeatureLabel(label);
+    trainedFeatures.push_back(descriptor.getFeature());
+    descriptor.clear();
+  }
+  
   void BOLDRecognizer::writeToFile()
   {
       std::ofstream output("test.marc",std::ofstream::out);
@@ -259,28 +267,4 @@ namespace BOLD{
   
 }
 
-int main(int argc, char**argv){
-  ros::init(argc, argv, "bold");
-  cv::initModule_nonfree();
-  cout << argc << '\n';
-  
-  BOLDRecognizer br;
-  br.readFromFile();
-  br.dialogue();
-  
-  /*BOLDescriptor d;
-  for(int i=1;i<argc;i++){
-    cout << argv[i] << "\n";
-    d.setImage(argv[i],false);
-    d.setImageName(argv[i]);
-    d.describe();
-    d.showLines();
-    d.showFeatures();
-    d.clear();
-    
-  }*/
-  
-  //waitKey(0);
-  ros::shutdown();
-  return 0;
-}
+

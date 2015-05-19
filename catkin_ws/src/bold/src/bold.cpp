@@ -86,7 +86,7 @@ namespace BOLD{
   }
   
   void BOLDescriptor::showFeatures(){
-   feature.show(imageName); 
+   feature->show(imageName);
   }
   
   //perform the LSD line detection from code of -von Gioi - e.a
@@ -193,7 +193,7 @@ namespace BOLD{
       return;
     }
 
-    feature.add(alpha,beta);
+    feature->add(alpha,beta);
       
     
   }
@@ -243,7 +243,7 @@ namespace BOLD{
   void BOLDescriptor::describe(){
    int i,j;
    cout << "describing..\n" ;
-   feature.clear();
+   feature->clear();
    if(lines==NULL){
       if(!imageIsSet){
 	cout << "BOLD::BOLDescriptor.describe() error: image not set.\n";
@@ -260,15 +260,15 @@ namespace BOLD{
       }
     }
     cout << "normalize..\n";
-    feature.normalize();
+    feature->normalize();
 
   }
   
   void BOLDescriptor::setFeatureLabel(string label){
-    feature.setLabel(label);
+    feature->setLabel(label);
   }
   
-  BOLDFeature BOLDescriptor::getFeature(){
+  BOLDFeature* BOLDescriptor::getFeature(){
     return feature;
   }
   
@@ -285,7 +285,7 @@ namespace BOLD{
       lines = NULL;
   //  }
     
-    feature.clear();
+    feature->clear();
     
     
     imageIsSet = false;

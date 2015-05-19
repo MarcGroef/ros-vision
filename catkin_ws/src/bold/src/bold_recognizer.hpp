@@ -33,15 +33,16 @@ namespace BOLD{
   class BOLDRecognizer{
   private:
     BOLDescriptor descriptor;
-    vector<BOLDFeature> trainedFeatures;
+    vector<BOLDFeature*> trainedFeatures;
     
   public:
+   ~BOLDRecognizer();
     BOLDRecognizer();
-    string classify(BOLDFeature f);
+    string classify(BOLDFeature* f);
     string classify(string fileName);
-    void addLabeledFeature(BOLDFeature f);
+    void addLabeledFeature(BOLDFeature *f);
     void addLabeledFeatureFromFile(string fileName,string label);
-    void addLabeledFeature(Mat image,string label);
+    void addLabeledFeature(Mat &image,string label);
     void writeToFile();
     void readFromFile();
     void dialogue();

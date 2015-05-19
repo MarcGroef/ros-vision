@@ -56,7 +56,7 @@ namespace BOLD{
     bool imageIsSet;
     bool linesIsSet;
     int nLines;
-    BOLDFeature feature;
+    BOLDFeature *feature;
     int KNLIndices[K_NEAREST_LINE_SEGMENTS];
     
     void kNearestLines(int index);
@@ -73,7 +73,7 @@ namespace BOLD{
     void setImage(Mat image,bool showImage);
     void setImage(string fileName,bool showImage);
     void describe();
-    BOLDFeature getFeature();
+    BOLDFeature* getFeature();
     void showLines();
     void showFeatures();
     void setImageName(string name);

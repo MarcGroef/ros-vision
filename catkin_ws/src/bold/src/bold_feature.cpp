@@ -48,12 +48,12 @@
      return normalized; 
     }
     
-    double BOLDFeature::distanceFrom(BOLDFeature f){
+    double BOLDFeature::distanceFrom(BOLDFeature* f){
       double dist=0;
       double add;
       for(int i=0;i<HISTOGRAM_SIZE;i++){
 	    for(int j=0;j<HISTOGRAM_SIZE;j++){
-	      dist += (histogram[i][j]-f.getElement(i,j))*(histogram[i][j]-f.getElement(i,j));
+	      dist += (histogram[i][j]-f->getElement(i,j))*(histogram[i][j]-f->getElement(i,j));
 	      
 	    }
       }

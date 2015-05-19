@@ -34,7 +34,7 @@
       BOLDFeature();
       BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int entries, bool normalized, string label);
       void add(double alpha,double beta);
-      double distanceFrom(BOLDFeature f);
+      double distanceFrom(BOLDFeature* f);
       void print();
       void show(string name);
       

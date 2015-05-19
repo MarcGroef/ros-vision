@@ -12,7 +12,7 @@ namespace BOLD{
   }
   //TODO: KNN adds each line combo double. Hists should be devided by two
   
-  string BOLDRecognizer::classify(BOLDFeature f)
+  string BOLDRecognizer::classify(BOLDFeature* f)
  {
     
     int nTrainedElements = trainedFeatures.size();
@@ -38,7 +38,7 @@ namespace BOLD{
     
     for(int i = 0; i < nTrainedElements; ++i)
     {  
-      dist = f.distanceFrom(trainedFeatures.at(i));  //store distance to compared element
+      dist = f->distanceFrom(trainedFeatures[i]);  //store distance to compared element
       
       buff2 = i;
       for(int j = 0; j < K_NEAREST_NEIGHBORS; ++j)
@@ -74,8 +74,8 @@ namespace BOLD{
     {
         for(int j = 0;j <= i; ++j) 
             if(kNearestNeighborIndices[i] != -1 && kNearestNeighborIndices[j] != -1 
-            && trainedFeatures[kNearestNeighborIndices[i]].getLabel() == 
-            trainedFeatures[kNearestNeighborIndices[j]].getLabel())
+            && trainedFeatures[kNearestNeighborIndices[i]]->getLabel() ==
+            trainedFeatures[kNearestNeighborIndices[j]]->getLabel())
             {
 	            ++labelFrequencies[j]; 
 	            if(labelFrequencies[j] > highestFrequency)
@@ -90,13 +90,13 @@ namespace BOLD{
 	cout << "KNN index out of bounds!!!  : "<< kNearestNeighborIndices[i] <<"\n";
 	continue;
       }
-      cout << "KNN:" << i << "dist = " << distances[i] << "\tarrayIndex = " << kNearestNeighborIndices[i] <<" label = "+trainedFeatures[kNearestNeighborIndices[i]].getLabel()+ "\n";
+      cout << "KNN:" << i << "dist = " << distances[i] << "\tarrayIndex = " << kNearestNeighborIndices[i] <<" label = "+trainedFeatures[kNearestNeighborIndices[i]]->getLabel()+ "\n";
     }
     for(int i = 0; i < K_NEAREST_NEIGHBORS; ++i)
     {
         if(labelFrequencies[i] == highestFrequency) 
         {
-            return trainedFeatures[kNearestNeighborIndices[i]].getLabel();
+            return trainedFeatures[kNearestNeighborIndices[i]]->getLabel();
 	           /* if(buff2 == -1)
 		    {
 	                buff2 = i;
@@ -118,7 +118,7 @@ namespace BOLD{
 	  
         }
     }
-    return trainedFeatures[buff2].getLabel();
+    return trainedFeatures[buff2]->getLabel();
     }
     
   
@@ -131,12 +131,12 @@ namespace BOLD{
     return label;
   }
   
-  void BOLDRecognizer::addLabeledFeature(BOLDFeature f){
-   if(f.getLabel()=="") {
+  void BOLDRecognizer::addLabeledFeature(BOLDFeature* f){
+   if(f->getLabel()=="") {
     cout << "BOLD::BOLDRecognizer::addLabeledFeature(): WARNING! Trying to add labeled feature, but feature label is not set.. Feature not added.\n" ;
     return;
    }
-   if(!f.isNormalized()){
+   if(!f->isNormalized()){
     cout << "BOLD::BOLDRecognizer::addLabeledFeature(): WARNING! Trying to add labeled feature, but feature is not yet normalized.. Feature not added.\n" ;
     return;
    }
@@ -150,13 +150,13 @@ namespace BOLD{
     descriptor.describe();
     descriptor.setFeatureLabel(label);
     cout << "push it\n";
-    BOLDFeature f = descriptor.getFeature();
+    BOLDFeature* f = descriptor.getFeature();
     trainedFeatures.push_back(f);
     descriptor.clear();
     cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
   }
   
-  void BOLDRecognizer::addLabeledFeature(Mat image,string label){
+  void BOLDRecognizer::addLabeledFeature(Mat &image,string label){
     descriptor.setImage(image,false);
     descriptor.describe();
     descriptor.setFeatureLabel(label);
@@ -172,7 +172,7 @@ namespace BOLD{
 
       for(size_t idx = 0; idx != trainedFeatures.size(); ++idx)
       {
-        trainedFeatures[idx].writeTo(output);
+        trainedFeatures[idx]->writeTo(output);
       }
       
       output.close();
@@ -213,7 +213,7 @@ namespace BOLD{
             input >> normalized;
             input >> label;
 
-            trainedFeatures.push_back(BOLDFeature(histogram,entries,normalized,label));
+            trainedFeatures.push_back(new BOLDFeature(histogram,entries,normalized,label));
             cout << idx << "\n";;
         }
         
@@ -264,7 +264,19 @@ namespace BOLD{
         }
     }
   }
+
+   BOLDRecognizer::~BOLDRecognizer()
+   {
+    for(std::vector<BOLDFeature*>::iterator it = trainedFeatures.begin(); it != trainedFeatures.end(); ++it)
+        delete *it;
+   }
   
 }
 
+
+int main(int argc,char**argv){
+    BOLDRecognizer br;
+    cout << "Hello, world!\n";
+    return 0;   
+}
 

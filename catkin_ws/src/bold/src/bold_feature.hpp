@@ -22,7 +22,7 @@
     
     class BOLDFeature{
     private:
-      double histogram[HISTOGRAM_SIZE][HISTOGRAM_SIZE];//  [alphas][betas]
+      double** histogram;//  [alphas][betas]
       int entries;
       double histBinSize;
       int highestCount;
@@ -32,7 +32,7 @@
     public:
       
       BOLDFeature();
-      BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int entries, bool normalized, string label);
+      BOLDFeature(double** histo, int entries, bool normalized, string label);
       void add(double alpha,double beta);
       double distanceFrom(BOLDFeature f);
       void print();

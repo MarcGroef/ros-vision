@@ -127,7 +127,8 @@ namespace BOLD{
     descriptor.setImage(fileName,false);
     descriptor.describe();
     label = classify(descriptor.getFeature());
-    descriptor.clear();
+   // descriptor.clear();
+    descriptor.freeFeature();
     return label;
   }
   
@@ -152,7 +153,7 @@ namespace BOLD{
     cout << "push it\n";
     BOLDFeature* f = descriptor.getFeature();
     trainedFeatures.push_back(f);
-    descriptor.clear();
+    //descriptor.clear();
     cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
   }
   
@@ -161,7 +162,7 @@ namespace BOLD{
     descriptor.describe();
     descriptor.setFeatureLabel(label);
     trainedFeatures.push_back(descriptor.getFeature());
-    descriptor.clear();
+    //descriptor.clear();
   }
   
   void BOLDRecognizer::writeToFile()
@@ -200,7 +201,7 @@ namespace BOLD{
             int entries;
             bool normalized;
             string label;
-
+	    //TODO: Optimize by writing directly to a new boldfeature
             for(size_t r = 0; r < HISTOGRAM_SIZE; ++r)
             {
                 for(size_t k = 0; k < HISTOGRAM_SIZE; ++k)
@@ -264,19 +265,39 @@ namespace BOLD{
         }
     }
   }
+  void BOLDRecognizer::showAllFeatures(){
+    cout << "show features\n";
+    string s = "a";
+    string prevLabel = "";
+    for(int i=0;i<trainedFeatures.size();i++){
+      if(prevLabel==trainedFeatures[i]->getLabel()){
+	s[0]++;
+      }else{
+	prevLabel = trainedFeatures[i]->getLabel();
+	s="a";
+      }
+      cout << trainedFeatures[i]-> getLabel();
+      trainedFeatures[i]->show(trainedFeatures[i]->getLabel()+" "+s);
+    }
+  }
 
    BOLDRecognizer::~BOLDRecognizer()
    {
     for(std::vector<BOLDFeature*>::iterator it = trainedFeatures.begin(); it != trainedFeatures.end(); ++it)
         delete *it;
    }
+   
+   
   
 }
 
 
 int main(int argc,char**argv){
     BOLDRecognizer br;
-    cout << "Hello, world!\n";
+    br.dialogue();
+    br.showAllFeatures();
+    waitKey(0);
+    cout << "Goodbye!\n";
     return 0;   
 }
 

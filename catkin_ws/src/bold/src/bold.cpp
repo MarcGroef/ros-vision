@@ -23,6 +23,7 @@ namespace BOLD{
     imageIsSet = false;
     imageName = "";
     linesIsSet = false;
+   
   }
   
   BOLDescriptor::~BOLDescriptor(){
@@ -242,6 +243,11 @@ namespace BOLD{
   
   void BOLDescriptor::describe(){
    int i,j;
+   std::clock_t start;
+   start = std::clock();
+   
+   feature = new BOLDFeature();
+   
    cout << "describing..\n" ;
    feature->clear();
    if(lines==NULL){
@@ -261,8 +267,10 @@ namespace BOLD{
     }
     cout << "normalize..\n";
     feature->normalize();
-
+ 
+    cout << "It took "<<(float)(std::clock()-start)/CLOCKS_PER_SEC <<" sec to process : This would result in "<< 1/((float)(std::clock()-start)/CLOCKS_PER_SEC)<< " fps\n";
   }
+  
   
   void BOLDescriptor::setFeatureLabel(string label){
     feature->setLabel(label);
@@ -294,6 +302,9 @@ namespace BOLD{
     imageName = "";
   }
   
+  void BOLDescriptor::freeFeature(){
+    delete feature;
+  }
  
   
 }

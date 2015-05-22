@@ -18,6 +18,7 @@
 #include <iostream>
 #include <string>
 #include <cfloat>
+#include <ctime>
 
 #include "bold_vector.hpp"
 #include "bold_feature.hpp"
@@ -56,7 +57,7 @@ namespace BOLD{
     bool imageIsSet;
     bool linesIsSet;
     int nLines;
-    BOLDFeature *feature;
+    BOLDFeature* feature;
     int KNLIndices[K_NEAREST_LINE_SEGMENTS];
     
     void kNearestLines(int index);
@@ -80,6 +81,7 @@ namespace BOLD{
     void setFeatureLabel(string label);
     string getImageName();
     void clear();
+    void freeFeature();
   };
 }
 #endif 

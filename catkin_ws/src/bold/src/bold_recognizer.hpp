@@ -46,6 +46,7 @@ namespace BOLD{
     void writeToFile();
     void readFromFile();
     void dialogue();
+    void showAllFeatures();
   };
   
   

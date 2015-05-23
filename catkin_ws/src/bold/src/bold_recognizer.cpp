@@ -14,7 +14,7 @@ namespace BOLD{
   
   string BOLDRecognizer::classify(BOLDFeature* f)
  {
-    
+   
     int nTrainedElements = trainedFeatures.size();
     int kNearestNeighborIndices[K_NEAREST_NEIGHBORS];
     double distances[K_NEAREST_NEIGHBORS];
@@ -96,6 +96,7 @@ namespace BOLD{
     {
         if(labelFrequencies[i] == highestFrequency) 
         {
+	  
             return trainedFeatures[kNearestNeighborIndices[i]]->getLabel();
 	           /* if(buff2 == -1)
 		    {
@@ -118,17 +119,21 @@ namespace BOLD{
 	  
         }
     }
+   
     return trainedFeatures[buff2]->getLabel();
     }
     
   
   string BOLDRecognizer::classify(string fileName){
     string label;
+     std::clock_t start;
+    start = std::clock();
     descriptor.setImage(fileName,false);
     descriptor.describe();
     label = classify(descriptor.getFeature());
-   // descriptor.clear();
+    descriptor.clear();
     descriptor.freeFeature();
+    cout << "It took "<<(float)(std::clock()-start)/CLOCKS_PER_SEC <<" sec to process : This would result in "<< 1/((float)(std::clock()-start)/CLOCKS_PER_SEC)<< " fps\n";
     return label;
   }
   
@@ -153,7 +158,7 @@ namespace BOLD{
     cout << "push it\n";
     BOLDFeature* f = descriptor.getFeature();
     trainedFeatures.push_back(f);
-    //descriptor.clear();
+    descriptor.clear();
     cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
   }
   
@@ -162,7 +167,7 @@ namespace BOLD{
     descriptor.describe();
     descriptor.setFeatureLabel(label);
     trainedFeatures.push_back(descriptor.getFeature());
-    //descriptor.clear();
+    descriptor.clear();
   }
   
   void BOLDRecognizer::writeToFile()
@@ -184,10 +189,12 @@ namespace BOLD{
         std::ifstream input("test.marc", std::ifstream::in);
         int histosize;
         int plaatjesn;
-	cout << "reading..\n";
+	cout << "reading from File..\n";
         input >> plaatjesn;
         
         input >> histosize;
+	
+	
 	
         if(histosize != HISTOGRAM_SIZE){
             cout << "Histogram size "<<histosize <<" from file does not match the HISTOGRAM_SIZE as compiled with..\n";
@@ -230,7 +237,7 @@ namespace BOLD{
     cout << "Welcome to the BOLD recognizer!\n" ;
     cout << "Trainings phase:\n";
     for(;;){
-      cout << "Do you want to add a trainings sample? (y=yes, n=no)\n";
+      cout << "Do you want to add a trainings sample? (y=yes, n=no, s=store trained features to file,l=load features from file)\n";
       cin >> i;
       if(i=='y'){
 	
@@ -243,6 +250,10 @@ namespace BOLD{
         }else if(i == 'n'){
 	        cout << "Ending training input..\n";
 	        break;
+	}else if(i=='s'){
+		writeToFile();
+	}else if(i=='l'){
+		readFromFile();
         }else{
 	        cout << "Invalid input.. try again!\n";
         }
@@ -295,8 +306,10 @@ namespace BOLD{
 int main(int argc,char**argv){
     BOLDRecognizer br;
     br.dialogue();
-    br.showAllFeatures();
-    waitKey(0);
+    //br.showAllFeatures();  //***causes memleak indirectly lost:240, definitivly 60 bytes, posswibly lost: 228.865 bytes, still reachable: 796.541 bytes
+    
+    //waitKey(0);
+    //cv::destroyAllWindows();
     cout << "Goodbye!\n";
     return 0;   
 }

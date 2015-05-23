@@ -42,6 +42,7 @@
 	  histogram[i][j]/=entries;
 	}
       }
+      cout << entries << "entries \n";
     }
     
     bool BOLDFeature::isNormalized(){

@@ -1,0 +1,718 @@
+@font-face {
+    font-family: 'aachen_btroman';
+    src: url('fonts/aachen-bt-webfont.eot');
+    src: url('fonts/aachen-bt-webfont.eot?#iefix') format('embedded-opentype'),
+        url('fonts/aachen-bt-webfont.woff') format('woff'),
+        url('fonts/aachen-bt-webfont.ttf') format('truetype'),
+        url('fonts/aachen-bt-webfont.svg#aachen_btroman') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+/* ### general ### */
+* { margin: 0px; padding: 0px; }
+html, body { height: 100%; font-family: Verdana; font-size: 12px; color: #000; }
+input, select, textarea { font-family: Verdana; font-size: 12px; color: #000; }
+body { background: url(/Static/Images/Design/body_bg.jpg) no-repeat center center fixed; 
+       -webkit-background-size: cover;
+       -moz-background-size: cover;
+       -o-background-size: cover;
+       background-size: cover; overflow-x: hidden; }
+img { border: 0px; display: block; }
+:focus { outline: none; }
+/* behavior: url(stylesheets/PIE/PIE.htc); */
+
+/* ### global classes ### */
+.clear { clear: both; height: 0; }
+.center { position: relative; margin: 0 auto; max-width: 964px; }
+
+/* ### wrapper ### */
+#wrapper { position: relative; display: block; width: 100%; min-height: 100%; }
+
+/* ### main container ### */
+#mainCntr { width: 100%; padding-bottom: 164px; }
+
+/* ### header container ### */
+#headerCntr { position: relative; width: 100%; height: 176px; }
+#headerCntr a.logo { position: absolute; top: 4px; left: -1px; z-index: 100;}
+#headerCntr a.link { position: absolute; top: 180px; right: 10px; color: #fff; font-size: 14px; font-weight: bold; padding-left: 18px; background: url(/Static/Images/Design/arrow1.png) no-repeat left; display: inline-block; text-decoration: none; }
+
+/* ### menu box ### */
+.menuBox { position: absolute; top: 69px; right: 4px; z-index: 102;}
+.menuBox ul { list-style: none; }
+.menuBox li { float: left; margin-left: 26px; font-size: 22px; text-transform: uppercase; font-family: 'aachen_btroman'; position: relative; padding-bottom: 15px; }
+.menuBox li a { display: block; text-decoration: none; padding: 0 10px; line-height: 38px; color: #fff; background: #a50133; }
+.menuBox li a:hover, .menuBox li:hover > a { background: #fff; color: #000; }
+.menuBox li ul { display: none; position: absolute; top: 45px; left: 0; padding: 5px 7px 10px 9px; background: #f1f0de; }
+.menuBox li li { float: none; margin-left: 0; font-size: 18px; border-bottom: 1px solid #000; padding-bottom: 0; }
+.menuBox li li a { padding: 0; line-height: 32px; color: #000; background: #f1f0de; }
+.menuBox li li:hover a { background: none!important; }
+.menuBox li li a:hover { color: #000; }
+.menuBox li:hover ul { display: block; }
+.mobilemenu { display: none; }
+
+/* ### banner container ### */
+#bannerCntr { width: 100%; overflow: hidden; height: 380px; margin: 30px 0 22px 0; position:relative;}
+.rslides li .inner { position: absolute; top: 0; left: 50%; width: 964px; height: 380px; margin-left: -482px; z-index: 300; }
+.rslides li .inner .center { position: relative; }
+.rslides li .inner .center .started { position: absolute; top: 84px; right: 4px; width: 270px; padding: 15px 15px 22px 18px; background: url(/Static/Images/Design/started_bg.png) repeat; }
+.rslides li .inner .center .started h3 { color: #000; font-size: 26px; font-weight: normal; font-family: 'aachen_btroman'; padding-bottom: 9px; }
+.rslides li .inner .center .started p { color: #000; font-size: 14px; line-height: 18px; padding-bottom: 16px; }
+.rslides li .inner .center .started a.more { color: #000; font-size: 14px; text-decoration: none; font-weight: bold; }
+.rslides li .inner .center .started a.more:hover { text-decoration: underline; }
+
+/* ### slider container ### */
+#sliderCntr { width: 100%;  margin-top: 31px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box; margin-bottom: 2px; }
+#sliderCntr .center { border: 1px solid #fff; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box; overflow: hidden; }
+#sliderCntr .slider { width: 100%; position: relative; }
+#sliderCntr ul { list-style: none; width: 100%; }
+#sliderCntr li { float: left; width: 100%; position: relative; }
+#sliderCntr li img { width: 100%; }
+#sliderCntr .blank { position: absolute; bottom: 0; left: 0; width: 100%; height: 49px; background: url(/Static/Images/Design/bg2.png) repeat; }
+#sliderCntr a.prev { position: absolute; top: 50%; margin-top: -13px; left: 4%; }
+#sliderCntr a.next { position: absolute; top: 50%; margin-top: -13px; right: 4%; }
+
+/* ### content container ### */
+#contentCntr { width: 100%; }
+#contentCntr.sub { padding-top: 30px; }
+
+/* ### Artist Page + Fotoalbum page### */
+.banddate { color:#FFF; font-family:'aachen_btroman'; font-size:22px; line-height:30px; margin-top: 15px; padding-left:40px; text-transform:none; text-shadow:2px 2px #000; }
+.fotoalbum li, .band-gig li{ list-style: none; width:227px; height:150px; float:left; overflow:hidden; margin:7px; }
+.fotoalbum li a, .band-gig li a{ position:relative; width:223px; height:146px; display:block; border:2px solid #A50234; border-radius:2px; overflow:hidden; }
+.band-gig li.red-border a {border:2px solid #A50234;}
+.band-gig li.white-border a {border:2px solid #FFFFFF;}
+.band-gig li a p.showOnHover{ visibility:hidden; position:absolute; height:126px; width:203px; z-index:10; background:url(/Static/Images/Design/text_bg.png) repeat scroll 0 0 rgba(0,0,0,0); color:#FFF; font-family:'Verdana'; text-align:center; font-size:14px; margin:auto; padding:10px; }
+.band-gig li a:hover .showOnHover{ visibility:visible; }
+.fotoalbum li a img, .band-gig li a img{ position:absolute; top:-146px; bottom:-146px; min-height:146px; width:223px; margin:auto; }
+.fotoalbum li a span, .band-gig li a span{ position:absolute;bottom:0; background:url(/Static/Images/Design/text_bg.png) repeat scroll 0 0 rgba(0,0,0,0); color:#FFF; font-family:'aachen_btroman'; text-transform:uppercase; text-align:center; font-size:16px; height:37px; width:223px; line-height:37px; }
+/* ### Artist item ### */
+.back-to-albums, .back-to-albums a, .back-to-artists, .back-to-artists a{ color:#FFF; text-align:right; font-size:14px; text-decoration:none; font-weight:700; height:37px; width:100%; line-height:37px; }
+.artist-gig-info { width: 100%; }
+.foto-album-clickable { cursor: pointer; }
+.artist-photo{ height: 400px; width: 100%; position:relative; display:block; overflow:hidden; border:2px solid #FFF; border-radius:2px; }
+.artist-photo img{ width: 100%; top: -296px; bottom: -296px; min-height: 296px; position:absolute; width:100%; margin:auto; }
+.social-icon { height: 25px; float: left; margin-right: 10px;}
+.social-icon img { height: 25px;}
+.image-overlay { position: fixed; z-index: 10; width:964px; height:100%; top:0;}
+.image-overlay img {width: 670px; height: 450px;position: relative; border: solid #A50234 2px; border-radius:2px; margin: 0 auto; top:125px;}
+.arrow-container { position: fixed; width: 670px; left: 50%; margin-left: -335px; top: 294px; z-index: 15;}
+.foto-album-arrow-left, .foto-album-arrow-right { background-repeat:no-repeat; background-position:center; display:block; position: relative; cursor: pointer; z-index: 15; width: 50px; height: 50px;}
+.foto-album-arrow-left { float: left; background-image: url('/Static/Images/Design/prev2.png');}
+.foto-album-arrow-right { float: right; background-image: url('/Static/Images/Design/next2.png');}
+
+/* ### left container ### */
+#leftCntr { float: left; width: 66%; }
+
+/* ### wide container ### */
+#wideCntr { float: left; width: 100%; padding-bottom: 30px;}
+
+/* ### land box ### */
+.landBox { width: 100%; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box; margin-bottom: 20px; overflow: auto; margin-left: auto; margin-right: auto; }
+/* ### trout box ### */
+
+.contentBox { width: 100%; padding: 16px 17px; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box; background: url(/Static/Images/Design/bg1.png) repeat; margin-bottom: 20px; overflow: auto; }
+
+h1 { color: #0e1757; font-size: 25px; padding-bottom: 12px; text-transform: uppercase; font-family: 'aachen_btroman'; font-weight: normal; }
+h2 { color: #0e1757;  font-family: 'aachen_btroman'; font-size: 18px; text-transform: uppercase; }
+h3 { color: #0e1757;  font-family: 'aachen_btroman'; padding-bottom: 13px; font-size: 16px; }
+h4 { color: #000; font-size: 18px; font-weight: normal; padding-bottom: 13px; text-transform: uppercase; } 
+h4 span { color: #a50234; }
+h5 { color: #0e1757;  font-family: 'aachen_btroman'; font-size: 14px; font-weight: normal; text-transform: uppercase;  }
+h6 { color: #0e1757;  font-family: 'aachen_btroman'; font-size: 14px; font-weight: normal;  }
+
+.contentBox strong { display: block; color: #000; font-size: 14px; padding-bottom: 10px; }
+.contentBox p, .contentBox ul, .contentBox ol { color: #000; font-size: 14px; line-height: 18px; padding-bottom: 10px; }
+.contentBox h4 { padding-bottom: 0; }
+.contentBox ul { padding-left: 2em; }
+.contentBox ol { padding-left: 2.5em; }
+.contentBox li { padding-bottom:0.5em; }
+.contentBox ul ul, .contentBox ol ol, .contentBox ul ol, .contentBox ol ul { padding-top:0.5em; padding-bottom:0; }
+
+.contentBox a { color: #000; text-decoration: none; font-weight: bold; font-style: italic; }
+.contentBox a:hover { text-decoration: underline; }
+
+.contentBox img.video { width: 100%; }
+.contentBox img.showcase { float: right; margin: 0 0 12px 12px; }
+.contentBox .attachment a { color: #A50234; text-decoration: none; }
+.contentBox div:first-child {
+    display:inline-block;
+    width:100%;
+    margin-bottom:1em;
+}
+.contentBox div:first-child div:first-child{
+    width: 70%;
+    height: 45px;
+    display: inline-block;
+}
+.contentBox div:first-child div:last-child{
+    display: inline-block;
+    vertical-align: top;
+}
+.contentBox div:first-child div:last-child a{
+    float: right;
+    color: #A50234;
+    display: block;
+    font-size: 11px;
+    font-style: italic;
+    font-weight: bold;
+    text-decoration: none;
+}
+/* ### sponsors box ### */
+.sponsorsBox { width: 100%; }
+.sponsorsBox ul { list-style: none; }
+.sponsorsBox li { width: 100%; margin-bottom: 15px; overflow: hidden; }
+.sponsorsBox .text { float: left; width: 100%; margin-top: 2px; background: url(/Static/Images/Design/text_bg2.png) repeat; padding: 0 0 0 0; -webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box; }
+.sponsorsBox .text a{ overflow: hidden; display:inline-block; float:left;}
+.sponsorsBox .text h3 { color: #fff; font-family: Verdana; font-size: 14px; padding-bottom: 8px; padding-top: 10px; margin: 0 0 0 20px;}
+.sponsorsBox .text h3 a { color: #fff; text-decoration: none; float: none; }
+.sponsorsBox .text img { max-width: 99.5%; border: 2px solid #a50234; border-radius: 2px; float: left; margin: 0 20px 0 0; }
+.sponsorsBox .text img.white { background-color: #FFFFFF; border: 2px solid #a50234; border-radius: 2px; float: left;}
+.sponsorsBox .text p { color: #fff; font-size: 14px; line-height: 18px; padding-bottom: 10px; margin: 10px 0 0 20px;}
+.sponsorsBox .text p a { color: #fff; font-size: 11px; font-weight: bold; font-style: italic; text-decoration: none; display: block; margin: 10px 20px 5px 0; float: none;}
+.sponsorsBox .text p a:hover { text-decoration: underline; }
+.sponsorsBox .text a.more { color: #fff; font-size: 14px; text-decoration: none; font-weight: bold; }
+.sponsorsBox .text a.more:hover { text-decoration: underline; }
+
+/* ### right container ### */
+#rightCntr { float: right; width: 32%; position: relative;}
+
+/* ### social box ### */
+.socialBox {top: -60px; z-index:101; right: 4px; position: absolute;}
+.socialBoxHome { position: static;}
+.socialBox ul { list-style: none; overflow: hidden; float: right; margin-bottom: 10px;  }
+.socialBox li { float: left; margin-left: 10px; }
+.socialBox li img { display: inline; }
+
+
+/* ### line box ### */
+.lineBox { background: url(/Static/Images/Design/bg1.png) repeat; width: 99.2%; margin-bottom: 18px; box-shadow: 2px 2px 3px rgba(0,0,0,0.3); padding: 10px 0 14px 0; overflow: hidden; }
+.lineBox h3 { color: #000; font-size: 23px; text-align: center; font-weight: normal; font-family: 'aachen_btroman'; padding-bottom: 7px; }
+.lineBox .slider { position: relative; width: 100%; overflow: hidden; }
+.lineBox ul { list-style: none; width: 100%; }
+.lineBox li { float: left; width: 100%; }
+.lineBox h2, .lineBox h2 a { color: #a50234; font-size: 36px; font-weight: normal; text-align: center; font-family: 'aachen_btroman'; text-transform: uppercase; text-decoration: none}
+.lineBox a.prev { position: absolute;  left: 3%; top: 50%; margin-top: -9px; z-index: 25;}
+.lineBox a.next { position: absolute; top: 50%; margin-top: -9px; right: 3%; z-index: 25;}
+
+/* ### news box ### */
+.newsBox { width: 99.2%; margin-bottom: 18px; box-shadow: 2px 2px 3px rgba(0,0,0,0.3); overflow: hidden; }
+.newsBox a.news { display: block; text-decoration: none; width: 100%; background: url(/Static/Images/Design/bg1.png) repeat; line-height: 38px; height: 38px; color: #000; font-size: 21px; text-align: center; font-family: 'aachen_btroman'; text-transform: uppercase; }
+.newsBox a.news:hover { text-decoration: underline; }
+
+/* ### tweets box ### */
+.tweetsBox { width: 99.2%; margin-bottom: 18px; box-shadow: 2px 2px 3px rgba(0,0,0,0.3); background: #fff; height: 641px; }
+.tweetsBox h3 { color: #a50234; font-size: 21px; font-weight: normal; text-align: center; font-family: 'aachen_btroman'; text-transform: uppercase; padding: 9px 0 10px 0; }
+.tweetsBox .plugin { width: 100%; } 
+.tweetsBox .plugin img { width: 100%; }
+
+/* ### main box ### */
+.mainBox { width: 99.2%; margin-bottom: 18px; box-shadow: 2px 2px 3px rgba(0,0,0,0.3); background: #fff; padding: 15px 0 12px 0; }
+.mainBox h3 { color: #000; font-size: 21px; font-weight: normal; text-align: center; font-family: 'aachen_btroman'; text-transform: uppercase; padding-bottom: 22px; }
+.mainBox .logo { width: 100%; text-align: center; }
+.mainBox .logo img { display: inline; width: 100%; }
+
+/* ### footer container ### */
+#footerCntr { overflow: hidden; width: 100%; position: absolute; bottom: 0; background: #fff; padding: 9px 0; }
+#footerCntr .center { overflow: hidden; }
+#footerCntr ul { list-style: none; width: 100%; }
+#footerCntr li { float: left; width: 33.33%; text-align: center; }
+#footerCntr h3 { color: #000; font-size: 21px; font-weight: normal; font-family: 'aachen_btroman'; text-transform: uppercase; }
+#footerCntr li:last-child h3 { display: none; }
+#footerCntr img { display: inline; }
+
+form > div{
+    width: 100%;
+    margin-bottom: 12px;
+    position: relative;
+}
+form > div > label{
+    width: 33%;
+    float: left;
+}
+form > div > label > span{
+    color: #a50133;
+}
+form label.error{
+    position: absolute;
+    left: 0;
+    top: 16px;
+    color: #FF0000;
+}
+form > div > input, form textArea{
+    width: 60%;
+    padding: 8px;
+}
+form .options{
+    width: 60%;
+    display: inline-block;
+}
+form .options input{
+    float: left;
+}
+form .options label{
+    display: block;
+    padding-left: 24px;
+    width: 90%;
+}
+form .options label.error{
+    padding: 0;
+}
+form .button{
+    font-family: 'aachen_btroman';
+    background-color: #a50133;
+    color: #f1f0de;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 8px;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+form .tooltip{
+    float: right;
+    width: 16px;
+    height: 16px;
+    background-color: #0e1757;
+    color: white;
+    text-align: center;
+    cursor: default;
+}
+#tooltip{
+    position: absolute;
+    background-color: white;
+    padding: 8px;
+    max-width: 128px;
+}
+.right{
+    float: right;
+}
+
+.search form{
+    margin-bottom: 64px;
+}
+
+.search h3 { 
+    color: #000; 
+    font-size: 14px; 
+    font-weight: 300;
+    line-height: 18px; 
+    padding-bottom: 24px;
+}
+
+.search strong{
+    display: inline;
+    font-weight: bold;
+}
+
+.search ul li {
+    margin: 16px 0;
+    width: 100%;
+}
+
+.search ul li h3{
+    padding-bottom: 0px;
+}
+
+.search ul li h3 a{
+    text-decoration: none;
+    color: #0e1757;
+}
+
+.search ul li .date{
+    color: #A50234;
+    font-weight: 100;
+    font-size: 10px;
+    line-height: 10px;
+}
+
+.search ul li p {
+    font-weight: 300;
+}
+
+.search ul li p strong {
+    font-weight: bold;
+}
+
+.search .read-more{
+    display: block;
+    float: right;
+    color: #A50234;
+    text-decoration: none;
+    margin-top: 16px;
+}
+
+ul.pagination{
+    float: right;
+    overflow: visible;
+}
+
+ul.pagination li{
+    width: 24px;
+    height: 24px;
+    background-color: #A50234;
+    text-align: center;
+    margin: 0 2px;
+    line-height: 24px;
+    display: inline-block;
+}
+
+ul.pagination li:first-child{
+    margin-right: 2px;
+}
+
+ul.pagination li a{
+    font-size: 16px;
+    color: #FFF;
+    font-family: 'aachen_btroman';
+    text-decoration: none;
+    font-weight: 400;
+}
+
+ul.pagination li.active{
+    margin: -8px 2px 8px;
+}
+
+ul.sitemap li{
+    width: 100%;
+}
+
+ul.sitemap li a{
+    color: #A50234;
+    text-decoration: none;
+}
+
+ul.sitemap li ul{
+    margin-left: 16px;
+}
+
+.headline{
+    left: 50%;
+    margin-left: -480px;
+}
+
+@media only screen and (max-width: 963px) {
+
+    #headerCntr a.logo img { width: 260px; }
+
+    .menuBox li { font-size: 17px; margin-left: 17px; }
+    .menuBox li a { padding: 0 8px; }
+
+    .rslides li .inner { left: 0; margin-left: 0; width: 100%; }
+
+    .lineBox h2 { font-size: 30px; }
+
+    .newsBox a.news { font-size: 18px; }
+
+    .landBox li span { font-size: 21px; }
+
+    .sponsorsBox .text a.more { margin-top: 10px; display: inline-block; }
+
+    .artist-photo { height: 346px; }
+    .artist-photo img{ top: -346px; bottom: -346px; min-height: 346px;}
+    .arrow-container{top: 125px; width: 85%; left: 0; margin-left: 7.5%;}
+    .foto-album-overlay img {width: 95%;}
+    .sponsorsBox .text img { max-width: 99%;}
+    .headline{
+        left: 0;
+        margin-left: 10px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+
+    .menuBox { top: 160px; }
+
+    .landBox li span { font-size: 15px; }
+
+    .lineBox h3 { font-size: 17px; }
+    .lineBox h2 { font-size: 23px; }
+    .lineBox a.prev { left: 2%; }
+    .lineBox a.next { right: 2%; }
+
+
+    .newsBox a.news { font-size: 13px; }
+
+    .tweetsBox h3 { font-size: 16px; }
+
+    #footerCntr h3 { font-size: 17px; }
+
+    #footerCntr img.first { width: 200px; }
+
+    .mainBox h3 { font-size: 17px; }
+
+    .artistsBox li span { font-size: 14px; }
+
+    .artistsBox { padding-top: 30px; }
+
+    .artistsBox h3 { font-size: 17px; }
+
+    .artist-photo { height: 296px; }
+    .artist-photo img{ top: -296px; bottom: -296px; min-height: 296px;}
+
+}
+
+@media only screen and (max-width: 549px) {
+
+    .menuBox { display: none; }
+
+    .mobilemenu { position: absolute; top: 0; left: 0; display: block; width: 100%; z-index: 600; }
+    .mobilemenu .inner { position: relative; width: 100%; }
+    .mobilemenu img { display: inline; width: 60px; float: right; }
+    .mobilemenu ul { display: none; width: 100%; list-style: none; background: #a50133; position: absolute; top: 59px; left: 0; z-index: 600; padding: 8px 0; }
+    .mobilemenu li { line-height: 38px; font-size: 22px;font-family: 'aachen_btroman'; text-transform: uppercase; }
+    .mobilemenu li a { display: block; text-decoration: none; text-align: center; color: #fff; }
+    .mobilemenu li ul { background: #a50133; position: relative; top: auto; left: auto; z-index: 800; }
+    .mobilemenu li li { line-height: 26px; font-size: 15px; border-bottom: 0; background: #8D001D}
+    .mobilemenu li.drop > a:before { content: '+'; }
+    
+    .rslides li .inner .center .started { right: 8px; }
+
+    #leftCntr { float: none; width: 98%; padding-top: 30px; margin: 0 1%; }
+
+    .landBox ul { padding-bottom: 0; }
+    .landBox li { margin-right: 0; width: 100%; margin-bottom: 20px; float: none; }
+    .landBox li span { font-size: 24px; }
+
+    #rightCntr { float: none; width: 98%; margin: 0 1%; padding-top: 0; }
+
+    .lineBox { width: 100%; }
+    .lineBox h3 { font-size: 21px; }
+    .lineBox h2 { font-size: 32px; }
+    .lineBox a.prev { left: 3%; }
+    .lineBox a.next { right: 3%; }
+
+    .newsBox { width: 100%; }
+    .newsBox a.news { font-size: 21px; }
+
+    .tweetsBox { max-width: 306px; }
+    .tweetsBox h3 { font-size: 21px; }
+
+    #footerCntr ul { width: 100%; text-align: center; }
+    #footerCntr li { text-align: center; width: 100%; float: none; margin-bottom: 20px; }
+    #footerCntr h3 { font-size: 21px; }
+
+    #mainCntr { padding-bottom: 450px; }
+
+    #sliderCntr .blank { height: 26px; }
+
+    .contentBox h4 { font-size: 17px; }
+
+    .sponsorsBox .text img { max-width: 99%; }
+
+    .mainBox { width: 100%; }
+    .mainBox h3 { font-size: 21px; }
+
+    .artistsBox li { width: 100%; }
+    .artistsBox li span { font-size: 18px; }
+    .artistsBox h3 { font-size: 22px; }
+
+    .socialBox { top: -5px; }
+
+    .sponsorsBox .text p { font-size: 13px; }
+    
+    #contentCntr.sub { padding-top: 0; }
+
+    #bannerCntr { height: 180px; margin-bottom: 0; }
+    #bannerCntr .rslides li .inner { display: none;}
+    #bannerCntr .rslides img { width: 900px !important; margin-left: -350px; }
+
+    .flags {
+        position: absolute;
+        right: 72px;
+        border-right: 2px white solid;
+        border-bottom-right-radius: 10px;
+        -webkit-border-radius-bottom-right: 10px; 
+        -moz-border-radius-bottomright: 10px;
+        z-index: 1000;
+    }
+
+    .artist-photo { height: 196px; width: 97.5%; margin: 0 1%;}
+    .artist-photo img{ top: -196px; bottom: -196px; min-height: 196px;}
+
+}
+
+p.artist-item-date {color: #a50234; margin-right: 10px; float: left; font-size:18px; text-transform:uppercase; font-weight: 600;}
+p.artist-item-stage {margin-right: 10px;float: left; font-size:18px; text-transform:uppercase; font-weight: 600;}
+p.artist-item-time {float: left; font-size:18px; text-transform:uppercase; font-weight: 600;}
+
+.rslides {
+    position: relative;
+    list-style: none;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.rslides li {
+    -webkit-backface-visibility: hidden;
+    position: relative;
+    display: none;
+    width: 100%;
+
+}
+
+.rslides li:first-child {
+    position: relative;
+    display: block;
+    float: left;
+}
+
+.rslides img {
+    min-height: 100%; height: auto!important; height: 100%; min-width: 100%; width: auto!important; width: 100%;
+}
+
+
+.rslides_tabs { display: none; }
+
+#leftCntr div.landBox div.photo{
+    float: left;
+    position: relative;
+    margin: 10px 5px;
+}
+#leftCntr div.landBox div.photo img{
+    border: 2px solid #A50234;
+    border-radius: 2px;
+}
+
+#leftCntr div.landBox div.photo a span{ 
+    bottom: 0;
+    background: url("/Static/Images/Design/text_bg.png") repeat scroll 0 0 rgba(0, 0, 0, 0);
+    bottom: 2px;
+    color: #FFFFFF;
+    font-family: 'aachen_btroman';
+    font-size: 25px;
+    height: 37px;
+    left: 2px;
+    line-height: 37px;
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    width: 98.7%;
+}
+
+div.attachment {
+    border-top:1px solid #333;
+    margin-top:35px;
+    padding-top:10px;
+    
+}
+
+.flags{
+    width: 70px;
+    height: 26px;
+    float: right;
+    background-color: #A50133;
+    border-left: 2px white solid;
+    border-bottom: 2px white solid;
+    border-bottom-left-radius: 10px;
+    -webkit-border-radius-bottom-left: 10px; 
+    -moz-border-radius-bottomleft: 10px;
+}
+.flags > a > img{
+    float: left;
+    padding: 5px;
+
+}
+.flags > a > img:first-child{
+    margin-left: 3px;
+    margin-top: 2px;
+}
+
+.timeTable{
+    padding: 20px;
+    font-family: 'aachen_btroman';
+    background-color: #FFFFFF;
+    margin-bottom: 200px;
+}
+
+.timeTable > a{
+    color: #FFFFFF;
+    font-size: 1.4em;
+    text-decoration: none;
+    padding: 13px;
+    display: inline-block;
+    background-color: #C62757;
+    border: 5px solid #0e1757;
+}
+
+.timeTable > a.currentDate{
+    background-color: #A50234;
+}
+
+.timeTable table{
+    padding: 10px;
+}
+
+.timeTable th {
+    color: #FFFFFF;
+    padding: 3px;
+    font-weight: normal;
+    font-size: 0.8em;
+    background-color: #A50234;
+}
+.timeTable th.clearColumn{
+    background-color: #3D3D3D;
+}
+.timeTable td.bandTitle{
+    color: #FFFFFF;
+    padding: 15px 5px;
+    font-size: 1.3em;
+    display: block;
+    background-color: #A50234;
+    border: 5px solid #0e1757;
+}
+
+.timeTable td.show{
+    color: #FFFFFF;
+    text-align: center;
+    background-color: #0e1757;
+}
+
+.timeTable td.show a{
+    color: white;
+    width: 100%;
+    height: 100%;
+    display: block;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.timeTable div.scroll{
+    overflow: auto;
+    background-color: #3D3D3D;
+}
+
+.headline{
+    position: absolute;
+    bottom: 0;
+    width: 300px;
+    /* height: 380px; */
+    z-index: 300;
+    font-family: 'aachen_btroman';
+    color: white;
+    text-transform: uppercase;
+    font-size: 19px;
+    font-weight: lighter;
+}
+
+.headline div {
+    float: left;
+}
+
+.headline div span {
+    display: block;
+    color: #FFFFFF;
+    text-align: right;
+    padding: 0 2px 0 0;
+    line-height: 24px;
+    font-size: 24px;
+}
+.headline div .bigger{
+    font-size:50px;
+    display: inline-block;
+    line-height: 50px;
+}

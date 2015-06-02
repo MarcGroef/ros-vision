@@ -170,9 +170,9 @@ namespace BOLD{
     descriptor.clear();
   }
   
-  void BOLDRecognizer::writeToFile()
+  void BOLDRecognizer::writeToFile(string fileName)
   {
-      std::ofstream output("test.marc",std::ofstream::out);
+      std::ofstream output(fileName.c_str(),std::ofstream::out);
       output << trainedFeatures.size() << '\n';
       output << HISTOGRAM_SIZE << '\n';
 
@@ -184,9 +184,9 @@ namespace BOLD{
       output.close();
   }
 
- void BOLDRecognizer::readFromFile()
+ void BOLDRecognizer::readFromFile(string fileName)
  {
-        std::ifstream input("test.marc", std::ifstream::in);
+        std::ifstream input(fileName.c_str(), std::ifstream::in);
         int histosize;
         int plaatjesn;
 	cout << "reading from File..\n";
@@ -251,9 +251,9 @@ namespace BOLD{
 	        cout << "Ending training input..\n";
 	        break;
 	}else if(i=='s'){
-		writeToFile();
+		writeToFile("DEMO.ft");
 	}else if(i=='l'){
-		readFromFile();
+		readFromFile("DEMO.ft");
         }else{
 	        cout << "Invalid input.. try again!\n";
         }
@@ -296,6 +296,15 @@ namespace BOLD{
    {
     for(std::vector<BOLDFeature*>::iterator it = trainedFeatures.begin(); it != trainedFeatures.end(); ++it)
         delete *it;
+    descriptor.clear();
+   }
+   
+   void BOLDRecognizer::clear(){
+      descriptor.clear();
+      
+      for(std::vector<BOLDFeature*>::iterator it = trainedFeatures.begin(); it != trainedFeatures.end(); ++it)
+        delete *it;
+      trainedFeatures.clear();
    }
    
    
@@ -303,7 +312,7 @@ namespace BOLD{
 }
 
 
-int main(int argc,char**argv){
+/*int main(int argc,char**argv){
     BOLDRecognizer br;
     br.dialogue();
     //br.showAllFeatures();  //***causes memleak indirectly lost:240, definitivly 60 bytes, posswibly lost: 228.865 bytes, still reachable: 796.541 bytes
@@ -314,3 +323,4 @@ int main(int argc,char**argv){
     return 0;   
 }
 
+*/

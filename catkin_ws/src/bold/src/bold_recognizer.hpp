@@ -43,10 +43,11 @@ namespace BOLD{
     void addLabeledFeature(BOLDFeature *f);
     void addLabeledFeatureFromFile(string fileName,string label);
     void addLabeledFeature(Mat &image,string label);
-    void writeToFile();
-    void readFromFile();
+    void writeToFile(string fileName);
+    void readFromFile(string fileName);
     void dialogue();
     void showAllFeatures();
+    void clear();
   };
   
   

@@ -1,0 +1,11 @@
+BVD_M01/
+
+BVD_M01/hertog_jan/hertog_jan0.jpg
+BVD_M01/electronics_set/electronics_set0.jpg
+
+
+//textureless
+BVD_M01/rug_coffee_mug/rug_coffee_mug5.jpg
+
+//texture
+BVD_M01/rug_coffee_mug/rug_coffee_mug12.jpg

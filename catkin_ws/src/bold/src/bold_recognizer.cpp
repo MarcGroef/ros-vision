@@ -296,7 +296,7 @@ namespace BOLD{
    {
     for(std::vector<BOLDFeature*>::iterator it = trainedFeatures.begin(); it != trainedFeatures.end(); ++it)
         delete *it;
-    descriptor.clear();
+    
    }
    
    void BOLDRecognizer::clear(){

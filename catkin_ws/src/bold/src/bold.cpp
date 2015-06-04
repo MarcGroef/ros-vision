@@ -289,7 +289,7 @@ namespace BOLD{
    
    feature = new BOLDFeature();
    
-   cout << "describing..\n" ;
+   //cout << "describing..\n" ;
    //feature->clear();
    if(lines==NULL){
       if(!imageIsSet){
@@ -306,7 +306,7 @@ namespace BOLD{
 	  resolveAngles(i,KNLIndices[j]);
       }
     }
-    cout << "normalize..\n";
+    //cout << "normalize..\n";
     feature->normalize();
  
     

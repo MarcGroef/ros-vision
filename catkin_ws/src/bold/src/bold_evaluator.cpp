@@ -119,6 +119,7 @@ namespace BOLD{
     string result;
     for(int i=0;i<testSet.size();i++){
       result=bold.classify(testSet[i].filename);
+      cout << "determined label = " <<result << "\n";
       if(result==testSet[i].label)
 	nCorrect++;
       else
@@ -128,13 +129,15 @@ namespace BOLD{
     
   }
   
-  void BOLDEvaluator::nTests(int n,float fracTest){
+  void BOLDEvaluator::nTests(int nFold,float fracTest,int nItems){
     int totalCorrect=0;
     int totalFalse = 0;
     int total;
-    for(int i=0;i<n;i++){
+    
+    std::istringstream istream;
+    for(int i=0;i<nFold;i++){
       
-      readDataset("BVD_M01/",0);
+      readDataset("BVD_M01/",nItems);
       splitData(fracTest);
       train();
       test();
@@ -157,17 +160,45 @@ namespace BOLD{
 
 int main(int argc,char**argv){
   
-  cout << "Marc and Marc proudly present......\n\n\n\n\n\nBOLD\n\n";
+  cout << "Marc and Marc proudly present......\n\nBOLD\n\n";
   BOLD::BOLDEvaluator eval;
-
   
-  if(argc>1){
-   // eval.nTests(20,0.09f);
-    eval.readDataset("BVD_M01/",0);
-    eval.splitData(0.2f);
+
+  if(argc == 4 && ((string)"train").compare(argv[1])==0){
+  // eval.nTests(20,0.09f);
+    float frac;
+    int nItems;
+    istringstream ss(argv[3]);
+    ss >> frac;
+    istringstream ass(argv[2]);
+    ass >> nItems;
+    eval.readDataset("BVD_M01/",nItems);
+    eval.splitData(frac);
     eval.train();
     eval.bold.writeToFile("DEMO.ft");
-  }else
+  }else if(argc==2 && ((string)"dia").compare(argv[1])==0) 
     eval.bold.dialogue();
+  else if(argc == 5 && ((string)"crossfold").compare(argv[1])==0){
+
+    int nFold;
+    float frac;
+    int nItems;
+  
+    
+    istringstream ss(argv[2]);
+    ss >> nFold;
+    istringstream ass(argv[3]);
+    ass >> nItems;
+    istringstream bss(argv[4]);
+    bss >> frac;
+    cout << "starting " << nFold << " fold crossvalidation with "<< (nItems==0? "all":"");
+    if(nItems>0)cout << nItems;
+    cout << " items and with " << frac*100 << "\% as testset\n";
+    eval.nTests(nFold,frac,nItems);
+  }else{
+    cout << "Invalid run parameter..\nType 'dia' for a dialogue\nType 'train <int:first N items of BVD_M01(0 = all items)><float:fracTestset>' to train from BVD_M01\nType 'crossfold <int:nFold> <int:first N items of dataset(0 = all items)> <float:fracTestset>' to use crossvalidation\n";
+    return 0;   
+  }
+
   return 0; 
 }

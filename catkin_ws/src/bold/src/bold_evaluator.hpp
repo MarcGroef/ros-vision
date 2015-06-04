@@ -49,7 +49,7 @@ namespace BOLD{
     void splitData(float fracTest);
     void train();
     void test();
-    void nTests(int n,float fracTest);
+    void nTests(int n,float fracTest,int nItems);
   };
 }
 

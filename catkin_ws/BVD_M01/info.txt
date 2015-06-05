@@ -1,4 +1,4 @@
-24
+34
 aa_drink
 chicken_soup
 choco_glazing
@@ -23,3 +23,13 @@ salt
 seven_up
 tomato_soup
 usb_hub
+duct_tape
+plastic_cup
+plastic_mug
+rainbow_projector
+scale
+sponge
+sugar_cube
+tape_holder
+whiteboard_brush
+wifi

@@ -27,7 +27,7 @@ namespace BOLD{
     int highestFrequency = 0;
     int frequencyOccurences = 0;
     
-    cout << "start knn..\n";
+    //cout << "start knn..\n";
     
     for(int i = 0; i < K_NEAREST_NEIGHBORS; ++i)
     { 
@@ -155,11 +155,11 @@ namespace BOLD{
     descriptor.setImage(fileName,false);
     descriptor.describe();
     descriptor.setFeatureLabel(label);
-    cout << "push it\n";
+   // cout << "push it\n";
     BOLDFeature* f = descriptor.getFeature();
     trainedFeatures.push_back(f);
     descriptor.clear();
-    cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
+   // cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
   }
   
   void BOLDRecognizer::addLabeledFeature(Mat &image,string label){
@@ -222,7 +222,7 @@ namespace BOLD{
             input >> label;
 
             trainedFeatures.push_back(new BOLDFeature(histogram,entries,normalized,label));
-            cout << idx << "\n";;
+            cout << idx << " " << label << "\n";;
         }
         
         input.close();

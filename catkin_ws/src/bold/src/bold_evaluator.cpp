@@ -107,8 +107,9 @@ namespace BOLD{
       
   }
   
-  void BOLDEvaluator::train(){
+  void BOLDEvaluator::train(int curFold,int totFold){
     for(int i=0;i<trainingSet.size();i++){
+      if(!(totFold==0&&curFold==0))cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
       bold.addLabeledFeatureFromFile(trainingSet[i].filename,trainingSet[i].label);
     }
   }
@@ -120,10 +121,14 @@ namespace BOLD{
     for(int i=0;i<testSet.size();i++){
       result=bold.classify(testSet[i].filename);
       cout << "determined label = " <<result << "\n";
-      if(result==testSet[i].label)
+      if(result==testSet[i].label){
+	cout << "corrent!\n";
 	nCorrect++;
-      else
+      }
+      else{
+	cout << "Wrong!";
 	nFalse++;
+      }
     }
     
     
@@ -139,7 +144,7 @@ namespace BOLD{
       
       readDataset("BVD_M01/",nItems);
       splitData(fracTest);
-      train();
+      train(i,nFold);
       test();
       totalCorrect+=nCorrect;
       totalFalse+=nFalse;
@@ -174,7 +179,7 @@ int main(int argc,char**argv){
     ass >> nItems;
     eval.readDataset("BVD_M01/",nItems);
     eval.splitData(frac);
-    eval.train();
+    eval.train(0,0);
     eval.bold.writeToFile("DEMO.ft");
   }else if(argc==2 && ((string)"dia").compare(argv[1])==0) 
     eval.bold.dialogue();
@@ -193,7 +198,8 @@ int main(int argc,char**argv){
     bss >> frac;
     cout << "starting " << nFold << " fold crossvalidation with "<< (nItems==0? "all":"");
     if(nItems>0)cout << nItems;
-    cout << " items and with " << frac*100 << "\% as testset\n";
+    cout << " items and with " << frac*100 << "\% as testset\nPress any key to continue or ctrl-c to abort\n";
+    getchar();
     eval.nTests(nFold,frac,nItems);
   }else{
     cout << "Invalid run parameter..\nType 'dia' for a dialogue\nType 'train <int:first N items of BVD_M01(0 = all items)><float:fracTestset>' to train from BVD_M01\nType 'crossfold <int:nFold> <int:first N items of dataset(0 = all items)> <float:fracTestset>' to use crossvalidation\n";

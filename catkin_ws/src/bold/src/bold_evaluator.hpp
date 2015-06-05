@@ -47,7 +47,7 @@ namespace BOLD{
     void readDataset(string mainDatasetDirectory,int firstN);
     void readObject(string label);
     void splitData(float fracTest);
-    void train();
+    void train(int curFold,int totFold);
     void test();
     void nTests(int n,float fracTest,int nItems);
   };

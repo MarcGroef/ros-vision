@@ -97,7 +97,7 @@ namespace BOLD{
 
 
     lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
-    cout << nLines << " line segments found\n";
+    //cout << nLines << " line segments found\n";
     linesIsSet = true;
     //showLines();
   }

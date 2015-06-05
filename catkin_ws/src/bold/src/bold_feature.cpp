@@ -42,7 +42,7 @@
 	  histogram[i][j]/=entries;
 	}
       }
-      cout << entries << "entries \n";
+      //cout << entries << "entries \n";
     }
     
     bool BOLDFeature::isNormalized(){
@@ -79,11 +79,11 @@
       
      // cout << "binsize = " << histBinSize << "\n";
       while(alpha>=M_PI*2){
-	cout << "alpha = " << alpha << "\n";
+	//cout << "alpha = " << alpha << "\n";
 	alpha-=M_PI*2;
       }
       while(beta>=M_PI*2){
-	cout << "beta = " << beta << "\n";
+	//cout << "beta = " << beta << "\n";
 	beta-=M_PI*2;
 	
       }

@@ -158,7 +158,7 @@ namespace BOLD{
     float averageFalse = totalFalse*100/total;
     
     cout << "On average " << averageCorrect << "\% was correct and " << averageFalse << "\% was false\n";
-    report.writeHTML("TestReport");
+    report.writeHTML("NewestReport");
   }
   
 }

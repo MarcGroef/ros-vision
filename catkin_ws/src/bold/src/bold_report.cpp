@@ -11,6 +11,7 @@ namespace BOLD{
     nCorrect = 0;
     nFalse = 0;
     nTested = 0; 
+    filename = getFileName();
   }
   
   void BOLDImageReport::update(bool correct,BOLDDatum datum){
@@ -24,6 +25,38 @@ namespace BOLD{
       falseData.push_back(datum);
   }
   
+  string BOLDImageReport::getdir(){
+    return filename;
+  }
+  
+  string BOLDImageReport::getFileName(){
+    string name;
+    int dirLen = datum.filename.length();
+    size_t slashLoc = datum.filename.find_last_of("/");
+    size_t dotLoc = datum.filename.find_last_of(".");
+    name = datum.filename.substr(slashLoc+1,(dotLoc-slashLoc-1));
+  
+    return name+".html";
+  }
+  
+  void BOLDImageReport::writeHTML(string dir){
+    ofstream report;
+
+    report.open((dir +"/"+filename).c_str());
+    report << "<!DOCTYPE html>\n";
+    report << "<html>\n";
+    report << "<h1>" << filename.substr(0,filename.find_last_of(".")) << "</h1>\n";
+    report << "<p>" <<nCorrect << "/" << nTested << " correct and " << nFalse << "/" <<  nTested << "false</p><br>\n";
+    report << "<img src = \"../../../" << datum.filename << "\" alt = \"" << filename << "\" style= \" width:320px;height:240px;\"> ";
+    
+    report << "<h1> Falsely compared to: </h1><br>\n ";
+    for(int i=0;i<falseData.size();i++){
+      report << "<img src = \"../../../" << falseData[i].filename << "\" alt = \"" << falseData[i].filename << "\" style= \" width:320px;height:240px;\"> ";
+    }
+    report << "</html>"; 
+    report.close();
+  }
+  
   string BOLDImageReport::getLabel(){
     return datum.label;
   }
@@ -34,6 +67,14 @@ namespace BOLD{
   
   int BOLDImageReport::getFalse(){
     return nFalse;
+  }
+  
+  int BOLDImageReport::getTotal(){
+    return nTested;
+  }
+  
+  BOLDDatum BOLDImageReport::getDatum(){
+    return datum;
   }
   
   //*************************************************************BOLDLabelReport********************************************************
@@ -51,7 +92,7 @@ namespace BOLD{
   int BOLDLabelReport::fetchImageIndex(string fileDir){
     int arrSize = imageReports.size();
     for(int i=0;i<arrSize;i++){
-      if(imageReports[i].getLabel().compare(label)==0)
+      if(imageReports[i].getDatum().filename.compare(fileDir)==0)
 	return i;
     }
     BOLDDatum datum(fileDir,label);
@@ -75,8 +116,15 @@ namespace BOLD{
     report.open((dir +"/"+label+".html").c_str());
     report << "<!DOCTYPE html>\n";
     report << "<html>\n";
-    report << label << "\n";
+    report << "<h1> " << label << "</h1>" "\n";
+    report << "<p>" <<nCorrect << "/" << nTested << " correct and " << nFalse << "/" <<  nTested << "false</p><br>\n";
+    for(int i=0;i<imageReports.size();i++){
+      report << "<a href=\""<<  imageReports[i].getdir() << "\"> " << imageReports[i].getdir() << "</a><br>\n";
+      report << imageReports[i].getCorrect() << "/" << imageReports[i].getTotal() << " correct and " << imageReports[i].getFalse() << "/" <<  imageReports[i].getTotal() << "false<br>\n";
+      imageReports[i].writeHTML(dir);
+    }
     report << "</html>"; 
+    report.close();
   }
   
   int BOLDLabelReport::getTotal(){
@@ -131,15 +179,17 @@ namespace BOLD{
     
     report << "<h1>BOLD crossfold report</h1>";
     report << "<p>Labels and within classification correctness</p>\n";
+    report << "<p>" <<nCorrect << "/" << nTested << " correct and " << nFalse << "/" <<  nTested << "false</p><br>\n";
     for(size_t i=0;i<labelReports.size();i++){
       if(!boost::filesystem::exists(mainDir+labelReports[i].getLabel()))boost::filesystem::create_directory(mainDir+labelReports[i].getLabel());
-      report << "<a href=\""<<  labelReports[i].getLabel() << "/" << labelReports[i].getLabel()<< ".html" << "\"> " << labelReports[i].getLabel() << "</a>\n";
-      report << labelReports[i].getCorrect() << "/" << labelReports[i].getTotal() << " correct and " << labelReports[i].getFalse() << "/" << labelReports[i].getTotal() << "false. <br>\n";
+      report << "<a href=\""<<  labelReports[i].getLabel() << "/" << labelReports[i].getLabel()<< ".html" << "\"> " << labelReports[i].getLabel() << "</a><br>\n";
+      report << labelReports[i].getCorrect() << "/" << labelReports[i].getTotal() << " correct and " << labelReports[i].getFalse() << "/" << labelReports[i].getTotal() << "false. <br><br>\n";
       labelReports[i].writeHTML(mainDir + labelReports[i].getLabel()+"/");
     }    
     report << "</html>\n";
     
     report.close();
+    cout << "Written that shit!\n";
   }
   
 }

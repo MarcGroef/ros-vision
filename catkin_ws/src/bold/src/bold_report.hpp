@@ -18,6 +18,7 @@ namespace BOLD{
   class BOLDImageReport{
   private:
     BOLDDatum datum;
+    string filename;
     int nCorrect;
     int nFalse;
     int nTested;
@@ -25,8 +26,13 @@ namespace BOLD{
   public:
     BOLDImageReport(BOLDDatum datum);
     void update(bool correct, BOLDDatum falseDatum);
+    void writeHTML(string dir);
+    string getFileName();
     int getFalse();
     string getLabel();
+    string getdir();
+    int getTotal();
+    BOLDDatum getDatum();
     int getCorrect();
   };
   

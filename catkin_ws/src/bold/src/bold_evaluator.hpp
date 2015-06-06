@@ -17,17 +17,14 @@
 #include <cfloat>
 
 #include "bold_recognizer.hpp"
+#include "bold_report.hpp"
+#include "bold_datum.hpp"
 
 using namespace std;
 
 namespace BOLD{
   
-  class BOLDDatum{
-    public:
-    string filename,label;
   
-    BOLDDatum(string filedir,string lab);
-  };
   
   class BOLDEvaluator{
   private:
@@ -37,6 +34,8 @@ namespace BOLD{
     vector<BOLDDatum> data;
     vector<BOLDDatum> trainingSet;
     vector<BOLDDatum> testSet;
+    
+    BOLDReport report;
     
     int nLabels;
     int nCorrect;

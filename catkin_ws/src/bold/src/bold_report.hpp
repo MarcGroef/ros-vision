@@ -5,8 +5,10 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-
+#include <boost/filesystem.hpp>
 #include <vector>
+
+#include "bold_datum.hpp"
 
 
 using namespace std;
@@ -15,16 +17,18 @@ namespace BOLD{
   
   class BOLDImageReport{
   private:
-    string label;
-    string filedir;
+    BOLDDatum datum;
     int nCorrect;
     int nFalse;
     int nTested;
-    vector<string> falsedirs;
+    vector<BOLDDatum> falseData;
   public:
-    BOLDImageReport(string label,string filedir);
-    update(bool correct, string falseDir);
-  }
+    BOLDImageReport(BOLDDatum datum);
+    void update(bool correct, BOLDDatum falseDatum);
+    int getFalse();
+    string getLabel();
+    int getCorrect();
+  };
   
   class BOLDLabelReport{
   private:
@@ -37,21 +41,31 @@ namespace BOLD{
     
   public:
     BOLDLabelReport(string label);
+    
+    int fetchImageIndex(string fileDir);
     string getLabel();
-    void update(string filedir, bool correct,string falseDir);
-  }
+    void update(BOLDDatum datum, bool correct,BOLDDatum falseDatum);
+    int getFalse();
+    int getCorrect();
+    int getTotal();
+    void writeHTML(string dir);
+  };
   
   class BOLDReport{
   private:
     int nCorrect;
     int nFalse;
     int nTested;
+    string mainDir;
     vector<BOLDLabelReport> labelReports;
-    BOLDLabelReport fetchLabelReportIndex(string lab);
+    int fetchLabelReportIndex(string lab);
+
+    
   public:
     BOLDReport();
-    void update(string label,string filedir,bool correct,string falseLabel,string falseDir);
-  }
+    void update(BOLDDatum datum,bool correct,BOLDDatum falseDatum);
+    void writeHTML(string raportName);
+  };
  
   
   

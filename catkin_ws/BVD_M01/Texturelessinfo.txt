@@ -1,0 +1,11 @@
+10
+duct_tape
+plastic_cup
+plastic_mug
+rainbow_projector
+scale
+sponge
+sugar_cube
+tape_holder
+whiteboard_brush
+wifi

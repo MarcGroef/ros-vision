@@ -5,10 +5,7 @@ using namespace std;
 
 namespace BOLD{
   
-  BOLDDatum::BOLDDatum(string filedir,string lab){
-   label=lab;
-   filename = filedir;
-  }
+ 
   
   //firstN = 0 = ALL
   void BOLDEvaluator::readDataset(string mainDir,int firstN){
@@ -110,23 +107,25 @@ namespace BOLD{
   void BOLDEvaluator::train(int curFold,int totFold){
     for(int i=0;i<trainingSet.size();i++){
       if(!(totFold==0&&curFold==0))cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
-      bold.addLabeledFeatureFromFile(trainingSet[i].filename,trainingSet[i].label);
+      bold.addLabeledFeatureFromFile(trainingSet[i]);
     }
   }
   
   void BOLDEvaluator::test(){
     nCorrect=0;
     nFalse=0;
-    string result;
+    BOLDDatum result;
     for(int i=0;i<testSet.size();i++){
-      result=bold.classify(testSet[i].filename);
-      cout << "determined label = " <<result << "\n";
-      if(result==testSet[i].label){
-	cout << "corrent!\n";
+      result=bold.classify(testSet[i]);
+      cout << "determined label = " << result.label << "\n";
+      if(result.label==testSet[i].label){
+	cout << "correct!\n";
+	report.update(testSet[i],true,result);
 	nCorrect++;
       }
       else{
 	cout << "Wrong!";
+	report.update(testSet[i],false,result);
 	nFalse++;
       }
     }
@@ -159,6 +158,7 @@ namespace BOLD{
     float averageFalse = totalFalse*100/total;
     
     cout << "On average " << averageCorrect << "\% was correct and " << averageFalse << "\% was false\n";
+    report.writeHTML("TestReport");
   }
   
 }

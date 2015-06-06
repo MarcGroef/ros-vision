@@ -313,8 +313,8 @@ namespace BOLD{
   }
   
   
-  void BOLDescriptor::setFeatureLabel(string label){
-    feature->setLabel(label);
+  void BOLDescriptor::setFeatureLabel(BOLDDatum datum){
+    feature->setDatum(datum);
   }
   
   BOLDFeature* BOLDescriptor::getFeature(){

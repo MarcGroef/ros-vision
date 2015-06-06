@@ -1,5 +1,5 @@
 #include "bold_recognizer.hpp"
-#include <fstream>
+
 
 using namespace std;
 using namespace cv;
@@ -12,7 +12,7 @@ namespace BOLD{
   }
   //TODO: KNN adds each line combo double. Hists should be devided by two
   
-  string BOLDRecognizer::classify(BOLDFeature* f)
+  BOLDDatum BOLDRecognizer::classify(BOLDFeature* f)
  {
    
     int nTrainedElements = trainedFeatures.size();
@@ -96,8 +96,8 @@ namespace BOLD{
     {
         if(labelFrequencies[i] == highestFrequency) 
         {
-	  
-            return trainedFeatures[kNearestNeighborIndices[i]]->getLabel();
+	    
+            return trainedFeatures[kNearestNeighborIndices[i]]->getDatum();
 	           /* if(buff2 == -1)
 		    {
 	                buff2 = i;
@@ -120,15 +120,15 @@ namespace BOLD{
         }
     }
    
-    return trainedFeatures[buff2]->getLabel();
+    return trainedFeatures[buff2]->getDatum();
     }
     
   
-  string BOLDRecognizer::classify(string fileName){
-    string label;
-     std::clock_t start;
+  BOLDDatum BOLDRecognizer::classify(BOLDDatum datum){
+    BOLDDatum label;
+    std::clock_t start;
     start = std::clock();
-    descriptor.setImage(fileName,false);
+    descriptor.setImage(datum.filename,false);
     descriptor.describe();
     label = classify(descriptor.getFeature());
     descriptor.clear();
@@ -151,10 +151,10 @@ namespace BOLD{
   }
   
   
-  void BOLDRecognizer::addLabeledFeatureFromFile(string fileName,string label){
-    descriptor.setImage(fileName,false);
+  void BOLDRecognizer::addLabeledFeatureFromFile(BOLDDatum datum){
+    descriptor.setImage(datum.filename,false);
     descriptor.describe();
-    descriptor.setFeatureLabel(label);
+    descriptor.setFeatureLabel(datum);
    // cout << "push it\n";
     BOLDFeature* f = descriptor.getFeature();
     trainedFeatures.push_back(f);
@@ -162,10 +162,11 @@ namespace BOLD{
    // cout << "labeled feature " + label + " from " + fileName + " has been added to the trainingset\n";
   }
   
-  void BOLDRecognizer::addLabeledFeature(Mat &image,string label){
+  void BOLDRecognizer::addLabeledFeature(Mat &image,std::string label){
+    BOLDDatum dat(label);
     descriptor.setImage(image,false);
     descriptor.describe();
-    descriptor.setFeatureLabel(label);
+    descriptor.setFeatureLabel(dat);
     trainedFeatures.push_back(descriptor.getFeature());
     descriptor.clear();
   }
@@ -208,6 +209,7 @@ namespace BOLD{
             int entries;
             bool normalized;
             string label;
+	    string dir;
 	    //TODO: Optimize by writing directly to a new boldfeature
             for(size_t r = 0; r < HISTOGRAM_SIZE; ++r)
             {
@@ -220,8 +222,9 @@ namespace BOLD{
             input >> entries;
             input >> normalized;
             input >> label;
-
-            trainedFeatures.push_back(new BOLDFeature(histogram,entries,normalized,label));
+	    input >> dir;
+	    BOLDDatum datum(dir,label);
+            trainedFeatures.push_back(new BOLDFeature(histogram,entries,normalized,datum));
             cout << idx << " " << label << "\n";;
         }
         
@@ -245,7 +248,8 @@ namespace BOLD{
 	    cin >> name;
 	    cout << "Please specify the label..\n";
 	    cin >> label;
-	    addLabeledFeatureFromFile(name,label);
+	    BOLDDatum datum(name,label);
+	    addLabeledFeatureFromFile(datum);
 	
         }else if(i == 'n'){
 	        cout << "Ending training input..\n";
@@ -267,7 +271,8 @@ namespace BOLD{
       if(i=='y'){
 	    cout << "Please specify the input file..\n";
 	    cin >> name;
-	    cout << "Determined label = " + classify(name) + "\n";
+	    BOLDDatum dat(name,"");
+	    cout << "Determined label = " << classify(dat).label << "\n";
         }else if(i=='n'){
 	        cout << "Goodbye..\n";
 	        return;

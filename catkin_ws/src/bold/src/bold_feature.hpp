@@ -9,6 +9,8 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
+#include "bold_datum.hpp"
+
   using namespace std;
   using namespace cv;
   
@@ -27,12 +29,13 @@
       double histBinSize;
       int highestCount;
       bool normalized;
-      string label;
       
+      BOLDDatum datum;
     public:
       
       BOLDFeature();
       BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int entries, bool normalized, string label);
+      BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int ientries, bool inormalized, BOLDDatum datum);
       void add(double alpha,double beta);
       double distanceFrom(BOLDFeature* f);
       void print();
@@ -46,8 +49,10 @@
       void clear();
 
       void writeTo(std::ostream &output);
-      
+      void setDatum(BOLDDatum datum);
       void setLabel(string label);
+      void setDir(string dir);
+      BOLDDatum getDatum();
       string getLabel();
       
       bool isNormalized();

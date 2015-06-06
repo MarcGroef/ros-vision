@@ -3,7 +3,7 @@
 
 #include "bold.hpp"
 #include "bold_feature.hpp"
-
+#include "bold_datum.hpp"
 
 
 #include <ros/ros.h>
@@ -19,6 +19,9 @@
 #include <iostream>
 #include <math.h>
 #include <cfloat>
+#include <fstream>
+
+
 
 
 using namespace std;
@@ -38,10 +41,10 @@ namespace BOLD{
   public:
    ~BOLDRecognizer();
     BOLDRecognizer();
-    string classify(BOLDFeature* f);
-    string classify(string fileName);
+    BOLDDatum classify(BOLDFeature* f);
+    BOLDDatum classify(BOLDDatum datum);
     void addLabeledFeature(BOLDFeature *f);
-    void addLabeledFeatureFromFile(string fileName,string label);
+    void addLabeledFeatureFromFile(BOLDDatum datum);
     void addLabeledFeature(Mat &image,string label);
     void writeToFile(string fileName);
     void readFromFile(string fileName);

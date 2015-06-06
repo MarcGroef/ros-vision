@@ -22,7 +22,7 @@
 
 #include "bold_vector.hpp"
 #include "bold_feature.hpp"
-
+#include "bold_datum.hpp"
 
 
 using namespace cv;
@@ -78,7 +78,7 @@ namespace BOLD{
     void showLines();
     void showFeatures();
     void setImageName(string name);
-    void setFeatureLabel(string label);
+    void setFeatureLabel(BOLDDatum dat);
     string getImageName();
     void clear();
     void freeFeature();

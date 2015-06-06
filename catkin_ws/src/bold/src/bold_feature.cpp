@@ -17,7 +17,7 @@
       entries = 0;
       highestCount=0;
       normalized=false;
-      label = "";
+      datum.label = "";
     }
     
     BOLDFeature::BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int ientries, bool inormalized, string ilabel)
@@ -29,7 +29,30 @@
         }
         entries = ientries;
         normalized = inormalized;
-        label = ilabel;
+        datum.label = ilabel;
+	datum.hasDir = false;
+        highestCount = 0;
+        histBinSize = (2*M_PI)/HISTOGRAM_SIZE;
+
+        
+    }
+    
+    void BOLDFeature::setDatum(BOLDDatum dat)
+    {
+      datum = dat; 
+    }
+    
+     BOLDFeature::BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int ientries, bool inormalized, BOLDDatum dat)
+    {
+        for(int i=0;i<HISTOGRAM_SIZE;i++) {
+            for(int j=0;j<HISTOGRAM_SIZE;j++) {
+                histogram[i][j] = histo[i][j];
+            }
+        }
+        entries = ientries;
+        normalized = inormalized;
+        datum = dat;
+	
         highestCount = 0;
         histBinSize = (2*M_PI)/HISTOGRAM_SIZE;
 
@@ -108,6 +131,10 @@
       
     }
     
+    void BOLDFeature::setDir(string dir){
+      datum.filename = dir;
+    }
+    
     void BOLDFeature::show(string name){
       Mat image(FEATURE_SHOW_SIZE,FEATURE_SHOW_SIZE,CV_8UC1);
       
@@ -123,13 +150,16 @@
     }
     
     void BOLDFeature::setLabel(string l){
-      label = l;
+      datum.label = l;
     }
     
     string BOLDFeature::getLabel(){
-      return label; 
+      return datum.label; 
     }
-
+    
+    BOLDDatum BOLDFeature::getDatum(){
+     return datum; 
+    }
 
     void BOLDFeature::writeTo(std::ostream &output)
     {
@@ -144,7 +174,8 @@
 
       output << entries << '\n';
       output << normalized << '\n';
-      output << label << '\n';
+      output << datum.label << '\n';
+      output << datum.filename << "\n";
      }
     
     void BOLDFeature::clear(){

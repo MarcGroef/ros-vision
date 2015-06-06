@@ -16,6 +16,7 @@ namespace BOLD{
  
   
   class BVector{
+  
   private:
     double a[3];
   public:

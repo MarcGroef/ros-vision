@@ -29,6 +29,11 @@ namespace BOLD{
     return filename;
   }
   
+  vector<BOLDDatum> BOLDImageReport::getFalses(){
+    return falseData;  
+  }
+  
+  
   string BOLDImageReport::getFileName(){
     string name;
     int dirLen = datum.filename.length();
@@ -117,12 +122,20 @@ namespace BOLD{
     report << "<!DOCTYPE html>\n";
     report << "<html>\n";
     report << "<h1> " << label << "</h1>" "\n";
+    report << "<img src = \"../../../" << imageReports[0].getDatum().filename << "\" alt = \"" << imageReports[0].getDatum().filename << "\" style= \" width:320px;height:240px;\"> ";
     report << "<p>" <<nCorrect << "/" << nTested << " correct and " << nFalse << "/" <<  nTested << "false</p><br>\n";
     for(int i=0;i<imageReports.size();i++){
       report << "<a href=\""<<  imageReports[i].getdir() << "\"> " << imageReports[i].getdir() << "</a><br>\n";
       report << imageReports[i].getCorrect() << "/" << imageReports[i].getTotal() << " correct and " << imageReports[i].getFalse() << "/" <<  imageReports[i].getTotal() << "false<br>\n";
+      
       imageReports[i].writeHTML(dir);
     }
+    
+    report << "<h1> Falsely compared to: </h1><br>\n ";
+    for(int i=0;i<imageReports.size();i++)
+      for(int j=0;j<imageReports[i].getFalses().size();j++){
+	report << "<img src = \"../../../" << imageReports[i].getFalses()[j].filename << "\" alt = \"" << imageReports[i].getFalses()[j].filename << "\" style= \" width:320px;height:240px;\"> ";
+      }
     report << "</html>"; 
     report.close();
   }

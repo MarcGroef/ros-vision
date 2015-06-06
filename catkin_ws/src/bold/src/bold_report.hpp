@@ -34,6 +34,7 @@ namespace BOLD{
     int getTotal();
     BOLDDatum getDatum();
     int getCorrect();
+    vector<BOLDDatum> getFalses();
   };
   
   class BOLDLabelReport{

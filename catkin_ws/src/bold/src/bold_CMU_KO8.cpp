@@ -67,33 +67,3 @@ namespace BOLD{
   
 }
 
-int main(int argc, char**argv){
-  ros::init(argc, argv, "bold");
-  cv::initModule_nonfree();
- 
-  
-  /*BOLDRecognizer br;
-  br.readFromFile();
-  br.dialogue();*/
-  
-  
-  BOLD::CMU_KO8_handler c;
-  c.train();
-  
-  
-  /*BOLDescriptor d;
-  for(int i=1;i<argc;i++){
-    cout << argv[i] << "\n";
-    d.setImage(argv[i],false);
-    d.setImageName(argv[i]);
-    d.describe();
-    d.showLines();
-    d.showFeatures();
-    d.clear();
-    
-  }*/
-  
-  //waitKey(0);
-  ros::shutdown();
-  return 0;
-}

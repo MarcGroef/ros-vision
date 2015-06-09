@@ -71,6 +71,7 @@ namespace BOLD{
     imageIsSet = true;
     
   }
+ 
   
   void BOLDescriptor::setImage(string fileName,bool showInput){
     Mat im = cv::imread(fileName, CV_LOAD_IMAGE_GRAYSCALE);

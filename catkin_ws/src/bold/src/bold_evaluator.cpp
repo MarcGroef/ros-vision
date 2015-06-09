@@ -1,6 +1,7 @@
 #include "bold_evaluator.hpp"
 
 #include <sstream>
+#include "MatBlur.h"
 using namespace std;
 
 namespace BOLD{
@@ -168,8 +169,15 @@ int main(int argc,char**argv){
   cout << "Marc and Marc proudly present......\n\nBOLD\n\n";
   BOLD::BOLDEvaluator eval;
   
-
-  if(argc == 4 && ((string)"train").compare(argv[1])==0){
+  if(string(argv[1]).compare("resize") == 0)
+  {
+    cout << "RESIZE THAT SHIIIIT\n";
+    BOLD::MatBlur mattie(imread("cat.jpg", CV_LOAD_IMAGE_COLOR));
+    namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
+    imshow( "Display window",     mattie.resize(2));                   // Show our image inside it.
+    waitKey(0);  
+  }
+  else if(argc == 4 && string("train").compare(argv[1])==0){
   // eval.nTests(20,0.09f);
     float frac;
     int nItems;
@@ -181,9 +189,9 @@ int main(int argc,char**argv){
     eval.splitData(frac);
     eval.train(0,0);
     eval.bold.writeToFile("DEMO.ft");
-  }else if(argc==2 && ((string)"dia").compare(argv[1])==0) 
+  }else if(argc==2 && string("dia").compare(argv[1])==0) 
     eval.bold.dialogue();
-  else if(argc == 5 && ((string)"crossfold").compare(argv[1])==0){
+  else if(argc == 5 && string("crossfold").compare(argv[1])==0){
 
     int nFold;
     float frac;

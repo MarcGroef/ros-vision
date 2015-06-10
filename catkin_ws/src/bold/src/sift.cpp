@@ -34,6 +34,11 @@ namespace BOLD{
       }
   }
   
+  void SIFTClassifier::clear(){
+   objects.clear();
+    
+  }
+  
 BOLDDatum SIFTClassifier::classify(BOLDDatum d, bool largeObject)
 {
 

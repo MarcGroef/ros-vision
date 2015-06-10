@@ -171,7 +171,8 @@ namespace BOLD{
       totalCorrectSIFT+=nSIFTCorrect;
       totalFalseBOLD+=nBOLDFalse;
       totalFalseSIFT+=nSIFTFalse;
-     // bold.clear();
+      bold.clear();
+      sift.clear();
       data.clear();
       testSet.clear();
       trainingSet.clear();

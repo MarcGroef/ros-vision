@@ -37,6 +37,7 @@ namespace BOLD{
   public:
     void train(BOLDDatum datum);
     BOLDDatum classify(BOLDDatum d,bool isLarge);
+    void clear();
   };
   
 }

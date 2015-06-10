@@ -221,8 +221,8 @@ namespace BOLD{
       mjx = (lines[j].x1+lines[j].x2)/2;
       mjy = (lines[j].y1+lines[j].y2)/2;
       
-      dist = sqrt((mix-mjx)*(mix-mjx)+(miy-mjy)*(miy-mjy));
-      
+       dist = sqrt((mix-mjx)*(mix-mjx)+(miy-mjy)*(miy-mjy));
+      //dist = abs(mix-mjx)+abs(miy-mjy);  //manhattan. Not sign. different prestation from euclid
       for(int d=0;d<K_NEAREST_LINE_SEGMENTS;d++){
 	if (dist<=distances[d]){
 	  buff2=d;

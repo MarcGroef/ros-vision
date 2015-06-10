@@ -109,7 +109,7 @@ namespace BOLD{
     for(int i=0;i<trainingSet.size();i++){
       if(!(totFold==0&&curFold==0))cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
       bold.addLabeledFeatureFromFile(trainingSet[i]);
-      sift.train(trainingSet[i]);
+      //sift.train(trainingSet[i]);
     }
   }
   
@@ -123,7 +123,7 @@ namespace BOLD{
       
       
       //test sift
-      result = sift.classify(testSet[i],true);
+     /* result = sift.classify(testSet[i],true);
       cout << "determined label = " << result.label << "\n";
       if(result.label==testSet[i].label){
 	cout << "correct!\n";
@@ -134,7 +134,7 @@ namespace BOLD{
 	cout << "Wrong!\n";
 	report.updateSIFT(testSet[i],false,result);
 	nSIFTFalse++;
-      }
+      }*/
       //test bold
       result=bold.classify(testSet[i]);
       cout << "determined label = " << result.label << "\n";

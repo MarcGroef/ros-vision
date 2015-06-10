@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <iostream>
+#include <cmath>
 
 #include <opencv/cv.h>
 #include <opencv2/nonfree/nonfree.hpp>
@@ -37,7 +38,13 @@
       BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int entries, bool normalized, string label);
       BOLDFeature(double histo[HISTOGRAM_SIZE][HISTOGRAM_SIZE], int ientries, bool inormalized, BOLDDatum datum);
       void add(double alpha,double beta);
-      double distanceFrom(BOLDFeature* f);
+      
+      
+      double euclidDistanceFrom(BOLDFeature* f);
+      double manhatDistanceFrom(BOLDFeature* f);
+      double canberraDistanceFrom(BOLDFeature* f);  //is crappy for this
+      double varDistanceFrom(BOLDFeature* f,int power); //power = 1 : manhat, 2: euclid....
+      
       void print();
       void show(string name);
       

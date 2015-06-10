@@ -72,7 +72,7 @@
      return normalized; 
     }
     
-    double BOLDFeature::distanceFrom(BOLDFeature* f){
+    double BOLDFeature::euclidDistanceFrom(BOLDFeature* f){
       double dist=0;
       double add;
       for(int i=0;i<HISTOGRAM_SIZE;i++){
@@ -81,6 +81,50 @@
 	      
 	    }
       }
+      //returns squared distance
+      return dist;
+    }
+    
+    double BOLDFeature::manhatDistanceFrom(BOLDFeature* f){
+      double dist=0;
+      double add;
+      for(int i=0;i<HISTOGRAM_SIZE;i++){
+	    for(int j=0;j<HISTOGRAM_SIZE;j++){
+	      dist += abs(histogram[i][j]-f->getElement(i,j));
+	      
+	    }
+      }
+      //returns squared distance
+      return dist;
+    }
+    
+    double BOLDFeature::varDistanceFrom(BOLDFeature* f,int power){
+      double dist=0;
+      double add;
+      for(int i=0;i<HISTOGRAM_SIZE;i++){
+	    for(int j=0;j<HISTOGRAM_SIZE;j++){
+	      dist += pow(abs(histogram[i][j]-f->getElement(i,j)),power);
+	      
+	    }
+      }
+      //returns squared distance
+      return dist;
+    }
+    
+    double BOLDFeature::canberraDistanceFrom(BOLDFeature* f){
+      double dist=0;
+      double add;
+      double tmp;
+      for(int i=0;i<HISTOGRAM_SIZE;i++){
+	    for(int j=0;j<HISTOGRAM_SIZE;j++){
+	      tmp = abs(histogram[i][j]-f->getElement(i,j))/(abs(histogram[i][j])+abs(f->getElement(i,j)));
+	      if(tmp!=tmp)
+		dist+=999999999.0;
+	      else
+		dist+=tmp;
+	    }
+      }
+      if(dist!=dist) cout << "NAN!!!!\n";
       //returns squared distance
       return dist;
     }

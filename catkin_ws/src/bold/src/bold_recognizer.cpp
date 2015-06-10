@@ -38,8 +38,8 @@ namespace BOLD{
     
     for(int i = 0; i < nTrainedElements; ++i)
     {  
-      dist = f->distanceFrom(trainedFeatures[i]);  //store distance to compared element
-      
+      dist = f->manhatDistanceFrom(trainedFeatures[i]);  //store distance to compared element
+  
       buff2 = i;
       for(int j = 0; j < K_NEAREST_NEIGHBORS; ++j)
        {
@@ -126,6 +126,7 @@ namespace BOLD{
     
   
   BOLDDatum BOLDRecognizer::classify(BOLDDatum datum){
+    cout << "classify " << datum.filename << "\n";
     BOLDDatum label;
     std::clock_t start;
     start = std::clock();

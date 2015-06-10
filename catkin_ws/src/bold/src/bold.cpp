@@ -75,6 +75,7 @@ namespace BOLD{
   
   void BOLDescriptor::setImage(string fileName,bool showInput){
     Mat im = cv::imread(fileName, CV_LOAD_IMAGE_GRAYSCALE);
+    
     imageName = fileName;
     if(showInput){
       cv::namedWindow("BOLD input",cv::WINDOW_AUTOSIZE);

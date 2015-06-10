@@ -1,10 +1,18 @@
-25
+34
 aa_drink
 chicken_soup
 choco_glazing
+coca_cola_cherry
+coca_cola_light
 coca_cola_original
+coca_cola_small
 douwe_egberts_cup
 electronics_set
+fanta_lemon
+fanta_orange
+guarana
+hertog_jan
+mountain_dew
 mouse_box
 muppets_mug
 old_spice
@@ -12,6 +20,7 @@ pringles_cream_union
 red_bull
 rug_coffee_mug
 salt
+seven_up
 tomato_soup
 usb_hub
 duct_tape
@@ -24,3 +33,4 @@ sugar_cube
 tape_holder
 whiteboard_brush
 wifi
+

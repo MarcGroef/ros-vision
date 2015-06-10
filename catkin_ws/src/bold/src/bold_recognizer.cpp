@@ -80,6 +80,7 @@ namespace BOLD{
 	            ++labelFrequencies[j]; 
 	            if(labelFrequencies[j] > highestFrequency)
 	                highestFrequency = labelFrequencies[j];
+		    break;
             }
     }
     //check for ties and return label

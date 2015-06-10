@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 find_package(OpenCV REQUIRED)
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 
@@ -109,6 +110,7 @@ include_directories(
 
 ## Declare a cpp executable
 add_executable(bold 
+  src/sift.cpp
   src/bold_datum.cpp
   src/bold_report.cpp 
   src/bold_evaluator.cpp 

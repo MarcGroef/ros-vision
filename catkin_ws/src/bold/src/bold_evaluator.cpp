@@ -1,7 +1,7 @@
 #include "bold_evaluator.hpp"
 
 #include <sstream>
-#include "MatBlur.h"
+
 using namespace std;
 
 namespace BOLD{
@@ -109,25 +109,44 @@ namespace BOLD{
     for(int i=0;i<trainingSet.size();i++){
       if(!(totFold==0&&curFold==0))cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
       bold.addLabeledFeatureFromFile(trainingSet[i]);
+      sift.train(trainingSet[i]);
     }
   }
   
   void BOLDEvaluator::test(){
-    nCorrect=0;
-    nFalse=0;
+    nSIFTCorrect=0;
+    nSIFTFalse=0;
+    nBOLDCorrect=0;
+    nBOLDFalse=0;
     BOLDDatum result;
     for(int i=0;i<testSet.size();i++){
+      
+      
+      //test sift
+      result = sift.classify(testSet[i],true);
+      cout << "determined label = " << result.label << "\n";
+      if(result.label==testSet[i].label){
+	cout << "correct!\n";
+	report.updateSIFT(testSet[i],true,result);
+	nSIFTCorrect++;
+      }
+      else{
+	cout << "Wrong!\n";
+	report.updateSIFT(testSet[i],false,result);
+	nSIFTFalse++;
+      }
+      //test bold
       result=bold.classify(testSet[i]);
       cout << "determined label = " << result.label << "\n";
       if(result.label==testSet[i].label){
 	cout << "correct!\n";
-	report.update(testSet[i],true,result);
-	nCorrect++;
+	report.updateBOLD(testSet[i],true,result);
+	nBOLDCorrect++;
       }
       else{
-	cout << "Wrong!";
-	report.update(testSet[i],false,result);
-	nFalse++;
+	cout << "Wrong!\n";
+	report.updateBOLD(testSet[i],false,result);
+	nBOLDFalse++;
       }
     }
     
@@ -135,8 +154,10 @@ namespace BOLD{
   }
   
   void BOLDEvaluator::nTests(int nFold,float fracTest,int nItems){
-    int totalCorrect=0;
-    int totalFalse = 0;
+    int totalCorrectBOLD=0;
+    int totalFalseBOLD = 0;
+    int totalCorrectSIFT = 0;
+    int totalFalseSIFT = 0;
     int total;
     
     std::istringstream istream;
@@ -146,19 +167,24 @@ namespace BOLD{
       splitData(fracTest);
       train(i,nFold);
       test();
-      totalCorrect+=nCorrect;
-      totalFalse+=nFalse;
-      bold.clear();
+      totalCorrectBOLD+=nBOLDCorrect;
+      totalCorrectSIFT+=nSIFTCorrect;
+      totalFalseBOLD+=nBOLDFalse;
+      totalFalseSIFT+=nSIFTFalse;
+     // bold.clear();
       data.clear();
       testSet.clear();
       trainingSet.clear();
       labels.clear();
     }
-    total = totalCorrect+totalFalse;
-    float averageCorrect = totalCorrect*100/total;
-    float averageFalse = totalFalse*100/total;
+    total = totalCorrectBOLD+totalFalseBOLD;
+    float averageCorrectBOLD = totalCorrectBOLD*100/total;
+    float averageCorrectSIFT = totalCorrectSIFT*100/total;
+    float averageFalseBOLD = totalFalseBOLD*100/total;
+    float averageFalseSIFT = totalFalseSIFT*100/total;
     
-    cout << "On average " << averageCorrect << "\% was correct and " << averageFalse << "\% was false\n";
+    cout << "BOLD: On average " << averageCorrectBOLD << "\% was correct and " << averageFalseBOLD << "\% was false\n";
+    cout << "SIFT: On average " << averageCorrectSIFT << "\% was correct and " << averageFalseSIFT << "\% was false\n";
     report.writeHTML("NewestReport");
   }
   
@@ -168,8 +194,8 @@ int main(int argc,char**argv){
   
   cout << "Marc and Marc proudly present......\n\nBOLD\n\n";
   BOLD::BOLDEvaluator eval;
-  
-  if(string(argv[1]).compare("resize") == 0)
+
+ /* if(string(argv[1]).compare("resize") == 0)
   {
     cout << "RESIZE THAT SHIIIIT\n";
     BOLD::MatBlur mattie(imread("cat.jpg", CV_LOAD_IMAGE_COLOR));
@@ -177,7 +203,10 @@ int main(int argc,char**argv){
     imshow( "Display window",     mattie.resize(2));                   // Show our image inside it.
     waitKey(0);  
   }
-  else if(argc == 4 && string("train").compare(argv[1])==0){
+  else */
+ 
+ 
+if(argc == 4 && string("train").compare(argv[1])==0){
   // eval.nTests(20,0.09f);
     float frac;
     int nItems;

@@ -19,30 +19,41 @@ namespace BOLD{
   private:
     BOLDDatum datum;
     string filename;
-    int nCorrect;
-    int nFalse;
-    int nTested;
+    int nCorrectBOLD;
+    int nFalseBOLD;
+    int nCorrectSIFT;
+    int nFalseSIFT;
+    int nTestedBOLD;
+    int nTestedSIFT;
     vector<BOLDDatum> falseData;
   public:
     BOLDImageReport(BOLDDatum datum);
-    void update(bool correct, BOLDDatum falseDatum);
+    void updateBOLD(bool correct, BOLDDatum falseDatum);
+    void updateSIFT(bool correct, BOLDDatum falseDatum);
     void writeHTML(string dir);
     string getFileName();
     int getFalse();
     string getLabel();
     string getdir();
-    int getTotal();
+    int getTotalBOLD();
+    int getTotalSIFT();
     BOLDDatum getDatum();
-    int getCorrect();
+    int getBOLDFalse();
+    int getBOLDCorrect();
+    int getSIFTCorrect();
+    int getSIFTFalse();
     vector<BOLDDatum> getFalses();
   };
   
   class BOLDLabelReport{
   private:
     string label;
-    int nCorrect;
-    int nFalse;
-    int nTested;
+    int nCorrectBOLD;
+    int nFalseBOLD;
+    int nCorrectSIFT;
+    int nFalseSIFT;
+    int nTestedBOLD;
+    int nTestedSIFT;
     int nPictures;
     vector<BOLDImageReport> imageReports;
     
@@ -51,18 +62,25 @@ namespace BOLD{
     
     int fetchImageIndex(string fileDir);
     string getLabel();
-    void update(BOLDDatum datum, bool correct,BOLDDatum falseDatum);
-    int getFalse();
-    int getCorrect();
-    int getTotal();
+    void updateBOLD(BOLDDatum datum, bool correct,BOLDDatum falseDatum);
+    void updateSIFT(BOLDDatum datum, bool correct,BOLDDatum falseDatum);
+    int getBOLDFalse();
+    int getBOLDCorrect();
+    int getSIFTCorrect();
+    int getSIFTFalse();
+    int getTotalBOLD();
+    int getTotalSIFT();
     void writeHTML(string dir);
   };
   
   class BOLDReport{
   private:
-    int nCorrect;
-    int nFalse;
-    int nTested;
+    int nCorrectBOLD;
+    int nFalseBOLD;
+    int nCorrectSIFT;
+    int nFalseSIFT;
+    int nTestedBOLD;
+    int nTestedSIFT;
     string mainDir;
     vector<BOLDLabelReport> labelReports;
     int fetchLabelReportIndex(string lab);
@@ -70,7 +88,8 @@ namespace BOLD{
     
   public:
     BOLDReport();
-    void update(BOLDDatum datum,bool correct,BOLDDatum falseDatum);
+    void updateBOLD(BOLDDatum datum,bool correct,BOLDDatum falseDatum);
+    void updateSIFT(BOLDDatum datum,bool correct,BOLDDatum falseDatum);
     void writeHTML(string raportName);
   };
  

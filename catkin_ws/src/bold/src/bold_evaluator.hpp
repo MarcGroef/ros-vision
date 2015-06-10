@@ -19,15 +19,20 @@
 #include "bold_recognizer.hpp"
 #include "bold_report.hpp"
 #include "bold_datum.hpp"
+#include "sift.hpp"
+//#include "MatBlur.h"
 
 using namespace std;
 
 namespace BOLD{
   
-  
+  enum Methods{
+    BOLD,SIFT,
+  };
   
   class BOLDEvaluator{
   private:
+    SIFTClassifier sift;
     string mainDatasetDirectory;
     vector<string> labels;
     
@@ -38,8 +43,10 @@ namespace BOLD{
     BOLDReport report;
     
     int nLabels;
-    int nCorrect;
-    int nFalse;
+    int nSIFTCorrect;
+    int nSIFTFalse;
+    int nBOLDCorrect;
+    int nBOLDFalse;
     //vector<int> nItems;
   public:
     BOLDRecognizer bold;

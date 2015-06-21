@@ -10,42 +10,50 @@ namespace BOLD{
   BOLDRecognizer::BOLDRecognizer(){
 
   }
-  //TODO: KNN adds each line combo double. Hists should be devided by two
+  
+
+
   
   BOLDDatum BOLDRecognizer::classify(BOLDFeature* f)
  {
    
     int nTrainedElements = trainedFeatures.size();
-    int kNearestNeighborIndices[K_NEAREST_NEIGHBORS];
-    double distances[K_NEAREST_NEIGHBORS];
+
+
     
     double dist;
     double buffer;
     int buff2, buff3;
     
-    int labelFrequencies[K_NEAREST_NEIGHBORS];
+
     int highestFrequency = 0;
     int frequencyOccurences = 0;
     
+    int KNlabelFrequencies[K_NEAREST_NEIGHBORS];
+
     //cout << "start knn..\n";
     
-    for(int i = 0; i < K_NEAREST_NEIGHBORS; ++i)
+    for(int i = 0; i < K_NEAREST_NEIGHBORS_MEMORY_SIZE; ++i)
     { 
       distances[i] = DBL_MAX;
       kNearestNeighborIndices[i] = -1;
       labelFrequencies[i] = 0;
     }
     
+    for(int i=0;i < K_NEAREST_NEIGHBORS;i++)
+      KNlabelFrequencies[i]=0;
+    
+    
     for(int i = 0; i < nTrainedElements; ++i)
     {  
       dist = f->manhatDistanceFrom(trainedFeatures[i]);  //store distance to compared element
   
       buff2 = i;
-      for(int j = 0; j < K_NEAREST_NEIGHBORS; ++j)
+      for(int j = 0; j < K_NEAREST_NEIGHBORS_MEMORY_SIZE; ++j)
        {
         if(dist <= distances[j])  
          {
-            for(int n = j; n < K_NEAREST_NEIGHBORS; ++n)
+            for(int n = j; n < K_NEAREST_NEIGHBORS_MEMORY_SIZE; ++n)
              {
 
 	            //store dist to be switched in buffer
@@ -69,23 +77,33 @@ namespace BOLD{
  
     
     //count label frequencies
-    
-    for(int i = 0; i < K_NEAREST_NEIGHBORS; ++i) 
+    //cout << "count freqs\n";
+    for(int i = 0; i < K_NEAREST_NEIGHBORS_MEMORY_SIZE; ++i) 
     {
+	cout << "*******************knn list*****************\n"  << distances[i] << "\n";
         for(int j = 0;j <= i; ++j) 
+	{
+	    //cout << "i " << i << " " << trainedFeatures[kNearestNeighborIndices[i]]->getLabel() << " j " << j << " fr " << labelFrequencies[j] << "\n"; 
+	    
             if(kNearestNeighborIndices[i] != -1 && kNearestNeighborIndices[j] != -1 
             && trainedFeatures[kNearestNeighborIndices[i]]->getLabel() ==
             trainedFeatures[kNearestNeighborIndices[j]]->getLabel())
-            {
-	            ++labelFrequencies[j]; 
-	            if(labelFrequencies[j] > highestFrequency)
-	                highestFrequency = labelFrequencies[j];
+            {	
+		    if(i < K_NEAREST_NEIGHBORS)
+		      ++KNlabelFrequencies[j];
+		    
+		    ++labelFrequencies[j];
+	            
+	            if(i < K_NEAREST_NEIGHBORS && labelFrequencies[j] > highestFrequency)  //only use K_NEAREST_NEIGHBORS as frequency count
+	                highestFrequency = KNlabelFrequencies[j];
+		   
 		    break;
             }
+	}
     }
     //check for ties and return label
     buff2 = -1;
-    
+    cout << "check for ties and return label\n";
     for(int i = 0; i < K_NEAREST_NEIGHBORS; ++i){  // debug and knn info
       if(kNearestNeighborIndices[i]<0||kNearestNeighborIndices[i]>trainedFeatures.size()){
 	cout << "KNN index out of bounds!!!  : "<< kNearestNeighborIndices[i] <<"\n";
@@ -95,35 +113,46 @@ namespace BOLD{
     }
     for(int i = 0; i < K_NEAREST_NEIGHBORS; ++i)
     {
-        if(labelFrequencies[i] == highestFrequency) 
+	cout << "freq neigboor " << i << " : " << labelFrequencies[i] << "\n";
+        if(KNlabelFrequencies[i] == highestFrequency) 
         {
-	    
+
             return trainedFeatures[kNearestNeighborIndices[i]]->getDatum();
-	           /* if(buff2 == -1)
-		    {
-	                buff2 = i;
-	            } else 
-	               cout << "K-NN TIE!! Needs better tiebreaker... Choosing at random\n" ;
-		       
-                   cout << "KNN labels:\n";
-		    
-	               for(int p = 0; p < K_NEAREST_NEIGHBORS; ++p)
-                   {
-	                if(kNearestNeighborIndices[p] != -1)
-	                    cout << trainedFeatures[kNearestNeighborIndices[p]].getLabel() 
-                             << ": dist = " << distances[p] << "\n";
-	                else{
-	                    cout << kNearestNeighborIndices[p] << "\n" ;
-	                }
-	                return trainedFeatures[i].getLabel();
-	            }*/
-	  
         }
     }
    
-    return trainedFeatures[buff2]->getDatum();
-    }
+    return BOLDDatum();
+  }
+  
+  bool larger(int i,int j){
+   return (i>j) ;
+  }
+  
+  vector<BOLDDatum> BOLDRecognizer::getSortedLabels(){
+    vector<int> freqs(K_NEAREST_NEIGHBORS_MEMORY_SIZE); 
+    int frequencies[K_NEAREST_NEIGHBORS_MEMORY_SIZE];
     
+    std::vector<BOLDDatum> sortedLabels;
+   
+    for(int i=0;i<K_NEAREST_NEIGHBORS_MEMORY_SIZE;i++) {
+      freqs.push_back(labelFrequencies[i]);
+      frequencies[i]=labelFrequencies[i];
+    }
+    //cout << "sort\n";
+    std::sort(freqs.begin(),freqs.end(),larger);
+   // cout << "sorted\n";
+    int matches=0;
+    for(int i=0;i<K_NEAREST_NEIGHBORS_MEMORY_SIZE && freqs[matches]!=0 ;i++){
+      if(frequencies[i]==freqs[matches]){
+	sortedLabels.push_back(trainedFeatures[kNearestNeighborIndices[i]]->getDatum());
+	cout << "pushed  " << trainedFeatures[kNearestNeighborIndices[i]]->getDatum().filename << "\n";
+	frequencies[i]=0; // mark it
+	matches++;
+	i=0;
+      }
+    }
+    return sortedLabels;
+  }
   
   BOLDDatum BOLDRecognizer::classify(BOLDDatum datum){
     cout << "classify " << datum.filename << "\n";

@@ -20,6 +20,8 @@
 #include <math.h>
 #include <cfloat>
 #include <fstream>
+#include <algorithm>
+#include <vector>
 
 
 
@@ -30,19 +32,26 @@ using namespace cv;
 namespace BOLD{
   
   enum BOLDRecognizerConstants{
-   K_NEAREST_NEIGHBORS = 3,
+   K_NEAREST_NEIGHBORS = 3,  //use for classifying
+   K_NEAREST_NEIGHBORS_MEMORY_SIZE = 10,
   };
   
   class BOLDRecognizer{
   private:
     BOLDescriptor descriptor;
     vector<BOLDFeature*> trainedFeatures;
-    
+    double distances[K_NEAREST_NEIGHBORS_MEMORY_SIZE];
+    int kNearestNeighborIndices[K_NEAREST_NEIGHBORS_MEMORY_SIZE];
+    int labelFrequencies[K_NEAREST_NEIGHBORS_MEMORY_SIZE];
+    bool isMentLabel(BOLDDatum d,vector<BOLDDatum> labels);
+    //bool larger(int i,int j);
   public:
    ~BOLDRecognizer();
     BOLDRecognizer();
     BOLDDatum classify(BOLDFeature* f);
     BOLDDatum classify(BOLDDatum datum);
+
+    vector<BOLDDatum> getSortedLabels();
     void addLabeledFeature(BOLDFeature *f);
     void addLabeledFeatureFromFile(BOLDDatum datum);
     void addLabeledFeature(Mat &image,string label);

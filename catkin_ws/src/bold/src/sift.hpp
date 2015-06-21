@@ -37,6 +37,8 @@ namespace BOLD{
   public:
     void train(BOLDDatum datum);
     BOLDDatum classify(BOLDDatum d,bool isLarge);
+    BOLDDatum classify(BOLDDatum item,vector<BOLDDatum> trainingslabels);
+    BOLDDatum classify(BOLDDatum d, bool largeObject,vector<BOLDDatum> searchLabels);
     void clear();
   };
   

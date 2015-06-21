@@ -107,9 +107,11 @@ namespace BOLD{
   
   void BOLDEvaluator::train(int curFold,int totFold){
     for(int i=0;i<trainingSet.size();i++){
-      if(!(totFold==0&&curFold==0))cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
+      if(!(totFold==0&&curFold==0))
+	cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
       bold.addLabeledFeatureFromFile(trainingSet[i]);
       //sift.train(trainingSet[i]);
+      boldsifter.train(trainingSet[i]);
     }
   }
   
@@ -148,10 +150,29 @@ namespace BOLD{
 	report.updateBOLD(testSet[i],false,result);
 	nBOLDFalse++;
       }
+      
+      //combine sift+bold. First sift. If sift doesnt recognize the object, then bold_evaluator
+      /*result = sift.classify(testSet[i],true);*/
+      result = boldsifter.classify(testSet[i]);
+      if(result.label==(string)"")
+	result = bold.classify(testSet[i]);
+      
+      if(result.label==testSet[i].label){    //lets report in the thml report as sift. All in the name of laziness of rewriting the bold_report for this.
+	cout << "correct!\n";
+	report.updateSIFT(testSet[i],true,result);
+	nSIFTCorrect++;
+      }
+      else{
+	cout << "Wrong!\n";
+	report.updateSIFT(testSet[i],false,result);
+	nSIFTFalse++;
+      }
     }
     
     
   }
+  
+  
   
   void BOLDEvaluator::nTests(int nFold,float fracTest,int nItems){
     int totalCorrectBOLD=0;
@@ -172,6 +193,7 @@ namespace BOLD{
       totalFalseBOLD+=nBOLDFalse;
       totalFalseSIFT+=nSIFTFalse;
       bold.clear();
+      boldsifter.clear();
       sift.clear();
       data.clear();
       testSet.clear();
@@ -207,7 +229,7 @@ int main(int argc,char**argv){
   else */
  
  
-if(argc == 4 && string("train").compare(argv[1])==0){
+  if(argc == 4 && string("train").compare(argv[1])==0){
   // eval.nTests(20,0.09f);
     float frac;
     int nItems;

@@ -20,6 +20,7 @@
 #include "bold_report.hpp"
 #include "bold_datum.hpp"
 #include "sift.hpp"
+#include "bold_boldsifter.hpp"
 //#include "MatBlur.h"
 
 using namespace std;
@@ -33,6 +34,8 @@ namespace BOLD{
   class BOLDEvaluator{
   private:
     SIFTClassifier sift;
+    BOLDSifter boldsifter;
+    
     string mainDatasetDirectory;
     vector<string> labels;
     

@@ -110,6 +110,7 @@ include_directories(
 
 ## Declare a cpp executable
 add_executable(bold 
+  src/bold_boldsifter.cpp
   src/sift.cpp
   src/bold_datum.cpp
   src/bold_report.cpp 

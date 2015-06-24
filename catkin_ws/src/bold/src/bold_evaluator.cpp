@@ -110,7 +110,7 @@ namespace BOLD{
       if(!(totFold==0&&curFold==0))
 	cout << "training " << trainingSet[i].label << " "<<i << " at fold " << curFold+1 << " from "<<totFold <<"\n";
       bold.addLabeledFeatureFromFile(trainingSet[i]);
-      //sift.train(trainingSet[i]);
+      sift.train(trainingSet[i]);
       boldsifter.train(trainingSet[i]);
     }
   }
@@ -120,12 +120,14 @@ namespace BOLD{
     nSIFTFalse=0;
     nBOLDCorrect=0;
     nBOLDFalse=0;
+    nBOLDSIFTERFalse = 0;
+    nBOLDSIFTERCorrect = 0;
     BOLDDatum result;
     for(int i=0;i<testSet.size();i++){
       
       
       //test sift
-     /* result = sift.classify(testSet[i],true);
+      result = sift.classify(testSet[i],true);
       cout << "determined label = " << result.label << "\n";
       if(result.label==testSet[i].label){
 	cout << "correct!\n";
@@ -136,7 +138,7 @@ namespace BOLD{
 	cout << "Wrong!\n";
 	report.updateSIFT(testSet[i],false,result);
 	nSIFTFalse++;
-      }*/
+      }
       //test bold
       result=bold.classify(testSet[i]);
       cout << "determined label = " << result.label << "\n";
@@ -151,21 +153,21 @@ namespace BOLD{
 	nBOLDFalse++;
       }
       
-      //combine sift+bold. First sift. If sift doesnt recognize the object, then bold_evaluator
-      /*result = sift.classify(testSet[i],true);*/
+      //combine sift+bold. BOLDSIFTER
+      
       result = boldsifter.classify(testSet[i]);
       if(result.label==(string)"")
 	result = bold.classify(testSet[i]);
       
       if(result.label==testSet[i].label){    //lets report in the thml report as sift. All in the name of laziness of rewriting the bold_report for this.
 	cout << "correct!\n";
-	report.updateSIFT(testSet[i],true,result);
-	nSIFTCorrect++;
+	//report.updateSIFT(testSet[i],true,result);
+	nBOLDSIFTERCorrect++;
       }
       else{
 	cout << "Wrong!\n";
-	report.updateSIFT(testSet[i],false,result);
-	nSIFTFalse++;
+	//report.updateSIFT(testSet[i],false,result);
+	nBOLDSIFTERFalse++;
       }
     }
     
@@ -179,6 +181,8 @@ namespace BOLD{
     int totalFalseBOLD = 0;
     int totalCorrectSIFT = 0;
     int totalFalseSIFT = 0;
+    int totalFalseBOLDSIFTER = 0;
+    int totalCorrectBOLDSIFTER = 0;
     int total;
     
     std::istringstream istream;
@@ -190,6 +194,8 @@ namespace BOLD{
       test();
       totalCorrectBOLD+=nBOLDCorrect;
       totalCorrectSIFT+=nSIFTCorrect;
+      totalCorrectBOLDSIFTER+=nBOLDSIFTERCorrect;
+      totalFalseBOLDSIFTER+=nBOLDSIFTERFalse;
       totalFalseBOLD+=nBOLDFalse;
       totalFalseSIFT+=nSIFTFalse;
       bold.clear();
@@ -205,9 +211,13 @@ namespace BOLD{
     float averageCorrectSIFT = totalCorrectSIFT*100/total;
     float averageFalseBOLD = totalFalseBOLD*100/total;
     float averageFalseSIFT = totalFalseSIFT*100/total;
-    
+    float averageFalseBOLDSIFTER = totalFalseBOLDSIFTER*100/total;
+    float averageCorrectBOLDSIFTER = totalCorrectBOLDSIFTER*100/total;
+
     cout << "BOLD: On average " << averageCorrectBOLD << "\% was correct and " << averageFalseBOLD << "\% was false\n";
     cout << "SIFT: On average " << averageCorrectSIFT << "\% was correct and " << averageFalseSIFT << "\% was false\n";
+    cout << "BOLDSIFTER: On average " << averageCorrectBOLDSIFTER << "\% was correct and " << averageFalseBOLDSIFTER << "\% was false\n";
+
     report.writeHTML("NewestReport");
   }
   

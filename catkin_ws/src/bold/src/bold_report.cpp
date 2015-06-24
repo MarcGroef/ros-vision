@@ -38,6 +38,15 @@ namespace BOLD{
     if(!correct)
       falseData.push_back(datum);
   }
+
+  void BOLDImageReport::updateBOLDSIFTER(bool correct,BOLDDatum datum){
+    nTestedBOLDSIFTER++;
+    if(correct)
+     nCorrectBOLDSIFTER++;
+    else
+     nFalseBOLDSIFTER++;
+  }
+
   string BOLDImageReport::getdir(){
     return filename;
   }
@@ -66,6 +75,7 @@ namespace BOLD{
     report << "<h1>" << filename.substr(0,filename.find_last_of(".")) << "</h1>\n";
     report << "<p> BOLD: " <<nCorrectBOLD << "/" << nTestedBOLD << " correct and " << nFalseBOLD << "/" <<  nTestedBOLD << "false</p>\n";
     report << "<p> SIFT: " <<nCorrectSIFT << "/" << nTestedSIFT << " correct and " << nFalseSIFT << "/" <<  nTestedSIFT << "false</p><br>\n";
+    report << "<p> BOLDSIFTER: " << nCorrectBOLDSIFTER << "/" << nTestedBOLDSIFTER  << nFalseBOLDSIFTER << "/" << nTestedBOLDSIFTER << "false</p><br>\n";
     report << "<img src = \"../../../" << datum.filename << "\" alt = \"" << filename << "\" style= \" width:320px;height:240px;\"> ";
     
     report << "<h1> Falsely compared to: </h1><br>\n ";
@@ -107,6 +117,8 @@ namespace BOLD{
   BOLDDatum BOLDImageReport::getDatum(){
     return datum;
   }
+
+  
   
   //*************************************************************BOLDLabelReport********************************************************
   BOLDLabelReport::BOLDLabelReport(string label){

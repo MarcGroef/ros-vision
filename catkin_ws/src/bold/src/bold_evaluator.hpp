@@ -50,6 +50,8 @@ namespace BOLD{
     int nSIFTFalse;
     int nBOLDCorrect;
     int nBOLDFalse;
+    int nBOLDSIFTERCorrect;
+    int nBOLDSIFTERFalse;
     //vector<int> nItems;
   public:
     BOLDRecognizer bold;

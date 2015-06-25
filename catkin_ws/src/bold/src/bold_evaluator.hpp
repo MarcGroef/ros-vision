@@ -22,7 +22,7 @@
 #include "sift.hpp"
 #include "bold_boldsifter.hpp"
 //#include "MatBlur.h"
-
+#include <ctime>
 using namespace std;
 
 namespace BOLD{
@@ -52,6 +52,9 @@ namespace BOLD{
     int nBOLDFalse;
     int nBOLDSIFTERCorrect;
     int nBOLDSIFTERFalse;
+    double BOLDTicks;
+    double SIFTTicks;
+    double BOLDSIFTERTicks;
     //vector<int> nItems;
   public:
     BOLDRecognizer bold;

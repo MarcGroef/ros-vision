@@ -77,13 +77,13 @@ namespace BOLD{
  
     
     //count label frequencies
-    //cout << "count freqs\n";
+
     for(int i = 0; i < K_NEAREST_NEIGHBORS_MEMORY_SIZE; ++i) 
     {
-	cout << "*******************knn list*****************\n"  << distances[i] << "\n";
+	
         for(int j = 0;j <= i; ++j) 
 	{
-	    //cout << "i " << i << " " << trainedFeatures[kNearestNeighborIndices[i]]->getLabel() << " j " << j << " fr " << labelFrequencies[j] << "\n"; 
+
 	    
             if(kNearestNeighborIndices[i] != -1 && kNearestNeighborIndices[j] != -1 
             && trainedFeatures[kNearestNeighborIndices[i]]->getLabel() ==
@@ -127,7 +127,7 @@ namespace BOLD{
   bool larger(int i,int j){
    return (i>j) ;
   }
-  
+  //get sorted label vector required by the boldsifter
   vector<BOLDDatum> BOLDRecognizer::getSortedLabels(){
     vector<int> freqs(K_NEAREST_NEIGHBORS_MEMORY_SIZE); 
     int frequencies[K_NEAREST_NEIGHBORS_MEMORY_SIZE];
@@ -145,7 +145,7 @@ namespace BOLD{
     for(int i=0;i<K_NEAREST_NEIGHBORS_MEMORY_SIZE && freqs[matches]!=0 ;i++){
       if(frequencies[i]==freqs[matches]){
 	sortedLabels.push_back(trainedFeatures[kNearestNeighborIndices[i]]->getDatum());
-	cout << "pushed  " << trainedFeatures[kNearestNeighborIndices[i]]->getDatum().filename << "\n";
+	//cout << "pushed  " << trainedFeatures[kNearestNeighborIndices[i]]->getDatum().filename << "\n";
 	frequencies[i]=0; // mark it
 	matches++;
 	i=0;
@@ -157,14 +157,13 @@ namespace BOLD{
   BOLDDatum BOLDRecognizer::classify(BOLDDatum datum){
     cout << "classify " << datum.filename << "\n";
     BOLDDatum label;
-    std::clock_t start;
-    start = std::clock();
+    
     descriptor.setImage(datum.filename,false);
     descriptor.describe();
     label = classify(descriptor.getFeature());
     descriptor.clear();
     descriptor.freeFeature();
-    cout << "It took "<<(float)(std::clock()-start)/CLOCKS_PER_SEC <<" sec to process : This would result in "<< 1/((float)(std::clock()-start)/CLOCKS_PER_SEC)<< " fps\n";
+    
     return label;
   }
   
@@ -241,7 +240,6 @@ namespace BOLD{
             bool normalized;
             string label;
 	    string dir;
-	    //TODO: Optimize by writing directly to a new boldfeature
             for(size_t r = 0; r < HISTOGRAM_SIZE; ++r)
             {
                 for(size_t k = 0; k < HISTOGRAM_SIZE; ++k)
@@ -294,7 +292,7 @@ namespace BOLD{
         }
         cout << "There are " << trainedFeatures.size() << " trained features present.\n";
     }
-    //writeToFile();
+
     cout << "Testing phase:\n";
     for(;;){
       cout << "Do you want to present a test sample?(y=yes,n=no)\n";
@@ -348,15 +346,3 @@ namespace BOLD{
 }
 
 
-/*int main(int argc,char**argv){
-    BOLDRecognizer br;
-    br.dialogue();
-    //br.showAllFeatures();  //***causes memleak indirectly lost:240, definitivly 60 bytes, posswibly lost: 228.865 bytes, still reachable: 796.541 bytes
-    
-    //waitKey(0);
-    //cv::destroyAllWindows();
-    cout << "Goodbye!\n";
-    return 0;   
-}
-
-*/

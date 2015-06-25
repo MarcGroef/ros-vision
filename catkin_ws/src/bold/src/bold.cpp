@@ -93,15 +93,9 @@ namespace BOLD{
   }
   
   //perform the LSD line detection from code of -von Gioi - e.a
-  //Currently the line segments are written to a .eps image.
-  
   void BOLDescriptor::detectLines(){
-
-
     lines = (Line*)lsd_scale(&nLines,image,imWidth,imHeight,1.0);
-    //cout << nLines << " line segments found\n";
     linesIsSet = true;
-    //showLines();
   }
   
   void BOLDescriptor::showLines(){
@@ -238,61 +232,16 @@ namespace BOLD{
 	}
       }
     }
-    //cout << "closest: " << distances[0] << ", furthest: " << distances[K_NEAREST_LINE_SEGMENTS-1] << "\n";
   }
   
-  /*void BOLDescriptor::kNearestLines(int index){
-    
-    double distances[K_NEAREST_LINE_SEGMENTS];
-    float mix,miy,mjx,mjy;
-    //double dist,buffer;
-    int buff2,buff3;
-    mix = (lines[index].x1+lines[index].x2)/2;
-    miy = (lines[index].y1+lines[index].y2)/2;
-    
-    cv::Mat lineData(nLines,2,CV_32F);
-    cv::Mat query(1,2,CV_32F);
-   
-    query.at<float>(0,0)=mix;
-    query.at<float>(0,1)=miy;
-   
-    
-    for(size_t j=0;j<nLines;j++){
 
-      mjx = (lines[j].x1+lines[j].x2)/2;
-      mjy = (lines[j].y1+lines[j].y2)/2;
-      lineData.at<float>(j,0)=mjx;
-      lineData.at<float>(j,1)=mjy;
-    }
-   
-    cv::flann::LinearIndexParams params;
-
-    //cvError(6);
-    cv::flann::Index tree(lineData,params);
-    
-    
-    cv::Mat indices;//(1,K_NEAREST_LINE_SEGMENTS,CV_32S);
-    cv::Mat dist(2,K_NEAREST_LINE_SEGMENTS,CV_32F);
-    
-    tree.knnSearch(query,indices,dist,K_NEAREST_LINE_SEGMENTS,cv::flann::SearchParams(64));
-    //cout << query << "\n" <<indices << "\n" << dist << "\n";
-    //cout << "closest: " << distances[0] << ", furthest: " << distances[K_NEAREST_LINE_SEGMENTS-1] << "\n";
-    for(size_t i= 0;i<K_NEAREST_LINE_SEGMENTS;i++){
-     KNLIndices[i]=indices.at<short>(0,i) ;
-     
-    }
-  }*/
-  
   
   
   void BOLDescriptor::describe(){
    int i,j;
    
-   
    feature = new BOLDFeature();
    
-   //cout << "describing..\n" ;
-   //feature->clear();
    if(lines==NULL){
       if(!imageIsSet){
 	cout << "BOLD::BOLDescriptor.describe() error: image not set.\n";
@@ -308,7 +257,7 @@ namespace BOLD{
 	  resolveAngles(i,KNLIndices[j]);
       }
     }
-    //cout << "normalize..\n";
+ 
     feature->normalize();
  
     

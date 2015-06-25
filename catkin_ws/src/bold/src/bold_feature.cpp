@@ -65,7 +65,6 @@
 	  histogram[i][j]/=entries;
 	}
       }
-      //cout << entries << "entries \n";
     }
     
     bool BOLDFeature::isNormalized(){
@@ -81,7 +80,7 @@
 	      
 	    }
       }
-      //returns squared distance
+
       return dist;
     }
     
@@ -94,7 +93,7 @@
 	      
 	    }
       }
-      //returns squared distance
+
       return dist;
     }
     
@@ -107,7 +106,7 @@
 	      
 	    }
       }
-      //returns squared distance
+
       return dist;
     }
     

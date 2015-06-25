@@ -22,7 +22,6 @@ namespace BOLD{
       }
       
       input >> nLabels;
-     // cout << "scanning " << nLabels << " labels\n";
       
       for( int i = 0;i < nLabels ; i++){
 	if(firstN!=0&&i==firstN-1)
@@ -30,7 +29,7 @@ namespace BOLD{
 	string label;
 	input >> label;
 	labels.push_back(label);
-	//cout << "added label " << label << "\n";
+
 
 	readObject(label);
 	
@@ -115,7 +114,9 @@ namespace BOLD{
     }
   }
   
+  //perform 1 fold
   void BOLDEvaluator::test(){
+    //performance variables
     nSIFTCorrect=0;
     nSIFTFalse=0;
     nBOLDCorrect=0;
@@ -123,16 +124,28 @@ namespace BOLD{
     nBOLDSIFTERFalse = 0;
     nBOLDSIFTERCorrect = 0;
     BOLDDatum result;
-    for(int i=0;i<testSet.size();i++){
+    
+    //Timing variables
+    BOLDTicks = 0;
+    SIFTTicks = 0;
+    BOLDSIFTERTicks = 0;
+    clock_t timer;
+    
+
+    
+    
+    for(int i =0 ; i<testSet.size() ; i++ ){
       
       
       //test sift
+      timer = clock();
       result = sift.classify(testSet[i],true);
+      SIFTTicks+=(uint)(clock()-timer);
       cout << "determined label = " << result.label << "\n";
       if(result.label==testSet[i].label){
-	cout << "correct!\n";
-	report.updateSIFT(testSet[i],true,result);
-	nSIFTCorrect++;
+        cout << "correct!\n";
+        report.updateSIFT(testSet[i],true,result);
+        nSIFTCorrect++;
       }
       else{
 	cout << "Wrong!\n";
@@ -140,7 +153,9 @@ namespace BOLD{
 	nSIFTFalse++;
       }
       //test bold
+      timer = clock();
       result=bold.classify(testSet[i]);
+      BOLDTicks+=(uint)(clock()-timer);
       cout << "determined label = " << result.label << "\n";
       if(result.label==testSet[i].label){
 	cout << "correct!\n";
@@ -154,8 +169,9 @@ namespace BOLD{
       }
       
       //combine sift+bold. BOLDSIFTER
-      
+      timer = clock();
       result = boldsifter.classify(testSet[i]);
+      BOLDSIFTERTicks+=(uint)(clock()-timer);
       if(result.label==(string)"")
 	result = bold.classify(testSet[i]);
       
@@ -175,8 +191,10 @@ namespace BOLD{
   }
   
   
-  
+  //perform crossvalidation
   void BOLDEvaluator::nTests(int nFold,float fracTest,int nItems){
+    //performance variables
+    
     int totalCorrectBOLD=0;
     int totalFalseBOLD = 0;
     int totalCorrectSIFT = 0;
@@ -185,6 +203,12 @@ namespace BOLD{
     int totalCorrectBOLDSIFTER = 0;
     int total;
     
+    //timing variables
+    
+    double totalTicksBOLD = 0;
+    double totalTicksSIFT = 0;
+    double totalTicksBOLDSIFTER = 0;
+    
     std::istringstream istream;
     for(int i=0;i<nFold;i++){
       
@@ -192,6 +216,12 @@ namespace BOLD{
       splitData(fracTest);
       train(i,nFold);
       test();
+      
+      totalTicksBOLD+=BOLDTicks/CLOCKS_PER_SEC;
+      totalTicksSIFT+=SIFTTicks/CLOCKS_PER_SEC;
+      totalTicksBOLDSIFTER+=BOLDSIFTERTicks/CLOCKS_PER_SEC;
+      
+      
       totalCorrectBOLD+=nBOLDCorrect;
       totalCorrectSIFT+=nSIFTCorrect;
       totalCorrectBOLDSIFTER+=nBOLDSIFTERCorrect;
@@ -213,10 +243,14 @@ namespace BOLD{
     float averageFalseSIFT = totalFalseSIFT*100/total;
     float averageFalseBOLDSIFTER = totalFalseBOLDSIFTER*100/total;
     float averageCorrectBOLDSIFTER = totalCorrectBOLDSIFTER*100/total;
+    
+    float averageTimeBOLD = 1000*(float)totalTicksBOLD /(total);
+    float averageTimeSIFT = 1000*(float)totalTicksSIFT /(total);
+    float averageTimeBOLDSIFTER = 1000*(float)totalTicksBOLDSIFTER /(total);
 
-    cout << "BOLD: On average " << averageCorrectBOLD << "\% was correct and " << averageFalseBOLD << "\% was false\n";
-    cout << "SIFT: On average " << averageCorrectSIFT << "\% was correct and " << averageFalseSIFT << "\% was false\n";
-    cout << "BOLDSIFTER: On average " << averageCorrectBOLDSIFTER << "\% was correct and " << averageFalseBOLDSIFTER << "\% was false\n";
+    cout << "BOLD: On average " << averageCorrectBOLD << "\% was correct and " << averageFalseBOLD << "\% was false with an average time of " << averageTimeBOLD <<" ms per image\n";
+    cout << "SIFT: On average " << averageCorrectSIFT << "\% was correct and " << averageFalseSIFT << "\% was false with an average time of " << averageTimeSIFT <<" ms per image\n";
+    cout << "BOLDSIFTER: On average " << averageCorrectBOLDSIFTER << "\% was correct and " << averageFalseBOLDSIFTER << "\% was false with an average time of " << averageTimeBOLDSIFTER <<" ms per image\n";
 
     report.writeHTML("NewestReport");
   }
@@ -227,17 +261,6 @@ int main(int argc,char**argv){
   
   cout << "Marc and Marc proudly present......\n\nBOLD\n\n";
   BOLD::BOLDEvaluator eval;
-
- /* if(string(argv[1]).compare("resize") == 0)
-  {
-    cout << "RESIZE THAT SHIIIIT\n";
-    BOLD::MatBlur mattie(imread("cat.jpg", CV_LOAD_IMAGE_COLOR));
-    namedWindow( "Display window", WINDOW_AUTOSIZE );// Create a window for display.
-    imshow( "Display window",     mattie.resize(2));                   // Show our image inside it.
-    waitKey(0);  
-  }
-  else */
- 
  
   if(argc == 4 && string("train").compare(argv[1])==0){
   // eval.nTests(20,0.09f);
